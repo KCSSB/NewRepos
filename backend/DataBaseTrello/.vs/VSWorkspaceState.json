@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\API",
+    "\\API\\Controllers",
+    "\\API\\Properties",
+    "\\API\\Requests",
+    "\\DataBaseInfo",
+    "\\DataBaseInfo\\Services",
+    "\\DataBaseTrello"
+  ],
+  "SelectedNode": "\\API\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,17 @@
+.footer {
+  margin-top: 24px;
+  font-size: 16px;
+  color: #181818;
+}
+
+.createLink {
+  color: #ff8000;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 0.2s;
+}
+
+.createLink:hover {
+  color: #ff6600;
+}

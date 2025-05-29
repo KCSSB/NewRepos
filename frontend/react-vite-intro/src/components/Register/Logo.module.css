@@ -1,0 +1,15 @@
+.logoWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: #202124;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 10rem;
+  max-height: 10rem;
+}
