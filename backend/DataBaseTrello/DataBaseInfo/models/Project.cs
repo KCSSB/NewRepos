@@ -13,6 +13,8 @@ namespace DataBaseInfo.models
         public string ProjectName { get; set; } = null!;
 
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
-        public virtual List<Group> Groups { get; set; } = new();///1111
+        public virtual List<Group> Groups { get; set; } = new();
+        public virtual List<Board> Boards { get; set; } = new();
+
     }
 }

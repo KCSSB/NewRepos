@@ -20,6 +20,8 @@ namespace DataBaseInfo
         public DbSet<Board> Boards { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
        // public DbSet<HashedPassword> Passwords { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,6 +70,10 @@ namespace DataBaseInfo
                 // ..WithOne(p => p.user)
                 //.HasForeignKey<HashedPassword>(u => u.userId)
                 //.OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(u => u.RefreshToken)
+                .WithOne(r => r.user)
+                .HasForeignKey<RefreshToken>(r => r.UserId);
+                
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -77,14 +83,21 @@ namespace DataBaseInfo
                 //Настройка полей
                 entity.Property(p => p.ProjectName).IsRequired().HasMaxLength(20);
                 //Настройка связи между полями(Нэту)
+                entity.HasMany(p => p.Boards)
+                .WithOne(b => b.Project)
+                .HasForeignKey(b => b.ProjectId)
+                .IsRequired();
             });
             modelBuilder.Entity<MemberOfGroup>(entity =>
             {
-                entity.HasKey(m => m.Id);
+                
+                entity.HasKey(mg => mg.Id);
+                entity.Property(mg => mg.ProjectUserId).IsRequired();
+                entity.Property(mg => mg.GroupId).IsRequired();
 
-                entity.HasOne(m => m.User)
+                entity.HasOne(mg => mg.User)
                     .WithMany(pu => pu.Groups)
-                    .HasForeignKey(m => m.ProjectUserId)
+                    .HasForeignKey(mg => mg.ProjectUserId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(m => m.Group)
@@ -100,7 +113,7 @@ namespace DataBaseInfo
                 entity.Property(g => g.Name).IsRequired().HasMaxLength(20);
                 entity.Property(g => g.ProjectId).IsRequired();
                 entity.Property(g => g.LeadId).IsRequired();
-
+                entity.Property(g => g.BoardId).IsRequired();
                 entity.HasOne(g => g.Project)
                     .WithMany(p => p.Groups)
                     .HasForeignKey(g => g.ProjectId)
@@ -124,6 +137,10 @@ namespace DataBaseInfo
                 .WithMany(g => g.Boards)
                 .HasForeignKey(b => b.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(b => b.Project)
+                .WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
             });
 
             modelBuilder.Entity<Card>(entity =>
@@ -155,7 +172,14 @@ namespace DataBaseInfo
                 .HasForeignKey(t => t.CardId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
-
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.HasKey(r => r.Id);
+                entity.Property(r => r.CreatedAt).IsRequired();
+                entity.Property(r => r.TokenHash).IsRequired();
+             
+                entity.Property(r => r.UserId).IsRequired();
+            });
 
 
         }

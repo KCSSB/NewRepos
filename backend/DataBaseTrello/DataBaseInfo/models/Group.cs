@@ -19,6 +19,7 @@ namespace DataBaseInfo.models
         public int LeadId { get; set; }
         public virtual ProjectUser Lead { get; set; } = null!;
 
+        public int BoardId { get; set; }
         public virtual List<Board> Boards { get; set; } = new();
     }
 }

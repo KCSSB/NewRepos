@@ -26,3 +26,4 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.pdb
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.genruntimeconfig.cache
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\ref\DataBaseInfo.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.sourcelink.json
