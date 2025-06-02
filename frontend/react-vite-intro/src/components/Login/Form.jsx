@@ -33,7 +33,9 @@ const Form = ({ isRegister }) => {
           UserPassword: password
         });
         alert("Вход успешен");
-        localStorage.setItem("token", response.data.token);
+        
+        localStorage.setItem("token", JSON.stringify(response.data));
+      
       }
     } catch (err) {
       setError(err.response?.data?.message || "Ошибка сервера");

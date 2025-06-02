@@ -148,6 +148,13 @@
               "$ref": "#/components/schemas/Card"
             },
             "nullable": true
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "project": {
+            "$ref": "#/components/schemas/Project"
           }
         },
         "additionalProperties": false
@@ -220,6 +227,10 @@
           },
           "lead": {
             "$ref": "#/components/schemas/ProjectUser"
+          },
+          "boardId": {
+            "type": "integer",
+            "format": "int32"
           },
           "boards": {
             "type": "array",
@@ -300,6 +311,13 @@
               "$ref": "#/components/schemas/Group"
             },
             "nullable": true
+          },
+          "boards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Board"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -338,6 +356,38 @@
               "$ref": "#/components/schemas/Group"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefreshToken": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tokenHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expriesAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isRevoked": {
+            "type": "boolean"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         },
         "additionalProperties": false
@@ -388,6 +438,9 @@
               "$ref": "#/components/schemas/ProjectUser"
             },
             "nullable": true
+          },
+          "refreshToken": {
+            "$ref": "#/components/schemas/RefreshToken"
           }
         },
         "additionalProperties": false

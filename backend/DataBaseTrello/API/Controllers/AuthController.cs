@@ -45,7 +45,7 @@ namespace API.Controllers
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
             var Token = _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
-                return Ok(Token);
+                return  Ok(Token);
         }
     }
 }
