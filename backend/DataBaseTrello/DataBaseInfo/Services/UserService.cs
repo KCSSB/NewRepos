@@ -13,16 +13,16 @@ namespace DataBaseInfo.Services
 {
     public class UserService:IUserService
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFabric;
+        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-        public UserService(IDbContextFactory<AppDbContext> contextFabric,JWTServices JWTService)
+        public UserService(IDbContextFactory<AppDbContext> contextFactory,JWTServices JWTService)
         {
-            _contextFabric = contextFabric;
+            _contextFactory = contextFactory;
             _JWTService = JWTService;
         }
         public User Register(string userEmail, string password)
         {
-            using(var context = _contextFabric.CreateDbContext())
+            using(var context = _contextFactory.CreateDbContext())
             {
                 User? em = context.Users.FirstOrDefault(em => em.UserEmail == userEmail);
                 if ( em==null) 
@@ -47,20 +47,23 @@ namespace DataBaseInfo.Services
         public string Login(string UserEmail, string Password)
         {
             User? user;
-            using (var context = _contextFabric.CreateDbContext())
+            using (var context = _contextFactory.CreateDbContext())
             {
                 user = context.Users.FirstOrDefault(u => u.UserEmail == UserEmail);
             }
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
             if (result == PasswordVerificationResult.Success)
             {
-                return _JWTService.GenerateToken(user);
+                _JWTService.CreateRefreshTokenAsync(user);
+
+                return _JWTService.GenerateAcessToken(user);
             }
             else
             {
                 throw new Exception("Unauthorize");
             }
         }
+      
         // Получение пользователя по ID
        /* public async Task<User?> GetUserByIdAsync(int id)
         {

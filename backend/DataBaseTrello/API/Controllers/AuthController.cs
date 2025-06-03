@@ -45,7 +45,19 @@ namespace API.Controllers
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
             var Token = _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
-                return  Ok(Token);
+            return Ok(Token);
+        }
+        [HttpPost("GetRefreshToken")]
+        public async Task<IActionResult> GetRefreshTokenbyId(int id)
+        {
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                var userWithToken = await context.Users
+     .Include(u => u.RefreshToken) // Явно подгружаем RefreshToken
+     .FirstOrDefaultAsync(u => u.Id == id);
+
+                return Ok(userWithToken.RefreshToken.Id);
+            }
         }
     }
 }

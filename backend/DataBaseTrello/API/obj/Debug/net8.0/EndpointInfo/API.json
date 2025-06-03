@@ -67,6 +67,28 @@
         }
       }
     },
+    "/api/Auth/GetRefreshToken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/User/user/{Id}": {
       "get": {
         "tags": [
@@ -367,15 +389,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "tokenHash": {
-            "type": "string",
-            "nullable": true
-          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
           },
-          "expriesAt": {
+          "expiresAt": {
             "type": "string",
             "format": "date-time"
           },

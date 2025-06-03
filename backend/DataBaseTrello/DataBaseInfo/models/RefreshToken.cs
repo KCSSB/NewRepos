@@ -10,9 +10,8 @@ namespace DataBaseInfo.models
     public class RefreshToken
     {
         public int Id { get; set; }
-        public string TokenHash { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public DateTime ExpriesAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public bool IsRevoked { get; set; }
        
 

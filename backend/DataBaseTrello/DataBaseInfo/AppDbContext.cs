@@ -176,7 +176,7 @@ namespace DataBaseInfo
             {
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.CreatedAt).IsRequired();
-                entity.Property(r => r.TokenHash).IsRequired();
+               
              
                 entity.Property(r => r.UserId).IsRequired();
             });

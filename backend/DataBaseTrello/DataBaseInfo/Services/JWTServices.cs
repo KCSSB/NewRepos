@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using DataBaseInfo.models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using API.Helpers;
 namespace DataBaseInfo.Services
 {
-    public class JWTServices(IOptions<AuthSettings> options)
+    public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory)
     {
-        public string GenerateToken(User user)
+        public string GenerateAcessToken(User user)
         {
             var claims = new List<Claim>
             {
@@ -21,11 +24,33 @@ namespace DataBaseInfo.Services
                 new Claim("UserId", user.Id.ToString()),
             };
             var jwtToken = new JwtSecurityToken(
-                expires: DateTime.UtcNow.Add(options.Value.expires),
+                expires: DateTime.UtcNow.Add(options.Value.AccessTokenExpires),
                 claims: claims,
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SecretKey)), SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+        }
+        
+        public async Task CreateRefreshTokenAsync(User user)
+        {
+            using(var context = contextFactory.CreateDbContext())
+            {
+             
+                var token = new RefreshToken
+                {
+                    CreatedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
+                    IsRevoked = false,
+                    UserId = user.Id,
+                    
+
+                };
+                user.RefreshToken = token;
+                await context.RefreshTokens.AddAsync(token);
+                
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
