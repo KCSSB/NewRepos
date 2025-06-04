@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Helpers;
 namespace DataBaseInfo.Services
 {
-    public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory)
+    public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
     {
         public string GenerateAcessToken(User user)
         {
@@ -50,6 +50,41 @@ namespace DataBaseInfo.Services
                 
 
                 await context.SaveChangesAsync();
+            }
+        }
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
+        {
+            using(var context = contextFactory.CreateDbContext())
+            {
+
+            var storedToken = await context.RefreshTokens
+                .Include(rt => rt.User)
+                .FirstOrDefaultAsync(rt => hash.VerifyToken(refreshToken, rt.Token));
+
+            if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
+                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+
+            storedToken.IsRevoked = true;
+            await context.SaveChangesAsync();
+
+            var newRefreshToken = new RefreshToken
+            {
+                Token = hash.HashToken(Guid.NewGuid().ToString()),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
+                UserId = storedToken.UserId,
+                User = storedToken.User
+            };
+
+                storedToken.User.RefreshToken = newRefreshToken;
+
+                await context.RefreshTokens.AddAsync(newRefreshToken);
+            
+            await context.SaveChangesAsync();
+
+            var newAccessToken = GenerateAcessToken(storedToken.User);
+
+            return (newAccessToken, newRefreshToken.Token);
             }
         }
     }

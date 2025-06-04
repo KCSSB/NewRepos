@@ -4,9 +4,7 @@ using DataBaseInfo.Services;
 using DataBaseInfo.models;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using API.Requests;
-using Microsoft.AspNetCore.Identity;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
