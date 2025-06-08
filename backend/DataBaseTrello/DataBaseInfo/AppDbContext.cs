@@ -71,7 +71,7 @@ namespace DataBaseInfo
                 //.HasForeignKey<HashedPassword>(u => u.userId)
                 //.OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(u => u.RefreshToken)
-                .WithOne(r => r.user)
+                .WithOne(r => r.User)
                 .HasForeignKey<RefreshToken>(r => r.UserId);
                 
             });

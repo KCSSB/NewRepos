@@ -44,7 +44,7 @@ namespace DataBaseInfo.Services
                 
             }
         }
-        public string Login(string UserEmail, string Password)
+        public (string AcessToken,string? RefreshToken) Login(string UserEmail, string Password)
         {
             User? user;
             using (var context = _contextFactory.CreateDbContext())
@@ -54,9 +54,9 @@ namespace DataBaseInfo.Services
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
             if (result == PasswordVerificationResult.Success)
             {
-                _JWTService.CreateRefreshTokenAsync(user);
-
-                return _JWTService.GenerateAcessToken(user);
+                var token = Guid.NewGuid().ToString();
+                _JWTService.CreateRefreshTokenAsync(user,token);
+                return (_JWTService.GenerateAcessToken(user),token);
             }
             else
             {

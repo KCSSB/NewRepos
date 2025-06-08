@@ -22,6 +22,7 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+
         var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>(); 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -32,6 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(authSettings.SecretKey))
         };
+       
     });
 
 // Настройка CORS

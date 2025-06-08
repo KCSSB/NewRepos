@@ -31,25 +31,26 @@ namespace DataBaseInfo.Services
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
         
-        public async Task CreateRefreshTokenAsync(User user)
+        public async Task CreateRefreshTokenAsync(User user, string token)
         {
             using(var context = contextFactory.CreateDbContext())
             {
-             
-                var token = new RefreshToken
+                
+                var hashedToken = new RefreshToken
                 {
                     CreatedAt = DateTime.UtcNow,
                     ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
+                    Token = hash.HashToken(token),
                     IsRevoked = false,
                     UserId = user.Id,
-                    
-
+                    User = user
                 };
-                user.RefreshToken = token;
-                await context.RefreshTokens.AddAsync(token);
+                user.RefreshToken = hashedToken;
+                await context.RefreshTokens.AddAsync(hashedToken);
                 
-
+                
                 await context.SaveChangesAsync();
+               
             }
         }
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
