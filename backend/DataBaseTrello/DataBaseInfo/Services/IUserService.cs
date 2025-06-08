@@ -10,7 +10,7 @@ namespace DataBaseInfo.Services
     public interface IUserService
     {
         User? Register(string userName, string password);
-        (string AcessToken, string? RefreshToken) Login(string UserEmail, string Password);
+        Task<(string AcessToken, string? RefreshToken)> Login(string UserEmail, string Password);
         
 
     }

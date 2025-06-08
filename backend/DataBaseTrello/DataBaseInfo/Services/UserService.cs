@@ -44,23 +44,31 @@ namespace DataBaseInfo.Services
                 
             }
         }
-        public (string AcessToken,string? RefreshToken) Login(string UserEmail, string Password)
+        public async Task<(string AcessToken,string? RefreshToken)> Login(string UserEmail, string Password)
         {
             User? user;
             using (var context = _contextFactory.CreateDbContext())
             {
                 user = context.Users.FirstOrDefault(u => u.UserEmail == UserEmail);
             }
-            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
-            if (result == PasswordVerificationResult.Success)
+            if (user != null)
             {
-                var token = Guid.NewGuid().ToString();
-                _JWTService.CreateRefreshTokenAsync(user,token);
-                return (_JWTService.GenerateAcessToken(user),token);
+
+                var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
+                if (result == PasswordVerificationResult.Success)
+                {
+                    var token = Guid.NewGuid().ToString();
+                    await _JWTService.CreateRefreshTokenAsync(user, token);
+                    return (_JWTService.GenerateAcessToken(user), token);
+                }
+                else
+                {
+                    throw new Exception("Unauthorize");
+                }
             }
             else
             {
-                throw new Exception("Unauthorize");
+                throw new Exception("Пользователь не найден");
             }
         }
       

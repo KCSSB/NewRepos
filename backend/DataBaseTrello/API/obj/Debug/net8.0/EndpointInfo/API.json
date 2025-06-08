@@ -67,14 +67,26 @@
         }
       }
     },
-    "/api/Auth/GetRefreshToken": {
+    "/api/Auth/RefreshAccessToken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/GetRefreshTokenFromCookie": {
       "post": {
         "tags": [
           "Auth"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "Id",
             "in": "query",
             "schema": {
               "type": "integer",

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using API.Requests;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -16,6 +17,7 @@ namespace API.Controllers
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
+      
 
        
         public AuthController(UserService userService, IDbContextFactory<AppDbContext> contextFactory, JWTServices jwtServices, IOptions<AuthSettings> options)
@@ -24,6 +26,7 @@ namespace API.Controllers
             _contextFactory = contextFactory;
             _jwtServices = jwtServices;
             _options = options;
+          
         }
 
         [HttpPost("register")]
@@ -43,9 +46,9 @@ namespace API.Controllers
                 return Ok("User registered successfully");
         }
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var  tokens = _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
+            var  tokens = await _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
             var accessToken = tokens.AcessToken;
             var refreshToken = tokens.RefreshToken;
             Response.Cookies.Append("refreshToken", (refreshToken.ToString()), new CookieOptions
@@ -58,16 +61,34 @@ namespace API.Controllers
             
             return Ok(accessToken);
         }
-        [HttpPost("GetRefreshToken")]
-        public IActionResult GetRefreshTokenbyId(int id)
+        
+        [HttpPost("RefreshAccessToken")]
+        public async Task<IActionResult> RefreshAcessToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized("Refresh token is missing.");
+
+            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken);
+            if (tokens.accessToken == null || tokens.refreshToken == null)
+                return Unauthorized("Invalid or expired refresh token.");
+            Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
+            });
+            return Ok(tokens.accessToken);
+        }
+        [HttpPost("GetRefreshTokenFromCookie")]
+        public IActionResult GetRefreshToken(int Id)
         {
             using (var context = _contextFactory.CreateDbContext())
             {
-   //             var userWithToken = await context.Users
-     //.Include(u => u.RefreshToken) // Явно подгружаем RefreshToken
-     //.FirstOrDefaultAsync(u => u.Id == id);
-
-                return Ok(Request.Cookies["refreshToken"]);
+                var RefreshToken = context.RefreshTokens.FirstOrDefault(rt => rt.User.Id == Id);
+                var Token = RefreshToken.Token;
+                return Ok(Token); 
             }
         }
     }

@@ -43,7 +43,7 @@ namespace DataBaseInfo.Services
                     Token = hash.HashToken(token),
                     IsRevoked = false,
                     UserId = user.Id,
-                    User = user
+            
                 };
                 user.RefreshToken = hashedToken;
                 await context.RefreshTokens.AddAsync(hashedToken);
@@ -57,10 +57,10 @@ namespace DataBaseInfo.Services
         {
             using(var context = contextFactory.CreateDbContext())
             {
-
+                var HashToken = hash.HashToken(refreshToken);
             var storedToken = await context.RefreshTokens
                 .Include(rt => rt.User)
-                .FirstOrDefaultAsync(rt => hash.VerifyToken(refreshToken, rt.Token));
+                .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
@@ -68,13 +68,14 @@ namespace DataBaseInfo.Services
             storedToken.IsRevoked = true;
             await context.SaveChangesAsync();
 
+                var token = Guid.NewGuid().ToString();
             var newRefreshToken = new RefreshToken
             {
-                Token = hash.HashToken(Guid.NewGuid().ToString()),
+                Token = hash.HashToken(token),
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
                 UserId = storedToken.UserId,
-                User = storedToken.User
+               
             };
 
                 storedToken.User.RefreshToken = newRefreshToken;
@@ -83,9 +84,9 @@ namespace DataBaseInfo.Services
             
             await context.SaveChangesAsync();
 
-            var newAccessToken = GenerateAcessToken(storedToken.User);
+            var newAccessToken = GenerateAcessToken(newRefreshToken.User);
 
-            return (newAccessToken, newRefreshToken.Token);
+            return (newAccessToken, token);
             }
         }
     }

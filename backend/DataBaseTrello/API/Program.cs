@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
        
     });
 
-// Настройка CORS
+
 
 
 // Другие сервисы

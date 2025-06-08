@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataBaseInfo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250603195550_AddIsActiveToRefreshToken")]
-    partial class AddIsActiveToRefreshToken
+    [Migration("20250608160419_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,6 +196,10 @@ namespace DataBaseInfo.Migrations
                     b.Property<bool>("IsRevoked")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
@@ -352,13 +356,13 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.RefreshToken", b =>
                 {
-                    b.HasOne("DataBaseInfo.models.User", "user")
+                    b.HasOne("DataBaseInfo.models.User", "User")
                         .WithOne("RefreshToken")
                         .HasForeignKey("DataBaseInfo.models.RefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
