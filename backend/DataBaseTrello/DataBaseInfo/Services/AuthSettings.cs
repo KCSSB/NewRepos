@@ -10,6 +10,6 @@ namespace DataBaseInfo.Services
     {
         public TimeSpan AccessTokenExpires {  get; set; }
         public TimeSpan RefreshTokenExpires { get; set; }
-        public string SecretKey { get; set; }
+        public string SecretKey { get; set; } = null!;
     }
 }

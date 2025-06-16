@@ -33,6 +33,16 @@
   },
   {
     "ContainingType": "API.Controllers.AuthController",
+    "Method": "Logout",
+    "RelativePath": "api/Auth/Logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.AuthController",
     "Method": "RefreshAcessToken",
     "RelativePath": "api/Auth/RefreshAccessToken",
     "HttpMethod": "POST",

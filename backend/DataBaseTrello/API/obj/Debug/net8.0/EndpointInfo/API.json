@@ -79,6 +79,18 @@
         }
       }
     },
+    "/api/Auth/Logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/GetRefreshTokenFromCookie": {
       "post": {
         "tags": [

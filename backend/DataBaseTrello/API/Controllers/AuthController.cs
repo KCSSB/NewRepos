@@ -81,6 +81,23 @@ namespace API.Controllers
             });
             return Ok(tokens.accessToken);
         }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                bool flag = await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
+                if(flag == true)
+                {
+                    Response.Cookies.Delete("refreshToken");
+                    return Ok("User success unauthorized");
+                }
+                
+            }
+            return NoContent();
+        }
         [HttpPost("GetRefreshTokenFromCookie")]
         public IActionResult GetRefreshToken(int Id)
         {

@@ -8,6 +8,7 @@ using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DataBaseInfo.Services
 {
@@ -46,14 +47,25 @@ namespace DataBaseInfo.Services
         }
         public async Task<(string AcessToken,string? RefreshToken)> Login(string UserEmail, string Password)
         {
-            User? user;
+         
+            
             using (var context = _contextFactory.CreateDbContext())
             {
-                user = context.Users.FirstOrDefault(u => u.UserEmail == UserEmail);
-            }
-            if (user != null)
-            {
-
+                User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
+                if(user == null)
+                {
+                    throw new Exception("Пользователь не найден");
+                }
+                var activeToken = await context.RefreshTokens
+        .Include(rt => rt.User)
+        .FirstOrDefaultAsync(rt => rt.User.UserEmail == UserEmail
+                               && !rt.IsRevoked
+                               && rt.ExpiresAt > DateTime.UtcNow);
+                if(activeToken != null)
+                {
+                    throw new Exception("Вы уже были авторизованы");
+                }
+                
                 var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
                 if (result == PasswordVerificationResult.Success)
                 {
@@ -63,12 +75,10 @@ namespace DataBaseInfo.Services
                 }
                 else
                 {
-                    throw new Exception("Unauthorize");
+                    throw new Exception("inccorrect password");
                 }
-            }
-            else
-            {
-                throw new Exception("Пользователь не найден");
+            
+            
             }
         }
       

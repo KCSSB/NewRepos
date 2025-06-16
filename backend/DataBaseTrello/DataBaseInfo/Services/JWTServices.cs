@@ -89,5 +89,21 @@ namespace DataBaseInfo.Services
             return (newAccessToken, token);
             }
         }
+        public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken)
+        {
+            using (var context = contextFactory.CreateDbContext())
+            {
+                var hashedRequestToken = hash.HashToken(refreshToken);
+                var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
+                if (token != null)
+                {
+                    context.RefreshTokens.Remove(token);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+
+            }
+        }
     }
 }
