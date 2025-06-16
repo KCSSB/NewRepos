@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -21,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -159,7 +159,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -183,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Program.cs",
               "RelativeDocumentMoniker": "API\\Program.cs",
@@ -196,13 +196,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
               "RelativeToolTip": "API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAYwGMAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAowHQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-11T21:33:14.034Z",
               "EditorCaption": ""
@@ -215,7 +215,7 @@
               "RelativeDocumentMoniker": "DataBaseInfo\\Services\\JWTServices.cs",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Services\\JWTServices.cs",
               "RelativeToolTip": "DataBaseInfo\\Services\\JWTServices.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAmwGEAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAuwD8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-19T11:22:46.715Z",
               "EditorCaption": ""
@@ -234,7 +234,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "HashService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Services\\HashService.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\Services\\HashService.cs",
@@ -242,11 +242,12 @@
               "RelativeToolTip": "DataBaseInfo\\Services\\HashService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T14:05:34.582Z"
+              "WhenOpened": "2025-06-04T14:05:34.582Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AuthSettings.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Services\\AuthSettings.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\Services\\AuthSettings.cs",
@@ -258,13 +259,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\Services\\UserService.cs",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Services\\UserService.cs",
               "RelativeToolTip": "DataBaseInfo\\Services\\UserService.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAAAEkAAABJAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwCkAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-12T14:50:44.366Z",
               "EditorCaption": ""

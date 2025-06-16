@@ -49,6 +49,10 @@ namespace API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var  tokens = await _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
+            if(tokens.AcessToken==null || tokens.RefreshToken == null)
+            {
+                return BadRequest("Ошибка при создании токенов");
+            }
             var accessToken = tokens.AcessToken;
             var refreshToken = tokens.RefreshToken;
             Response.Cookies.Append("refreshToken", (refreshToken.ToString()), new CookieOptions

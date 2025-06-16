@@ -26,8 +26,10 @@ namespace DataBaseInfo.Services
             using(var context = _contextFactory.CreateDbContext())
             {
                 User? em = context.Users.FirstOrDefault(em => em.UserEmail == userEmail);
-                if ( em==null) 
+                if (em != null)
                 {
+                    throw new Exception("Пользователь с таким Email уже существует");
+                }
 
             var user = new User
             {
@@ -35,16 +37,17 @@ namespace DataBaseInfo.Services
                 UserName = "Temporary_Name",
             };
             var passHash = new PasswordHasher<User>().HashPassword(user, password);
+                if(passHash == null)
+                {
+                    throw new Exception("Ошибка при хэшировании пароля");
+                }
             user.UserPassword = passHash;
             return user;
                 }
-                else
-                {
-                    throw new Exception("Пользователь с таким Email уже существует");
-                }
+                
                 
             }
-        }
+        
         public async Task<(string AcessToken,string? RefreshToken)> Login(string UserEmail, string Password)
         {
          
