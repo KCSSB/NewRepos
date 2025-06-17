@@ -14,6 +14,8 @@ builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthS
 // Регистрация фабрики контекста
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//Регистрация сервиса для очистки рефреш токенов:
+builder.Services.AddHostedService<RefreshTokensCleaner>();
 //Регистрация сервиса валидации Токенов
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
