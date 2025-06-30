@@ -28,7 +28,7 @@ namespace DataBaseInfo.Services
                 User? em = context.Users.FirstOrDefault(em => em.UserEmail == userEmail);
                 if (em != null)
                 {
-                    throw new Exception("Пользователь с таким Email уже существует");
+                    throw new Exception("Пользователь с таким Email уже существует"); //Выходит ошибка, но никак не обрабатывается
                 }
 
             var user = new User
@@ -39,7 +39,7 @@ namespace DataBaseInfo.Services
             var passHash = new PasswordHasher<User>().HashPassword(user, password);
                 if(passHash == null)
                 {
-                    throw new Exception("Ошибка при хэшировании пароля");
+                    throw new Exception("Ошибка при хэшировании пароля"); //Выходит ошибка но не обрабатывается
                 }
             user.UserPassword = passHash;
             return user;
@@ -57,7 +57,7 @@ namespace DataBaseInfo.Services
                 User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
                 if(user == null)
                 {
-                    throw new Exception("Пользователь не найден");
+                    throw new Exception("Пользователь не найден"); //Выходит ошибка но не обрабатывается
                 }
                 var activeToken = await context.RefreshTokens
         .Include(rt => rt.User)
@@ -66,7 +66,7 @@ namespace DataBaseInfo.Services
                                && rt.ExpiresAt > DateTime.UtcNow);
                 if(activeToken != null)
                 {
-                    throw new Exception("Вы уже были авторизованы");
+                    throw new Exception("Вы уже были авторизованы"); //Выходит ошибка но не обрабатывается
                 }
                 
                 var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
@@ -78,48 +78,13 @@ namespace DataBaseInfo.Services
                 }
                 else
                 {
-                    throw new Exception("inccorrect password");
+                    throw new Exception("inccorrect password"); //Выходит ошибка но не обрабатывается
                 }
             
             
             }
         }
       
-        // Получение пользователя по ID
-       /* public async Task<User?> GetUserByIdAsync(int id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
-        // Создание нового пользователя
-        public async Task<bool> CreateUserAsync(User user)
-        {
-            _context.Users.Add(user);
-            return await _context.SaveChangesAsync() > 0;
-        }
-        // Обновление данных пользователя по ID
-        public async Task<bool> UpdateUserAsync(int id, User updatedUser)
-        {
-            var existingUser = await _context.Users.FindAsync(id);
-            if (existingUser == null)
-                return false;
-
-            existingUser.UserName = updatedUser.UserName;
-            existingUser.UserPassword = updatedUser.UserPassword;
-            // Обновите другие необходимые поля
-
-            _context.Users.Update(existingUser);
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        // Удаление пользователя по ID
-        public async Task<bool> DeleteUserAsync(int id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-                return false;
-
-            _context.Users.Remove(user);
-            return await _context.SaveChangesAsync() > 0;
-        }*/
+        
     }
 }

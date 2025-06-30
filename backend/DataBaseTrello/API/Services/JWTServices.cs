@@ -19,7 +19,7 @@ namespace DataBaseInfo.Services
         {
             var claims = new List<Claim>
             {
-                new Claim("UserName", user.UserName),
+               new Claim("UserName", user.UserName),
                 new Claim("UserEmail", user.UserEmail),
                 new Claim("UserId", user.Id.ToString()),
             };
@@ -63,7 +63,7 @@ namespace DataBaseInfo.Services
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Выходит ошибка но не обрабаывтается
 
             storedToken.IsRevoked = true;
             await context.SaveChangesAsync();
@@ -89,13 +89,13 @@ namespace DataBaseInfo.Services
             return (newAccessToken, token);
             }
         }
-        public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken)
+        public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken) // Где то тут может быть ошибка, поищи
         {
             using (var context = contextFactory.CreateDbContext())
             {
                 var hashedRequestToken = hash.HashToken(refreshToken);
                 var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
-                if (token != null)
+                if (token != null) 
                 {
                     context.RefreshTokens.Remove(token);
                     await context.SaveChangesAsync();

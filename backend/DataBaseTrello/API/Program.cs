@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Internal;
 
 //Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthS
 // Регистрация фабрики контекста
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
 //Регистрация сервиса для очистки рефреш токенов:
 builder.Services.AddHostedService<RefreshTokensCleaner>();
 //Регистрация сервиса валидации Токенов
@@ -37,7 +41,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 
-
 // Другие сервисы
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllers();
@@ -50,6 +53,29 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+    var dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
+    using(var dbContext = dbFactory.CreateDbContext())
+    {
+
+    try
+    {
+        dbContext.Database.Migrate();
+            var logger = service.GetService<ILogger<Program>>();
+            logger.LogInformation("Миграции были успешно применены");
+    }
+    catch (Exception ex)
+    {
+        var logger = service.GetService<ILogger<Program>>();
+        logger.LogError(ex, "Ошибка при выполнении миграции");
+        throw;
+    }
+    }
+}
+   
 
 if (app.Environment.IsDevelopment())
 {

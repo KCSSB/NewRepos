@@ -47,7 +47,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Boards");
+                    b.ToTable("Boards", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
@@ -77,7 +77,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Group", b =>
@@ -108,7 +108,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
@@ -131,7 +131,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("ProjectUserId");
 
-                    b.ToTable("MembersOfGroups");
+                    b.ToTable("MembersOfGroups", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
@@ -149,7 +149,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
@@ -173,7 +173,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserId", "ProjectId")
                         .IsUnique();
 
-                    b.ToTable("ProjectUsers");
+                    b.ToTable("ProjectUsers", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.RefreshToken", b =>
@@ -205,7 +205,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>
@@ -235,7 +235,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserEmail")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
@@ -261,7 +261,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Board", b =>

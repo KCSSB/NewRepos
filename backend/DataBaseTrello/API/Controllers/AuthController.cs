@@ -32,8 +32,8 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-           var user = _userService.Register(request.UserEmail, request.UserPassword);
-           using(var context = _contextFactory.CreateDbContext())
+           var user = _userService.Register(request.UserEmail, request.UserPassword); //check parametrs
+           using(var context = _contextFactory.CreateDbContext()) //Fix it
             {
                 context.Users.Add(user);
                await context.SaveChangesAsync();
@@ -102,15 +102,7 @@ namespace API.Controllers
             }
             return NoContent();
         }
-        [HttpPost("GetRefreshTokenFromCookie")]
-        public IActionResult GetRefreshToken(int Id)
-        {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                var RefreshToken = context.RefreshTokens.FirstOrDefault(rt => rt.User.Id == Id);
-                var Token = RefreshToken.Token;
-                return Ok(Token); 
-            }
-        }
+
+   
     }
 }

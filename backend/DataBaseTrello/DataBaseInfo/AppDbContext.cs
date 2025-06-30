@@ -27,14 +27,7 @@ namespace DataBaseInfo
         {
             base.OnModelCreating(modelBuilder);
 
-         //   modelBuilder.Entity<HashedPassword>(entity =>
-           // {
-             //   entity.HasKey(x => x.userId);
-               // entity.Property(x => x.storedHash).IsRequired();
-                //entity.Property(x => x.storedSalt).IsRequired();
-                //entity.Property(x => x.Password).IsRequired();
-           
-            //});
+         
             modelBuilder.Entity<ProjectUser>(entity =>
             {
 
