@@ -3,7 +3,7 @@ using System.Text;
 
 namespace API.Helpers
 {
-    public class PasswordHasher
+    public class PasswordHasher //Не используется
     {
         public void CreatePasswordHash(string password, out byte[] hash, out byte[]salt)
         {

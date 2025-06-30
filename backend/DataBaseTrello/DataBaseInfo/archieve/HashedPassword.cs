@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataBaseInfo.models
 {
-    public class HashedPassword
+    public class HashedPassword //Не используется
     {
         public string Password { get; set; } = null!;
 
