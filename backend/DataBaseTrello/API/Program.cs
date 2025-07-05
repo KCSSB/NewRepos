@@ -53,7 +53,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
 
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new Exception("Connection string is not configured!");
+}
 using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
