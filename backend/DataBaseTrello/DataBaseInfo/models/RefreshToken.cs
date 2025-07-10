@@ -10,13 +10,11 @@ namespace DataBaseInfo.models
     public class RefreshToken
     {
         public int Id { get; set; }
-        public string TokenHash { get; set; } = null!;
+        public string Token { get; set; } = null!; //Это хэшируется
         public DateTime CreatedAt { get; set; }
-        public DateTime ExpriesAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
         public bool IsRevoked { get; set; }
-       
-
         public int UserId { get; set; }
-        public virtual User user { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

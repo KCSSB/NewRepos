@@ -67,21 +67,10 @@
         }
       }
     },
-    "/api/User/user/{Id}": {
-      "get": {
+    "/api/Auth/RefreshAccessToken": {
+      "post": {
         "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+          "Auth"
         ],
         "responses": {
           "200": {
@@ -90,30 +79,11 @@
         }
       }
     },
-    "/api/User/create": {
+    "/api/Auth/Logout": {
       "post": {
         "tags": [
-          "User"
+          "Auth"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -124,124 +94,6 @@
   },
   "components": {
     "schemas": {
-      "Board": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "groupId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "group": {
-            "$ref": "#/components/schemas/Group"
-          },
-          "cards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Card"
-            },
-            "nullable": true
-          },
-          "projectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "project": {
-            "$ref": "#/components/schemas/Project"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Card": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "priority": {
-            "type": "string",
-            "nullable": true
-          },
-          "progress": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "boardId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "board": {
-            "$ref": "#/components/schemas/Board"
-          },
-          "tasks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/_Task"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Group": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "projectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "project": {
-            "$ref": "#/components/schemas/Project"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberOfGroup"
-            },
-            "nullable": true
-          },
-          "leadId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "lead": {
-            "$ref": "#/components/schemas/ProjectUser"
-          },
-          "boardId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "boards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "LoginRequest": {
         "required": [
           "userEmail",
@@ -263,135 +115,6 @@
         },
         "additionalProperties": false
       },
-      "MemberOfGroup": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "projectUserId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "$ref": "#/components/schemas/ProjectUser"
-          },
-          "groupId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "group": {
-            "$ref": "#/components/schemas/Group"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Project": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "projectName": {
-            "type": "string",
-            "nullable": true
-          },
-          "projectUsers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectUser"
-            },
-            "nullable": true
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Group"
-            },
-            "nullable": true
-          },
-          "boards": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Board"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ProjectUser": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "projectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "project": {
-            "$ref": "#/components/schemas/Project"
-          },
-          "groups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberOfGroup"
-            },
-            "nullable": true
-          },
-          "ledGroups": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Group"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RefreshToken": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "tokenHash": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "expriesAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "isRevoked": {
-            "type": "boolean"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
-        },
-        "additionalProperties": false
-      },
       "RegisterUserRequest": {
         "required": [
           "userEmail",
@@ -409,62 +132,6 @@
             "maxLength": 256,
             "minLength": 6,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userName": {
-            "type": "string",
-            "nullable": true
-          },
-          "userEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "userPassword": {
-            "type": "string",
-            "nullable": true
-          },
-          "projectUsers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectUser"
-            },
-            "nullable": true
-          },
-          "refreshToken": {
-            "$ref": "#/components/schemas/RefreshToken"
-          }
-        },
-        "additionalProperties": false
-      },
-      "_Task": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "complete": {
-            "type": "boolean"
-          },
-          "cardId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "card": {
-            "$ref": "#/components/schemas/Card"
           }
         },
         "additionalProperties": false

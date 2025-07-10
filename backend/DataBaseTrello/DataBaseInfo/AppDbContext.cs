@@ -27,14 +27,7 @@ namespace DataBaseInfo
         {
             base.OnModelCreating(modelBuilder);
 
-         //   modelBuilder.Entity<HashedPassword>(entity =>
-           // {
-             //   entity.HasKey(x => x.userId);
-               // entity.Property(x => x.storedHash).IsRequired();
-                //entity.Property(x => x.storedSalt).IsRequired();
-                //entity.Property(x => x.Password).IsRequired();
-           
-            //});
+         
             modelBuilder.Entity<ProjectUser>(entity =>
             {
 
@@ -71,7 +64,7 @@ namespace DataBaseInfo
                 //.HasForeignKey<HashedPassword>(u => u.userId)
                 //.OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(u => u.RefreshToken)
-                .WithOne(r => r.user)
+                .WithOne(r => r.User)
                 .HasForeignKey<RefreshToken>(r => r.UserId);
                 
             });
@@ -176,7 +169,7 @@ namespace DataBaseInfo
             {
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.CreatedAt).IsRequired();
-                entity.Property(r => r.TokenHash).IsRequired();
+               
              
                 entity.Property(r => r.UserId).IsRequired();
             });
