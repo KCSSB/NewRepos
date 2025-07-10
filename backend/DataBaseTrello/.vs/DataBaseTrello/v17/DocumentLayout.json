@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
@@ -16,10 +20,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -126,7 +126,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -150,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "docker-compose.yaml",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml",
               "RelativeDocumentMoniker": "..\\..\\docker-compose.yaml",
@@ -163,20 +163,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ProjectUser.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\ProjectUser.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\ProjectUser.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAqwBIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:12:55.37Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MemberOfGroup.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\MemberOfGroup.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\models\\MemberOfGroup.cs",
@@ -184,12 +171,11 @@
               "RelativeToolTip": "DataBaseInfo\\models\\MemberOfGroup.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:10.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-12T15:13:10.224Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Group.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Group.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\models\\Group.cs",
@@ -197,8 +183,7 @@
               "RelativeToolTip": "DataBaseInfo\\models\\Group.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABMAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:16.075Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-12T15:13:16.075Z"
             },
             {
               "$type": "Document",
@@ -238,6 +223,31 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RefreshToken.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\RefreshToken.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\RefreshToken.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T15:49:47.356Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProjectUser.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\ProjectUser.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\ProjectUser.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAqwBIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:12:55.37Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 5,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\User.cs",
@@ -246,21 +256,7 @@
               "RelativeToolTip": "DataBaseInfo\\models\\User.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:10:43.52Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RefreshToken.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\RefreshToken.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\RefreshToken.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T15:49:47.356Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-12T15:10:43.52Z"
             },
             {
               "$type": "Document",
@@ -308,8 +304,7 @@
               "RelativeToolTip": "API\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T21:33:14.034Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-11T21:33:14.034Z"
             },
             {
               "$type": "Document",
