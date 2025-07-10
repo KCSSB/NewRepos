@@ -16,7 +16,5 @@ namespace DataBaseInfo.models
         public virtual Group Group { get; set; } = null!;
 
         public virtual List<Card> Cards { get; set; } = new();
-        public int ProjectId { get; set; }
-        public virtual Project Project { get; set; } = null!;
     }
 }

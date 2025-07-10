@@ -10,7 +10,7 @@ namespace DataBaseInfo.models
     public class ProjectUser
     {
         public int Id { get; set; }
-
+        public string projectRole { get; set; } = null!;//owner или member
         public int UserId { get; set; }
         public virtual User User { get; set; } = null!;
 
@@ -18,6 +18,6 @@ namespace DataBaseInfo.models
         public virtual Project Project { get; set; } = null!;
 
         public virtual List<MemberOfGroup> Groups { get; set; } = new();
-        public virtual List<Group> LedGroups { get; set; } = new();
+
     }
 }

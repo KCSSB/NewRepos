@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DataBaseInfo.Services;
-using DataBaseInfo.models;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using API.Requests;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authorization;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -86,7 +83,7 @@ namespace API.Controllers
             return Ok(tokens.accessToken);
         }
 
-        [HttpPost("Logout")]
+        [HttpDelete("Logout")]
         public async Task<IActionResult> Logout()
         {
             var refreshToken = Request.Cookies["refreshToken"];

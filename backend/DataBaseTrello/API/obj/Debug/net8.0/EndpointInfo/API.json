@@ -80,9 +80,21 @@
       }
     },
     "/api/Auth/Logout": {
-      "post": {
+      "delete": {
         "tags": [
           "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Projects/CreateProject": {
+      "post": {
+        "tags": [
+          "Projects"
         ],
         "responses": {
           "200": {

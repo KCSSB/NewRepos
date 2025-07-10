@@ -15,6 +15,6 @@ namespace DataBaseInfo.models
         public string UserEmail { get; set; } = null!;
         public string UserPassword { get; set; } = null!;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
-        public virtual RefreshToken RefreshToken { get; set; } = null!; 
+        public virtual RefreshToken? RefreshToken { get; set; } 
     }
 }

@@ -28,28 +28,6 @@ namespace DataBaseInfo
             base.OnModelCreating(modelBuilder);
 
          
-            modelBuilder.Entity<ProjectUser>(entity =>
-            {
-
-                //первичный ключ
-                entity.HasKey(u => u.Id);
-                entity.Property(u => u.UserId).IsRequired();
-                entity.Property(u => u.ProjectId).IsRequired();
-                //Связь между моделями User и ProjectUser
-                entity.HasOne(up => up.User)
-                .WithMany(us => us.ProjectUsers)
-                .HasForeignKey(up => up.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(up => up.Project)
-                .WithMany(us => us.ProjectUsers)
-                .HasForeignKey(up => up.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasIndex(up => new { up.UserId, up.ProjectId })
-                      .IsUnique();
-            });
-
             modelBuilder.Entity<User>(entity =>
             {
                 //Первичный ключ
@@ -76,11 +54,29 @@ namespace DataBaseInfo
                 //Настройка полей
                 entity.Property(p => p.ProjectName).IsRequired().HasMaxLength(20);
                 //Настройка связи между полями(Нэту)
-                entity.HasMany(p => p.Boards)
-                .WithOne(b => b.Project)
-                .HasForeignKey(b => b.ProjectId)
-                .IsRequired();
             });
+            modelBuilder.Entity<ProjectUser>(entity =>
+            {
+
+                //первичный ключ
+                entity.HasKey(u => u.Id);
+                entity.Property(u => u.UserId).IsRequired();
+                entity.Property(u => u.ProjectId).IsRequired();
+                //Связь между моделями User и ProjectUser
+                entity.HasOne(up => up.User)
+                .WithMany(us => us.ProjectUsers)
+                .HasForeignKey(up => up.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(up => up.Project)
+                .WithMany(us => us.ProjectUsers)
+                .HasForeignKey(up => up.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasIndex(up => new { up.UserId, up.ProjectId })
+                      .IsUnique();
+            });
+
             modelBuilder.Entity<MemberOfGroup>(entity =>
             {
                 
@@ -103,19 +99,7 @@ namespace DataBaseInfo
             {
                 entity.HasKey(g => g.Id);
 
-                entity.Property(g => g.Name).IsRequired().HasMaxLength(20);
-                entity.Property(g => g.ProjectId).IsRequired();
-                entity.Property(g => g.LeadId).IsRequired();
-                entity.Property(g => g.BoardId).IsRequired();
-                entity.HasOne(g => g.Project)
-                    .WithMany(p => p.Groups)
-                    .HasForeignKey(g => g.ProjectId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(g => g.Lead)
-                    .WithMany(pu => pu.LedGroups)
-                    .HasForeignKey(g => g.LeadId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                
             });
 
             modelBuilder.Entity<Board>(entity =>
@@ -130,9 +114,7 @@ namespace DataBaseInfo
                 .WithMany(g => g.Boards)
                 .HasForeignKey(b => b.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(b => b.Project)
-                .WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
+               
                 
             });
 
