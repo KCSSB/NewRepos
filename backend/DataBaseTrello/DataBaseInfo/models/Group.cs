@@ -10,16 +10,8 @@ namespace DataBaseInfo.models
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-
-        public int ProjectId { get; set; }
-        public virtual Project Project { get; set; } = null!;
-
-        public virtual List<MemberOfGroup> Members { get; set; } = new(); // ок
-
         public int LeadId { get; set; }
-        public virtual ProjectUser Lead { get; set; } = null!;
-        //From Master
-        public int BoardId { get; set; }
+        public virtual List<MemberOfGroup> Members { get; set; } = new(); // ок
         public virtual List<Board> Boards { get; set; } = new();
     }
 }

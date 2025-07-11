@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataBaseInfo.Services
+namespace API.Configuration
 {
     public class AuthSettings
     {

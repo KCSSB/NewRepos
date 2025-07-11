@@ -3,112 +3,131 @@
   "WorkspaceRootPath": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\backgroundservices\\refreshtokenscleaner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\backgroundservices\\refreshtokenscleaner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\databaseinfo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\databaseinfo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\dbcontextfactoryformigrations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\dbcontextfactoryformigrations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\projectservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\projectservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\configuration\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\configuration\\authsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\helpers\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\helpers\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\helpers\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\helpers\\hashservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\refreshtokenscleaner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\services\\refreshtokenscleaner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\requests\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\requests\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\projectuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\projectuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\memberofgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\memberofgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\_task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\_task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\dbcontextfactoryformigrations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\dbcontextfactoryformigrations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:.env||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|solutionrelative:.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\requests\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\requests\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\requests\\registeruserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\requests\\registeruserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\archieve\\hashedpassword.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\archieve\\hashedpassword.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\databaseinfo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\databaseinfo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\archieve\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\archieve\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\api.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
@@ -128,26 +147,6 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250420102607_TryCreateMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\memberofgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\memberofgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\project.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\group.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\_task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\_task.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\models\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
@@ -160,12 +159,8 @@
       "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\databaseinfo.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\migrations\\20250608160419_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\migrations\\20250608160419_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\migrations\\20250608170126_refreshmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\migrations\\20250608170126_refreshmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\databaseinfo\\migrations\\20250710115014_changearchitecturesdb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{321D33E9-F188-4FFE-BBB3-D25B073FE51B}|DataBaseInfo\\DataBaseInfo.csproj|solutionrelative:databaseinfo\\migrations\\20250710115014_changearchitecturesdb.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -175,7 +170,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -199,70 +194,177 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "docker-compose.yaml",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml",
-              "RelativeDocumentMoniker": "docker-compose.yaml",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml",
-              "RelativeToolTip": "docker-compose.yaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
-              "WhenOpened": "2025-07-01T18:25:27.744Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Program.cs",
-              "RelativeDocumentMoniker": "API\\Program.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Program.cs",
-              "RelativeToolTip": "API\\Program.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAAADkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "HashService.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\HashService.cs",
+              "RelativeDocumentMoniker": "API\\Helpers\\HashService.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\HashService.cs",
+              "RelativeToolTip": "API\\Helpers\\HashService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T09:12:11.274Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T12:00:03.595Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "JWTServices.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
+              "RelativeDocumentMoniker": "API\\Helpers\\JWTServices.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
+              "RelativeToolTip": "API\\Helpers\\JWTServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T10:24:41.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\appsettings.json",
               "RelativeDocumentMoniker": "API\\appsettings.json",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\appsettings.json",
               "RelativeToolTip": "API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-04-20T09:31:49.509Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\User.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\User.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\User.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\User.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAjAAAAAAAAAA==",
+              "DocumentIndex": 11,
+              "Title": "Project.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Project.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Project.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Project.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\Project.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:10:43.52Z"
+              "WhenOpened": "2025-04-12T15:13:05.298Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Card.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Card.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Card.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Card.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\Card.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "docker-compose.yaml",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml",
+              "RelativeDocumentMoniker": "docker-compose.yaml",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\docker-compose.yaml",
+              "RelativeToolTip": "docker-compose.yaml",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAAAUAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-07-10T07:43:07.533Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Program.cs",
+              "RelativeDocumentMoniker": "API\\Program.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Program.cs",
+              "RelativeToolTip": "API\\Program.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAIwEYAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:26.12Z"
+              "WhenOpened": "2025-04-20T09:12:11.274Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "API\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\UserService.cs",
+              "RelativeToolTip": "API\\Services\\UserService.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAwwD4AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:51:57.151Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProjectService.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\ProjectService.cs",
+              "RelativeDocumentMoniker": "API\\Services\\ProjectService.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\ProjectService.cs",
+              "RelativeToolTip": "API\\Services\\ProjectService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:51:44.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RefreshTokensCleaner.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\BackGroundServices\\RefreshTokensCleaner.cs",
+              "RelativeDocumentMoniker": "API\\BackGroundServices\\RefreshTokensCleaner.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\BackGroundServices\\RefreshTokensCleaner.cs",
+              "RelativeToolTip": "API\\BackGroundServices\\RefreshTokensCleaner.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAgwB8AAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T14:19:32.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthSettings.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Configuration\\AuthSettings.cs",
+              "RelativeDocumentMoniker": "API\\Configuration\\AuthSettings.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Configuration\\AuthSettings.cs",
+              "RelativeToolTip": "API\\Configuration\\AuthSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:59:50.388Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "API\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAowCsAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T21:33:14.034Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProjectsController.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\ProjectsController.cs",
+              "RelativeDocumentMoniker": "API\\Controllers\\ProjectsController.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\ProjectsController.cs",
+              "RelativeToolTip": "API\\Controllers\\ProjectsController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAUwB0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T10:35:39.544Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProjectUser.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\ProjectUser.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\ProjectUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:12:55.37Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MemberOfGroup.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\MemberOfGroup.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\MemberOfGroup.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\MemberOfGroup.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\MemberOfGroup.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:13:10.224Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",
@@ -270,205 +372,167 @@
               "RelativeToolTip": "Dockerfile",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-06-30T14:09:56.424Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "DataBaseInfo.csproj",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DataBaseInfo.csproj",
-              "RelativeDocumentMoniker": "DataBaseInfo\\DataBaseInfo.csproj",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DataBaseInfo.csproj",
-              "RelativeToolTip": "DataBaseInfo\\DataBaseInfo.csproj",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAUAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-12T12:55:19.933Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env",
-              "RelativeDocumentMoniker": ".env",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env",
-              "RelativeToolTip": ".env",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-07-01T18:23:39.246Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": ".dockerignore",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore",
-              "RelativeDocumentMoniker": ".dockerignore",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore",
-              "RelativeToolTip": ".dockerignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-07-01T15:10:10.488Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "API.csproj",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj",
-              "RelativeDocumentMoniker": "API\\API.csproj",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj",
-              "RelativeToolTip": "API\\API.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-19T20:09:27.345Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "DbContextFactoryForMigrations.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DbContextFactoryForMigrations.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\DbContextFactoryForMigrations.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DbContextFactoryForMigrations.cs",
-              "RelativeToolTip": "DataBaseInfo\\DbContextFactoryForMigrations.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAA8AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-28T13:54:53.569Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "JWTServices.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\JWTServices.cs",
-              "RelativeDocumentMoniker": "API\\Services\\JWTServices.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\JWTServices.cs",
-              "RelativeToolTip": "API\\Services\\JWTServices.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwBMAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T12:01:07.589Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "20250630162650_TestMigration.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
-              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-30T16:26:50.458Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "API\\Services\\UserService.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\UserService.cs",
-              "RelativeToolTip": "API\\Services\\UserService.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAowEAAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T19:49:04.939Z"
+              "WhenOpened": "2025-07-10T07:39:09.825Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "AuthSettings.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\AuthSettings.cs",
-              "RelativeDocumentMoniker": "API\\Services\\AuthSettings.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\AuthSettings.cs",
-              "RelativeToolTip": "API\\Services\\AuthSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\User.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\User.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\User.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\User.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T12:00:51.602Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "HashService.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\HashService.cs",
-              "RelativeDocumentMoniker": "API\\Services\\HashService.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\HashService.cs",
-              "RelativeToolTip": "API\\Services\\HashService.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T12:00:54.84Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "IUserService.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\IUserService.cs",
-              "RelativeDocumentMoniker": "API\\Services\\IUserService.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\IUserService.cs",
-              "RelativeToolTip": "API\\Services\\IUserService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T12:01:05.364Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "RefreshTokensCleaner.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\RefreshTokensCleaner.cs",
-              "RelativeDocumentMoniker": "API\\Services\\RefreshTokensCleaner.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\RefreshTokensCleaner.cs",
-              "RelativeToolTip": "API\\Services\\RefreshTokensCleaner.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-29T19:51:46.368Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAiwCIAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T21:33:14.034Z"
+              "WhenOpened": "2025-04-12T15:10:43.52Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 19,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\AppDbContext.cs",
-              "RelativeToolTip": "DataBaseInfo\\AppDbContext.cs",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAcwLUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T12:48:50.408Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\models\\RefreshToken.cs",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\RefreshToken.cs",
               "RelativeToolTip": "DataBaseInfo\\models\\RefreshToken.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-11T15:49:47.356Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "ProjectUser.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\ProjectUser.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\ProjectUser.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\ProjectUser.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAqwA8AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 17,
+              "Title": "DbContextFactoryForMigrations.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DbContextFactoryForMigrations.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\DbContextFactoryForMigrations.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DbContextFactoryForMigrations.cs",
+              "RelativeToolTip": "DataBaseInfo\\DbContextFactoryForMigrations.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:12:55.37Z"
+              "WhenOpened": "2025-07-10T10:40:07.837Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "_Task.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\_Task.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\_Task.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\_Task.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\_Task.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:13:37.325Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "API.csproj",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj",
+              "RelativeDocumentMoniker": "API\\API.csproj",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj",
+              "RelativeToolTip": "API\\API.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-19T20:09:27.345Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "20250710115014_ChangeArchitecturesDB.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250710115014_ChangeArchitecturesDB.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250710115014_ChangeArchitecturesDB.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250710115014_ChangeArchitecturesDB.cs",
+              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250710115014_ChangeArchitecturesDB.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T11:50:14.398Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Group.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Group.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Group.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Group.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\Group.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:13:16.075Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Card.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Card.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Card.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Card.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\Card.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABIAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:13:26.12Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 20,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\AppDbContext.cs",
+              "RelativeToolTip": "DataBaseInfo\\AppDbContext.cs",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAAAJYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T12:48:50.408Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Board.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Board.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Board.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Board.cs",
+              "RelativeToolTip": "DataBaseInfo\\models\\Board.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:13:31.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": ".dockerignore",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore",
+              "RelativeDocumentMoniker": ".dockerignore",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore",
+              "RelativeToolTip": ".dockerignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-07-10T07:43:04.781Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": ".env",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env",
+              "RelativeDocumentMoniker": ".env",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.env",
+              "RelativeToolTip": ".env",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-07-10T07:43:06.122Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "docker-compose.yaml",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml",
+              "RelativeDocumentMoniker": "..\\..\\docker-compose.yaml",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml",
+              "RelativeToolTip": "..\\..\\docker-compose.yaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-07-10T07:08:53.899Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Requests\\LoginRequest.cs",
               "RelativeDocumentMoniker": "API\\Requests\\LoginRequest.cs",
@@ -480,43 +544,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "20250608170126_RefreshMigration.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608170126_RefreshMigration.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250608170126_RefreshMigration.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608170126_RefreshMigration.cs",
-              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250608170126_RefreshMigration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T17:01:26.24Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "20250608154716_InitialCreate.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
-              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T15:47:17.16Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "20250608160419_InitialCreate.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608160419_InitialCreate.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250608160419_InitialCreate.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608160419_InitialCreate.cs",
-              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250608160419_InitialCreate.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T16:04:19.85Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 28,
               "Title": "RegisterUserRequest.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Requests\\RegisterUserRequest.cs",
               "RelativeDocumentMoniker": "API\\Requests\\RegisterUserRequest.cs",
@@ -528,31 +556,43 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "HashedPassword.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\archieve\\HashedPassword.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\archieve\\HashedPassword.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\archieve\\HashedPassword.cs",
-              "RelativeToolTip": "DataBaseInfo\\archieve\\HashedPassword.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAuwAoAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T09:49:18.581Z"
+              "DocumentIndex": 29,
+              "Title": "DataBaseInfo.csproj",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DataBaseInfo.csproj",
+              "RelativeDocumentMoniker": "DataBaseInfo\\DataBaseInfo.csproj",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DataBaseInfo.csproj",
+              "RelativeToolTip": "DataBaseInfo\\DataBaseInfo.csproj",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAUAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-12T12:55:19.933Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "PasswordHasher.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\archieve\\PasswordHasher.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\archieve\\PasswordHasher.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\archieve\\PasswordHasher.cs",
-              "RelativeToolTip": "DataBaseInfo\\archieve\\PasswordHasher.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAgAAAAAAAAAA==",
+              "DocumentIndex": 30,
+              "Title": "20250630162650_TestMigration.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
+              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-08T07:30:24.423Z"
+              "WhenOpened": "2025-06-30T16:26:50.458Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 31,
+              "Title": "20250608154716_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
+              "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
+              "RelativeToolTip": "DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T15:47:17.16Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
               "Title": "API.http",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.http",
               "RelativeDocumentMoniker": "API\\API.http",
@@ -561,66 +601,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
               "WhenOpened": "2025-05-26T14:59:53.531Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "Board.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Board.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Board.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Board.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\Board.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:31.572Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "_Task.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\_Task.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\_Task.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\_Task.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\_Task.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:37.325Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "Group.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Group.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Group.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Group.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\Group.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:16.075Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "Project.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Project.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\Project.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\Project.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\Project.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:05.298Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "MemberOfGroup.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\MemberOfGroup.cs",
-              "RelativeDocumentMoniker": "DataBaseInfo\\models\\MemberOfGroup.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\models\\MemberOfGroup.cs",
-              "RelativeToolTip": "DataBaseInfo\\models\\MemberOfGroup.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-12T15:13:10.224Z"
             },
             {
               "$type": "Document",
@@ -648,7 +628,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 33,
               "Title": "API.csproj.user",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj.user",
               "RelativeDocumentMoniker": "API\\API.csproj.user",
@@ -660,7 +640,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 34,
               "Title": "20250421115047_CreateTableForPasswords.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421115047_CreateTableForPasswords.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421115047_CreateTableForPasswords.cs",
@@ -671,7 +651,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 35,
               "Title": "20250421094357_TryMigrat.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421094357_TryMigrat.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421094357_TryMigrat.cs",
@@ -682,7 +662,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 36,
               "Title": "20250420102607_TryCreateMigration.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250420102607_TryCreateMigration.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250420102607_TryCreateMigration.cs",
