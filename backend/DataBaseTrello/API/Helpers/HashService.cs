@@ -4,10 +4,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using API.Configuration;
 using Microsoft.Extensions.Options;
 
 
-namespace DataBaseInfo.Services
+namespace API.Helpers
 {
     public class HashService
     {

@@ -13,5 +13,9 @@ namespace DataBaseInfo.models
         public string ProjectName { get; set; } = null!;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
 
+        public Project(string ProjectName)
+        {
+           this.ProjectName = ProjectName;
+        }
     }
 }

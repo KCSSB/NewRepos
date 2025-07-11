@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Internal;
+using API.Helpers;
+using API.BackGroundServices;
+using API.Configuration;
 
 //Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +51,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<HashService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
@@ -66,16 +68,16 @@ using (var scope = app.Services.CreateScope())
     var dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
     using(var dbContext = dbFactory.CreateDbContext())
     {
-
-    try
+        var logger = service.GetService<ILogger<Program>>();
+        try
     {
         dbContext.Database.Migrate();
-            var logger = service.GetService<ILogger<Program>>();
+            
             logger.LogInformation("Миграции были успешно применены");
     }
     catch (Exception ex)
     {
-        var logger = service.GetService<ILogger<Program>>();
+        
         logger.LogError(ex, "Ошибка при выполнении миграции");
         throw;
     }

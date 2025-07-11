@@ -8,7 +8,9 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
-namespace DataBaseInfo.Services
+using DataBaseInfo;
+using API.Configuration;
+namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
     {

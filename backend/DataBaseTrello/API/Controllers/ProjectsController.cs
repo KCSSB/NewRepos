@@ -7,24 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    
     public class ProjectsController : ControllerBase
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
-
-        public ProjectsController(IDbContextFactory<AppDbContext> contextFactory)
-        {
-            _contextFactory = contextFactory;
-        }
+       
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject()
         {
-
-            return Ok();
+            
+            var acessToken = await HttpContext.GetTokenAsync("access_token");
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var token = jwtHandler.ReadJwtToken(acessToken);
+            var UserIdClaim = token?.Claims?.FirstOrDefault(c => c.Type == "UserId");
+            int? UserId = int.Parse(UserIdClaim.Value);
+            return Ok(UserId);
         }
         
     }

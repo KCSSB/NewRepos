@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Helpers;
 using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DataBaseInfo.Services
 {
-    public class UserService:IUserService
+    public class UserService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;

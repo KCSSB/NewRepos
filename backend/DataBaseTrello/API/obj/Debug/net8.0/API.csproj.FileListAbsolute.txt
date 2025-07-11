@@ -158,8 +158,6 @@ C:\Users\Windows 11\source\repos\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.I
 C:\Users\Windows 11\source\repos\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Windows 11\source\repos\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Windows 11\source\repos\DataBaseTrello\API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.json
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\API.staticwebassets.endpoints.json
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\API.exe
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\API.deps.json
@@ -448,3 +446,5 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\API.RazorAssemblyInfo.cache
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\API.RazorAssemblyInfo.cs
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.json
