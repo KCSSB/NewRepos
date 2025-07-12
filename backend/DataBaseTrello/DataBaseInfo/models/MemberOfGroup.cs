@@ -13,7 +13,6 @@ namespace DataBaseInfo.models
         public string GroupRole { get; set; } = null!;
         public int ProjectUserId { get; set; }
         public virtual ProjectUser User { get; set; } = null!;
-
         public int GroupId { get; set; }
         public virtual Group Group { get; set; } = null!;
      

@@ -10,9 +10,9 @@ using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
 
-//Создаёт билдер для настройки приложения
+// Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
-//Добавление секции AuthSettings в Сервисы Билдера
+// Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 
 // Регистрация фабрики контекста
