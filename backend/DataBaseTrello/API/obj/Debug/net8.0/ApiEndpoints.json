@@ -58,7 +58,13 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "projectRequest",
+        "Type": "API.Requests.CreateProjectRequest",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

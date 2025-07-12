@@ -10,12 +10,12 @@ namespace DataBaseInfo.models
     public class ProjectUser
     {
         public int Id { get; set; }
-        public string projectRole { get; set; } = null!;//owner или member
+        public string projectRole { get; set; } = string.Empty;//owner или member
         public int UserId { get; set; }
-        public virtual User User { get; set; } = null!;
+        public virtual User? User { get; set; } 
 
         public int ProjectId { get; set; }
-        public virtual Project Project { get; set; } = null!;
+        public virtual Project? Project { get; set; } = null!;
 
         public virtual List<MemberOfGroup> Groups { get; set; } = new();
 

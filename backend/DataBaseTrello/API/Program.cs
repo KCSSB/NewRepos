@@ -9,10 +9,11 @@ using Microsoft.EntityFrameworkCore.Internal;
 using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
+using API.Services;
 
-//Создаёт билдер для настройки приложения
+// Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
-//Добавление секции AuthSettings в Сервисы Билдера
+// Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 
 // Регистрация фабрики контекста
@@ -51,6 +52,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<HashService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<TokenExtractorService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
