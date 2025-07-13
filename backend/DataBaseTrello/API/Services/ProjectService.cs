@@ -17,7 +17,7 @@ namespace API.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<int?> CreateProjectAsync(string accessToken, string projectName)
+        public async Task<int?> CreateProjectAsync(string projectName)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace API.Services
 
                 Project project = new Project(projectName);
 
-                using var context = _contextFactory.CreateDbContext();
+                using var context = await _contextFactory.CreateDbContextAsync();
 
                 await context.Projects.AddAsync(project);
                 await context.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace API.Services
 
             
         }
-        public async Task<bool> AddUserInProjectAsync(int userId, int projectId)
+        public async Task<int?> AddUserInProjectAsync(int userId, int projectId)
         {
             try
             {
@@ -71,12 +71,12 @@ namespace API.Services
                 user.ProjectUsers.Add(projectUser);
                 project.ProjectUsers.Add(projectUser);
                 await context.SaveChangesAsync();
-                return true;
+                return projectUser.Id;
             }
             catch (DbUpdateException ex)
             {
                 //Логирование ошибки DbUpdateException
-                return false;
+                return null;
             }
           
         }

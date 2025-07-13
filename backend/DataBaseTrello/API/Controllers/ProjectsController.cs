@@ -23,10 +23,12 @@ namespace API.Controllers
     {
         private readonly ProjectService _projectService;
         private readonly TokenExtractorService _tokenExtractor;
-        public ProjectsController(ProjectService projectService, TokenExtractorService tokenExtractor)
+        private readonly GroupService _groupService;
+        public ProjectsController(ProjectService projectService, TokenExtractorService tokenExtractor, GroupService groupService)
         {
             _projectService = projectService;
             _tokenExtractor = tokenExtractor;
+            _groupService = groupService;
         }
 
         [HttpPost ("CreateProject")]
@@ -41,15 +43,20 @@ namespace API.Controllers
                 return BadRequest("Ошибка при получении acess токена");
 
             int userId = _tokenExtractor.TokenExtractorId(accessToken);
-            int? projectId = await _projectService.CreateProjectAsync(accessToken, projectRequest.ProjectName);
+            int? projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
 
             if(projectId==null)
-                return BadRequest("Project creation failed");
-            bool success = await _projectService.AddUserInProjectAsync(userId, (int)projectId);
+                return BadRequest("Ошибка во время создания проекта");
+            int? projectUserId = await _projectService.AddUserInProjectAsync(userId, (int)projectId);
 
-            if (!success)
+            if (projectUserId==null)
                 return BadRequest("Ошибка во время привязки User к Project");
-
+            int? groupId = await _groupService.CreateGroupAsync((int)projectUserId);
+            if (groupId == null)
+                return BadRequest("Ошибка при создании группы");
+            int? memberOfGroupId = await _groupService.AddUserInGroupAsync((int)projectUserId, (int)groupId);
+            if (memberOfGroupId == null)
+                return BadRequest("Ошибка при добавлении основателя в группу");
             return Ok("Проект успешно создан");
 
         }

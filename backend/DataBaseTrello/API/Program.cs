@@ -54,6 +54,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<TokenExtractorService>();
+builder.Services.AddScoped<GroupService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
