@@ -67,6 +67,8 @@ namespace API.Services
                     GroupRole = "Lead", //Временно на первое время
                     
                 };
+                await context.MembersOfGroups.AddAsync(member);
+                await context.SaveChangesAsync();
                 projectUser.Groups.Add(member);
                 group.Members.Add(member);
                 group.LeadId = member.Id;

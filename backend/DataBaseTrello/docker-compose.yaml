@@ -18,6 +18,8 @@ services:
     #Todo
     db:
       image: postgres:17.0
+      ports:
+        - "5433:5432"
       environment:
         POSTGRES_USER: ${DB_USER}
         POSTGRES_PASSWORD: ${DB_PASSWORD}
