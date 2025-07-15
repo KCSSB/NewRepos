@@ -10,12 +10,23 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using API.Configuration;
+using System.Runtime.CompilerServices;
 namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
     {
-        public string GenerateAcessToken(User user)
+        public string GenerateAcessToken(User? user)
         {
+            try
+            {
+                if (user == null)
+                    throw new Exception("Ошибка при получении пользователя");
+                }
+        catch (Exception)
+                {
+                //Логирование ошибки при получении пользователя
+                throw;
+                }
             var claims = new List<Claim>
             {
                new Claim("UserName", user.UserName),
@@ -30,30 +41,53 @@ namespace API.Helpers
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
         
-        public async Task CreateRefreshTokenAsync(User user, string token)
+
+    
+
+        public async Task CreateRefreshTokenAsync(User? user, string token)
         {
-            using(var context = contextFactory.CreateDbContext())
+            try
             {
-                
-                var hashedToken = new RefreshToken
+                if (user == null)
+                    throw new Exception("Ошибка при получении пользователя");
+                using (var context = contextFactory.CreateDbContext())
                 {
-                    CreatedAt = DateTime.UtcNow,
-                    ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
-                    Token = hash.HashToken(token),
-                    IsRevoked = false,
-                    UserId = user.Id,
-            
-                };
-                user.RefreshToken = hashedToken;
-                await context.RefreshTokens.AddAsync(hashedToken);
+
+                    var hashedToken = new RefreshToken
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.Add(options.Value.RefreshTokenExpires),
+                        Token = hash.HashToken(token),
+                        IsRevoked = false,
+                        UserId = user.Id,
+
+                    };
+                    user.RefreshToken = hashedToken;
+                    await context.RefreshTokens.AddAsync(hashedToken);
+
+
+                    await context.SaveChangesAsync();
+
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                //Логгирование ошибки DbUpdateException
+                throw;
+            }
+            catch (Exception ex)
+            {
+                    //Логгриование ошибки При получении пользователя
+                    throw;
                 
-                
-                await context.SaveChangesAsync();
-               
             }
         }
-        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string? refreshToken)
         {
+            try
+            {
+                if (string.IsNullOrEmpty(refreshToken))
+                    throw new Exception("Ошибка получения refreshToken");
             using(var context = contextFactory.CreateDbContext())
             {
                 var HashToken = hash.HashToken(refreshToken);
@@ -62,7 +96,7 @@ namespace API.Helpers
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Выходит ошибка но не обрабаывтается
+                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Рефреш токен не действителен
 
             storedToken.IsRevoked = true;
             await context.SaveChangesAsync();
@@ -87,21 +121,54 @@ namespace API.Helpers
 
             return (newAccessToken, token);
             }
+            }
+            catch (Exception)
+            {
+                
+                //Ошибка при получении User
+                throw;
+            }
+            catch (Exception)
+            {
+                //Рефреш токен не действителен
+            
+                throw;
+            }
+            catch (Exception)
+            {
+                
+                //рефреш токен отсутствует
+                throw;
+            }
         }
         public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken) // Где то тут может быть ошибка, поищи
         {
+            try
+            {
+                if (string.IsNullOrEmpty(refreshToken))
+                    throw new Exception("Рефреш токен отсутствует");
             using (var context = contextFactory.CreateDbContext())
             {
+
                 var hashedRequestToken = hash.HashToken(refreshToken);
                 var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
-                if (token != null) 
-                {
+                    if (token == null)
+                        throw new Exception("Ошибка при получении Рефреш токена из базы данных");
+                
                     context.RefreshTokens.Remove(token);
                     await context.SaveChangesAsync();
                     return true;
-                }
-                return false;
-
+            }
+            }
+            catch (Exception)
+            {
+                //Рефреш токен отсутствует
+                throw;
+            }
+            catch (Exception)
+            {
+                //Рефреш токен отсутствует в бд
+                throw;
             }
         }
     }

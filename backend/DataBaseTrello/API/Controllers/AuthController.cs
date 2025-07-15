@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using API.Helpers;
 using API.Configuration;
+using System.Data.Common;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -32,7 +33,10 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-           var user = _userService.Register(request.UserEmail, request.UserPassword); //check parametrs
+            try
+            {
+
+           var user = await _userService.RegisterAsync(request.UserEmail, request.UserPassword); //check parametrs
            using(var context = _contextFactory.CreateDbContext()) //Fix it
             {
                 context.Users.Add(user);
@@ -44,17 +48,36 @@ namespace API.Controllers
                 await context.SaveChangesAsync();
             }
                 return Ok("User registered successfully");
+            }
+            catch (Exception)
+            {
+                //Ошибка при создании пользователя
+                
+                return BadRequest();
+            }
+            catch (InvalidCastException ex) //Ошибка при хэшировании пароля
+            {
+                //Логирование ошибки
+                return BadRequest();
+            }
+            catch (Exception ex) //Ошибка существования идентичного Email
+            {
+                //Логирование ошибки
+                return BadRequest();
+            }
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var  tokens = await _userService.Login(loginRequest.UserEmail, loginRequest.UserPassword);
-            if(tokens.AcessToken==null || tokens.RefreshToken == null)
+            try
             {
-                return BadRequest("Ошибка при создании токенов");
-            }
-            var accessToken = tokens.AcessToken;
-            var refreshToken = tokens.RefreshToken;
+            var  tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
+            
+            
+                
+            
+            var accessToken = tokens?.AccessToken;
+            var refreshToken = tokens?.RefreshToken;
             Response.Cookies.Append("refreshToken", (refreshToken.ToString()), new CookieOptions
             {
                 HttpOnly = true,
@@ -64,18 +87,42 @@ namespace API.Controllers
             });
             
             return Ok(accessToken);
+            }
+            catch (InvalidCastException)
+            {
+                //Логирование ошибки Пользователь не найден
+                return BadRequest();
+            }
+            catch (DbException)
+            {
+                //Логирование ошибки Вы уже были авторизованы
+                return BadRequest();
+            }
+            catch (InvalidOperationException)
+            {
+                //Логирование ошибки Неверный пароль
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                //Логирование ошибки Ошибка при получении пользователя(переданная из вложенного)
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                //Логирование ошибки UpdateDbContext
+            }
         }
         
         [HttpPost("RefreshAccessToken")]
         public async Task<IActionResult> RefreshAcessToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            if (string.IsNullOrEmpty(refreshToken))
-                return Unauthorized("Refresh token is missing.");
+            try
+            {
 
+                var refreshToken = Request.Cookies["refreshToken"];
             var tokens = await _jwtServices.RefreshTokenAsync(refreshToken);
-            if (tokens.accessToken == null || tokens.refreshToken == null)
-                return Unauthorized("Invalid or expired refresh token.");
             Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
             {
                 HttpOnly = true,
@@ -84,23 +131,50 @@ namespace API.Controllers
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
             return Ok(tokens.accessToken);
+            }
+            catch (Exception)
+            {
+
+                //Ошибка при получении User
+                throw;
+            }
+            catch (Exception)
+            {
+                //Рефреш токен не действителен
+
+                throw;
+            }
+            catch (Exception)
+            {
+
+                //рефреш токен отсутствует
+                throw;
+            }
         }
 
         [HttpDelete("Logout")]
         public async Task<IActionResult> Logout()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
-            if (!string.IsNullOrEmpty(refreshToken))
+            try
             {
+
+                var refreshToken = Request.Cookies["refreshToken"];
                 bool flag = await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
-                if(flag == true)
-                {
+               
+                
                     Response.Cookies.Delete("refreshToken");
                     return Ok("User success unauthorized");
-                }
-                
             }
-            return NoContent();
+            catch (Exception)
+            {
+                //Рефреш токен отсутствует
+                throw;
+            }
+            catch (Exception)
+            {
+                //Рефреш токен отсутствует в бд
+                throw;
+            }
         }
 
    
