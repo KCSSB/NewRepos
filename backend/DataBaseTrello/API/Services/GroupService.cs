@@ -15,15 +15,17 @@ namespace API.Services
             _contextFactory = contextFactory;
         }
         //Добавить транзацкции и уникальные индексы, Сделать кастомные ошибки
-        public async Task<int?> CreateGroupAsync(int projectUserId, string groupName = "Global")
+        public async Task<int> CreateGroupAsync(int? projectUserId, string groupName = "Global")
         {
             try
             {
+                if (projectUserId == null)
+                    throw new ArgumentNullException("Ошибка при получении ProjectUserId");
                 using var context = await _contextFactory.CreateDbContextAsync();
                 var ProjectUser = await context.ProjectUsers.Include(g => g.Groups)
                     .FirstOrDefaultAsync(pj => pj.Id == projectUserId);
-                if (ProjectUser == null || ProjectUser.Groups==null)
-                    throw new InvalidOperationException("Ошибка при получении списка групп");
+                if (ProjectUser == null || ProjectUser.Groups == null)
+                    throw new ArgumentNullException("Ошибка при получении списка групп");
                 int GroupsCount = ProjectUser.Groups.Count();
                 if (GroupsCount > 0 && groupName == "Global")
                     throw new InvalidOperationException("Ошибка в именовании группы, вы указали имя группы Global");
@@ -32,7 +34,7 @@ namespace API.Services
                 {
                     Name = groupName
                 };
-                
+
                 await context.Groups.AddAsync(group);
                 await context.SaveChangesAsync();
                 return group.Id;
@@ -40,12 +42,22 @@ namespace API.Services
             catch (DbUpdateException ex)
             {
                 //Логирование ошибки DbUpdateException
-                return null;
+                throw;
             }
-            catch(InvalidOperationException ex) 
+            catch (InvalidOperationException ex)
             {
-                //Логирование ошибки InvalidOperationException
-                return null;
+                //Логирование ошибки отсутствии данных
+                throw;
+            }
+            catch (InvalidOperationException ex)
+            {
+                //Логирование ошибки Об именовании группы Global
+                throw;
+            }
+            catch(Exception)
+            {
+                //Логирование непредвиденной ошибки
+                throw;
             }
         }
         public async Task<int?> AddUserInGroupAsync(int projectUserId, int groupId)

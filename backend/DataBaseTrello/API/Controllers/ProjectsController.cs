@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using API.Helpers;
 using API.Services;
 using API.Requests;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -34,30 +35,25 @@ namespace API.Controllers
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
         {
-            if (projectRequest.ProjectName.IsNullOrEmpty())
-                return BadRequest("Ошибка именования проекта");
-
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
             
-            if (accessToken.IsNullOrEmpty())
-                return BadRequest("Ошибка при получении acess токена");
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             int userId = _tokenExtractor.TokenExtractorId(accessToken);
-            int? projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
+            int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
 
-            if(projectId==null)
-                return BadRequest("Ошибка во время создания проекта");
-            int? projectUserId = await _projectService.AddUserInProjectAsync(userId, (int)projectId);
+            int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
-            if (projectUserId==null)
-                return BadRequest("Ошибка во время привязки User к Project");
-            int? groupId = await _groupService.CreateGroupAsync((int)projectUserId);
+            //Остановился
+            int groupId = await _groupService.CreateGroupAsync(projectUserId);
             if (groupId == null)
                 return BadRequest("Ошибка при создании группы");
             int? memberOfGroupId = await _groupService.AddUserInGroupAsync((int)projectUserId, (int)groupId);
             if (memberOfGroupId == null)
                 return BadRequest("Ошибка при добавлении основателя в группу");
             return Ok("Проект успешно создан");
+            
+            
+
 
         }
         

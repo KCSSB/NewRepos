@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using API.Helpers;
+using System.Data.Common;
 
 namespace API.Services
 {
@@ -17,7 +18,7 @@ namespace API.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<int?> CreateProjectAsync(string projectName)
+        public async Task<int> CreateProjectAsync(string projectName)
         {
             try
             {
@@ -35,21 +36,24 @@ namespace API.Services
             catch (DbUpdateException ex)
             {
                 //Логирование ошибки "Error while updateDataBase!"
-                return null;
+                throw;
             }
             catch(Exception ex)
             {
                 //Логирование ошибки "Unexpected error creating project"
-                return null;
+                throw;
             }
 
             
         }
-        public async Task<int?> AddUserInProjectAsync(int userId, int projectId)
+        public async Task<int> AddUserInProjectAsync(int? userId, int? projectId)
         {
             try
             {
-
+                if (userId == null)
+                    throw new ArgumentNullException("Ошибка при получении UserId");
+                if (projectId == null)
+                    throw new ArgumentNullException("Ошибка при получении ProjectId");
                 using var context = _contextFactory.CreateDbContext();
                 var user = await context.Users
     .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
@@ -61,12 +65,12 @@ namespace API.Services
 
                 var projectUser = new ProjectUser()
                 {
-                    UserId = userId,
-                    ProjectId = projectId,
+                    UserId = (int)userId,
+                    ProjectId = (int)projectId,
                     projectRole = "Owner"
                 };
                 if (user == null || project == null)
-                    throw new Exception("Произошла ошибка во время связи моделей с ProjectUsers");
+                    throw new ArgumentNullException("Произошла ошибка во время связи моделей с ProjectUsers");
 
                 user.ProjectUsers.Add(projectUser);
                 project.ProjectUsers.Add(projectUser);
@@ -76,9 +80,25 @@ namespace API.Services
             catch (DbUpdateException ex)
             {
                 //Логирование ошибки DbUpdateException
-                return null;
+                throw;
             }
-          
+            catch (ArgumentNullException)
+            {
+                throw;
+                //Ошибка  при получении UserId
+            }
+            catch (DbException ex)
+            {
+                throw;
+                //Общая ошибка бд
+            }
+            catch(Exception ex)
+            {
+                throw;
+                //Непредвиденная ошибка
+            }
+            
+
         }
     }
 }
