@@ -104,6 +104,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("MyPolicy");
+app.UseExceptionHandling();
 app.MapControllers();
 
 app.Run();

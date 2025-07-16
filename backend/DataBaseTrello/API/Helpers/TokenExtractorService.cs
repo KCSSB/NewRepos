@@ -22,16 +22,6 @@ namespace API.Helpers
         int UserId = int.Parse(UserIdClaim.Value);
             return UserId;
             }
-            catch (SecurityTokenException)
-            {
-                //Неверный формат JWT
-                throw;
-            }
-            catch (Exception)
-            {
-                //Клеймы отсутствуют
-                throw;
-            }
             catch(Exception)
             {
                 //Ошибка при получении AccessToken

@@ -39,21 +39,6 @@ namespace API.Services
                 await context.SaveChangesAsync();
                 return group.Id;
             }
-            catch (DbUpdateException ex)
-            {
-                //Логирование ошибки DbUpdateException
-                throw;
-            }
-            catch (InvalidOperationException ex)
-            {
-                //Логирование ошибки отсутствии данных
-                throw;
-            }
-            catch (InvalidOperationException ex)
-            {
-                //Логирование ошибки Об именовании группы Global
-                throw;
-            }
             catch(Exception)
             {
                 //Логирование непредвиденной ошибки

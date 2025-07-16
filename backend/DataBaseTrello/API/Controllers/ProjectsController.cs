@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using API.Helpers;
 using API.Services;
-using API.Requests;
 using Microsoft.EntityFrameworkCore;
+using API.DTO.Requests;
 
 namespace API.Controllers
 {

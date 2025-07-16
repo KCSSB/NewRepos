@@ -124,22 +124,9 @@ namespace API.Helpers
             }
             catch (Exception)
             {
-                
-                //Ошибка при получении User
                 throw;
             }
-            catch (Exception)
-            {
-                //Рефреш токен не действителен
-            
-                throw;
-            }
-            catch (Exception)
-            {
-                
-                //рефреш токен отсутствует
-                throw;
-            }
+    
         }
         public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken) // Где то тут может быть ошибка, поищи
         {
@@ -147,23 +134,18 @@ namespace API.Helpers
             {
                 if (string.IsNullOrEmpty(refreshToken))
                     throw new Exception("Рефреш токен отсутствует");
-            using (var context = contextFactory.CreateDbContext())
-            {
+                using (var context = contextFactory.CreateDbContext())
+                {
 
-                var hashedRequestToken = hash.HashToken(refreshToken);
-                var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
+                    var hashedRequestToken = hash.HashToken(refreshToken);
+                    var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
                     if (token == null)
                         throw new Exception("Ошибка при получении Рефреш токена из базы данных");
-                
+
                     context.RefreshTokens.Remove(token);
                     await context.SaveChangesAsync();
                     return true;
-            }
-            }
-            catch (Exception)
-            {
-                //Рефреш токен отсутствует
-                throw;
+                }
             }
             catch (Exception)
             {

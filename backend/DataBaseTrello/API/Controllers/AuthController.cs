@@ -2,12 +2,12 @@
 using DataBaseInfo.Services;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
-using API.Requests;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using API.Helpers;
 using API.Configuration;
 using System.Data.Common;
+using API.DTO.Requests;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -51,7 +51,6 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-           
             var  tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
             
             

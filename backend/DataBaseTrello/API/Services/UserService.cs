@@ -98,27 +98,6 @@ namespace DataBaseInfo.Services
                     }
                 }
             }
-
-            catch (InvalidCastException)
-            {
-                //Логирование ошибки Пользователь не найден
-                throw;
-            }
-            catch (DbException)
-            {
-                //Логирование ошибки Вы уже были авторизованы
-                throw;
-            }
-            catch (InvalidOperationException)
-            {
-                //Логирование ошибки Неверный пароль
-                throw;
-            }
-            catch(Exception)
-            {
-                //Логирование ошибки Ошибка при получении пользователя(переданная из вложенного)
-                throw;
-            }
             catch (Exception)
             {
                 throw;

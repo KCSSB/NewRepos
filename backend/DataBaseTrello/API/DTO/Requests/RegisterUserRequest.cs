@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Requests
+namespace API.DTO.Requests
 {
     public record RegisterUserRequest
     {

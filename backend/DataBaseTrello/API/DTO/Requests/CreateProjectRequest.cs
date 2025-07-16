@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.Requests
+namespace API.DTO.Requests
 {
     public class CreateProjectRequest
     {

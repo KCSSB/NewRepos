@@ -1,4 +1,5 @@
-﻿using API.Middleware;
+﻿using System.Net;
+using API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Primitives;
@@ -24,8 +25,17 @@ namespace API.Middleware
             catch(Exception e)
             {
                 //Логирование
-                
             }
+        }
+        private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode, string message)
+        {
+            _logger.LogError(exMessage);
+            HttpResponse response = context.Response;
+
+            response.ContentType = "application/json";
+            response.StatusCode = (int)httpStatusCode;
+
+            
         }
     }
 }
