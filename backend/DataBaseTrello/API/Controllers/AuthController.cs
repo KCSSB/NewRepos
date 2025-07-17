@@ -9,6 +9,7 @@ using API.Configuration;
 using System.Data.Common;
 using API.DTO.Requests;
 using Microsoft.IdentityModel.Tokens;
+using API.Exceptions;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -82,7 +83,16 @@ namespace API.Controllers
         public async Task<IActionResult> RefreshAcessToken()
         {
             //Валидация здесь
+            
             var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
+            throw new InvalidTokenException("Ошибка при получении RefreshToken из Cookies",
+                    "AuthController",
+                    "RefreshAccessToken");
+            if (refreshToken == null)
+                throw new InvalidTokenException("Ошибка при получении RefreshToken из Cookies",
+                    "AuthController",
+                    "RefreshAccessToken");
+              
             //Валидация здесь
             //Возможно проблемы
             var tokens = await _jwtServices.RefreshTokenAsync(refreshToken);
