@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using API.Configuration;
 using System.Runtime.CompilerServices;
+using API.Extensions;
 namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
@@ -82,12 +83,10 @@ namespace API.Helpers
                 
             }
         }
-        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string? refreshToken)
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(refreshToken))
-                    throw new Exception("Ошибка получения refreshToken");
+            
+               
             using(var context = contextFactory.CreateDbContext())
             {
                 var HashToken = hash.HashToken(refreshToken);
@@ -96,11 +95,12 @@ namespace API.Helpers
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Рефреш токен не действителен
+                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Проблема с рефреш токеном, пришедшим из вне или токена 
+            //Внутри бд не существует
 
             storedToken.IsRevoked = true;
-            await context.SaveChangesAsync();
-
+                await context.SaveChangesWithContextAsync("JWTServices", "RefreshAccessToken", "Ошибка при отзыве старого токена");
+            //Возможны проблемы
                 var token = Guid.NewGuid().ToString();
             var newRefreshToken = new RefreshToken
             {
@@ -114,18 +114,16 @@ namespace API.Helpers
                 storedToken.User.RefreshToken = newRefreshToken;
 
                 await context.RefreshTokens.AddAsync(newRefreshToken);
-            
+            //Возможны проблемы
             await context.SaveChangesAsync();
-
+            //Возможны проблемы
+            //Возможны проблемы
             var newAccessToken = GenerateAcessToken(newRefreshToken.User);
-
+            //Возможны проблемы
             return (newAccessToken, token);
             }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
+            
     
         }
         public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken) // Где то тут может быть ошибка, поищи

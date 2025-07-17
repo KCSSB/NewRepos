@@ -1,7 +1,12 @@
 ﻿using System.Net;
+using System.Text;
+using System.Text.Json;
+using API.DTO.Responses;
+using API.Extensions;
 using API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 
 namespace API.Middleware
@@ -22,9 +27,19 @@ namespace API.Middleware
 
             await _next(context);
             }
-            catch(Exception e)
+            catch(DbUpdateException ex)
             {
-                //Логирование
+               var exceptionMessage = new StringBuilder();
+                if (ex.TryGetFromExceptionData("service", out string service))
+                    exceptionMessage.AppendLine($"Service: {service}");
+                if (ex.TryGetFromExceptionData("operation", out string operation))
+                    exceptionMessage.AppendLine($"Operation: {operation}");
+                if (ex.TryGetFromExceptionData("message", out string message))
+                    exceptionMessage.AppendLine($"Message: {message}");
+                if (exceptionMessage.Length == 0)
+                    exceptionMessage.Append("Контекст ошибки повреждён");
+                await HandleExceptionAsync(context, exceptionMessage.ToString(), HttpStatusCode.NotFound, "Не найдено");
+                
             }
         }
         private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode, string message)
@@ -34,6 +49,13 @@ namespace API.Middleware
 
             response.ContentType = "application/json";
             response.StatusCode = (int)httpStatusCode;
+            ErrorResponse errorResponse = new()
+            {
+                Message = message,
+                StatusCode = (int)httpStatusCode
+            };
+
+            await response.WriteAsJsonAsync(errorResponse);
 
             
         }

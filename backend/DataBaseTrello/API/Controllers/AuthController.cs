@@ -8,6 +8,7 @@ using API.Helpers;
 using API.Configuration;
 using System.Data.Common;
 using API.DTO.Requests;
+using Microsoft.IdentityModel.Tokens;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +19,7 @@ namespace API.Controllers
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
+        
       
 
        
@@ -33,29 +35,35 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-           
-           var user = await _userService.RegisterAsync(request.UserEmail, request.UserPassword); //check parametrs
-           using(var context = _contextFactory.CreateDbContext()) //Fix it
-            {
-                context.Users.Add(user);
-               await context.SaveChangesAsync();
+           //Возможны проблемы
+           var user = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            //Возможны проблемы
 
+            using (var context = _contextFactory.CreateDbContext()) //Fix it
+            {
+
+                context.Users.Add(user);
+                //Возможны проблемы
+                await context.SaveChangesAsync();
+                //Возможны проблемы
 
                 user.UserName = $"user{user.Id:D6}";
-
+                //Возможны проблемы
                 await context.SaveChangesAsync();
+                //Возможны проблемы
             }
-                return Ok("User registered successfully");
+            return Ok("User registered successfully");
 
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            var  tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
-            
-            
-                
-            
+            //Возможны проблемы
+            var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
+            //Возможны проблемы
+
+
+
             var accessToken = tokens?.AccessToken;
             var refreshToken = tokens?.RefreshToken;
             Response.Cookies.Append("refreshToken", (refreshToken.ToString()), new CookieOptions
@@ -73,9 +81,12 @@ namespace API.Controllers
         [HttpPost("RefreshAccessToken")]
         public async Task<IActionResult> RefreshAcessToken()
         {
-
-            var refreshToken = Request.Cookies["refreshToken"];
+            //Валидация здесь
+            var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
+            //Валидация здесь
+            //Возможно проблемы
             var tokens = await _jwtServices.RefreshTokenAsync(refreshToken);
+            //Возможно проблемы
             Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
             {
                 HttpOnly = true,
@@ -89,10 +100,14 @@ namespace API.Controllers
             [HttpDelete("Logout")]
             public async Task<IActionResult> Logout()
             {
-
+            //Валдиация Здесь
                 var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken.IsNullOrEmpty())
+                throw new Exception();
+            //Валидация Здесь
+            //Возможны проблемы
                 bool flag = await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
-
+            //Возможно проблемы
 
                 Response.Cookies.Delete("refreshToken");
                 return Ok("User success unauthorized");

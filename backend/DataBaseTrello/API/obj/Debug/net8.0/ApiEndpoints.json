@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "loginRequest",
-        "Type": "API.Requests.LoginRequest",
+        "Type": "API.DTO.Requests.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -45,7 +45,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "API.Requests.RegisterUserRequest",
+        "Type": "API.DTO.Requests.RegisterUserRequest",
         "IsRequired": true
       }
     ],
@@ -61,7 +61,7 @@
     "Parameters": [
       {
         "Name": "projectRequest",
-        "Type": "API.Requests.CreateProjectRequest",
+        "Type": "API.DTO.Requests.CreateProjectRequest",
         "IsRequired": true
       }
     ],
