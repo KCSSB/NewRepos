@@ -12,11 +12,12 @@ using DataBaseInfo;
 using API.Configuration;
 using System.Runtime.CompilerServices;
 using API.Extensions;
+using API.Exceptions;
 namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
     {
-        public string GenerateAcessToken(User? user)
+        public string GenerateAccessToken(User? user)
         {
             try
             {
@@ -95,8 +96,8 @@ namespace API.Helpers
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-                throw new UnauthorizedAccessException("Invalid or expired refresh token."); //Проблема с рефреш токеном, пришедшим из вне или токена 
-            //Внутри бд не существует
+                throw new InvalidTokenException("Указанный refresh token не найден или его срок действия истёк",
+                    "JWTServices","RefreshAccessToken");
 
             storedToken.IsRevoked = true;
                 await context.SaveChangesWithContextAsync("JWTServices", "RefreshAccessToken", "Ошибка при отзыве старого токена");
@@ -118,7 +119,7 @@ namespace API.Helpers
             await context.SaveChangesAsync();
             //Возможны проблемы
             //Возможны проблемы
-            var newAccessToken = GenerateAcessToken(newRefreshToken.User);
+            var newAccessToken = GenerateAccessToken(newRefreshToken.User);
             //Возможны проблемы
             return (newAccessToken, token);
             }

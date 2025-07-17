@@ -10,6 +10,7 @@ using System.Data.Common;
 using API.DTO.Requests;
 using Microsoft.IdentityModel.Tokens;
 using API.Exceptions;
+using API.Exceptions.Models;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -40,7 +41,7 @@ namespace API.Controllers
            var user = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
 
-            using (var context = _contextFactory.CreateDbContext()) //Fix it
+            using (var context = _contextFactory.CreateDbContext()) 
             {
 
                 context.Users.Add(user);
@@ -80,14 +81,12 @@ namespace API.Controllers
         }
 
         [HttpPost("RefreshAccessToken")]
-        public async Task<IActionResult> RefreshAcessToken()
+        public async Task<IActionResult> RefreshAccessToken()
         {
             //Валидация здесь
             
             var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
-            throw new InvalidTokenException("Ошибка при получении RefreshToken из Cookies",
-                    "AuthController",
-                    "RefreshAccessToken");
+ 
             if (refreshToken == null)
                 throw new InvalidTokenException("Ошибка при получении RefreshToken из Cookies",
                     "AuthController",

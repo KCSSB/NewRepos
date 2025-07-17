@@ -1,4 +1,4 @@
-﻿namespace API.Exceptions
+﻿namespace API.Exceptions.Models
 {
     public class InvalidTokenException: Exception
     {

@@ -90,7 +90,7 @@ namespace DataBaseInfo.Services
                     {
                         var token = Guid.NewGuid().ToString();
                         await _JWTService.CreateRefreshTokenAsync(user, token);
-                        return (_JWTService.GenerateAcessToken(user), token);
+                        return (_JWTService.GenerateAccessToken(user), token);
                     }
                     else
                     {
