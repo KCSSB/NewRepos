@@ -13,6 +13,9 @@ using API.Configuration;
 using System.Runtime.CompilerServices;
 using API.Extensions;
 using API.Exceptions;
+using API.Exceptions.ErrorContext;
+using API.Exceptions.Enumes;
+using System.Net;
 namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
@@ -96,11 +99,18 @@ namespace API.Helpers
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-                throw new InvalidTokenException("Указанный refresh token не найден или его срок действия истёк",
-                    "JWTServices","RefreshAccessToken");
+               throw new AppException(new ErrorContext(ServiceName.JWTServices,
+                   OperationName.RefreshTokenAsync,
+                   HttpStatusCode.Unauthorized,
+                   "Ошибка авторизации",
+                   "RefreshToken не существует в базе данных или его время истекло"));
 
             storedToken.IsRevoked = true;
-                await context.SaveChangesWithContextAsync("JWTServices", "RefreshAccessToken", "Ошибка при отзыве старого токена");
+                await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
+                    OperationName.RefreshTokenAsync,
+                    "Ошибка при отзыве старого Refresh token",
+                    "Не удалось завершить авторизацию. Повторите попытку позже",
+                    HttpStatusCode.InternalServerError);
             //Возможны проблемы
                 var token = Guid.NewGuid().ToString();
             var newRefreshToken = new RefreshToken

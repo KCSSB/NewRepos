@@ -27,7 +27,7 @@
   },
   {
     "ContainingType": "API.Controllers.AuthController",
-    "Method": "RefreshAcessToken",
+    "Method": "RefreshAccessToken",
     "RelativePath": "api/Auth/RefreshAccessToken",
     "HttpMethod": "POST",
     "IsController": true,

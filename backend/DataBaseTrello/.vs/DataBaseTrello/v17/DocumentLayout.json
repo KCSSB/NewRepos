@@ -3,28 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\appexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\appexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\errorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\errorcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\dto\\responses\\errorresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\dto\\responses\\errorresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\operationname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\operationname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\helpers\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\helpers\\jwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\appexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\appexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\middleware\\exceptionhandlermiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,6 +25,22 @@
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\servicename.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\servicename.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\extensions\\dbcontextextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\extensions\\dbcontextextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\extensions\\exceptionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\extensions\\exceptionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\dto\\responses\\errorresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\dto\\responses\\errorresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\errorcontext\\operationname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\errorcontext\\operationname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -55,20 +63,8 @@
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\controllers\\projectscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\exceptions\\models\\invalidtokenexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\exceptions\\models\\invalidtokenexception.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\extensions\\dbcontextextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\extensions\\dbcontextextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\extensions\\exceptionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|solutionrelative:api\\extensions\\exceptionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CE94B53D-6A34-4C65-842A-C2C94100500F}|API\\API.csproj|c:\\users\\windows 11\\projects\\dontaskapp\\backend\\databasetrello\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -122,11 +118,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 18,
               "Title": "docker-compose.yaml",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\docker-compose.yaml",
               "RelativeDocumentMoniker": "..\\..\\docker-compose.yaml",
@@ -136,19 +132,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
               "WhenOpened": "2025-07-10T07:08:53.899Z",
               "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AppException.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\AppException.cs",
-              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\AppException.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\AppException.cs",
-              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\AppException.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T13:45:17.232Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -172,32 +155,111 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "JWTServices.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
-              "RelativeDocumentMoniker": "API\\Helpers\\JWTServices.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
-              "RelativeToolTip": "API\\Helpers\\JWTServices.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAAAYwBMAAAAkAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ErrorContext.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ErrorContext.cs",
+              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\ErrorContext.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ErrorContext.cs",
+              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\ErrorContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-15T10:05:18.044Z"
+              "WhenOpened": "2025-07-17T10:02:48.471Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
+              "Title": "ExceptionHandlerMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Middleware\\ExceptionHandlerMiddleware.cs",
+              "RelativeDocumentMoniker": "API\\Middleware\\ExceptionHandlerMiddleware.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Middleware\\ExceptionHandlerMiddleware.cs",
+              "RelativeToolTip": "API\\Middleware\\ExceptionHandlerMiddleware.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAkAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T09:56:58.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\AuthController.cs",
               "RelativeToolTip": "API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAgwGUAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAgwFoAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-11T21:33:14.034Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AppException.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\AppException.cs",
+              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\AppException.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\AppException.cs",
+              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\AppException.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T13:45:17.232Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "JWTServices.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
+              "RelativeDocumentMoniker": "API\\Helpers\\JWTServices.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\JWTServices.cs",
+              "RelativeToolTip": "API\\Helpers\\JWTServices.cs",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAewGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T10:05:18.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ServiceName.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ServiceName.cs",
+              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\ServiceName.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ServiceName.cs",
+              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\ServiceName.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T09:43:02.745Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DbContextExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\DbContextExtensions.cs",
+              "RelativeDocumentMoniker": "API\\Extensions\\DbContextExtensions.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\DbContextExtensions.cs",
+              "RelativeToolTip": "API\\Extensions\\DbContextExtensions.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAMwBEAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T16:00:18.384Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ExceptionExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\ExceptionExtensions.cs",
+              "RelativeDocumentMoniker": "API\\Extensions\\ExceptionExtensions.cs",
+              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\ExceptionExtensions.cs",
+              "RelativeToolTip": "API\\Extensions\\ExceptionExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T05:47:10.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "ErrorResponse.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\DTO\\Responses\\ErrorResponse.cs",
               "RelativeDocumentMoniker": "API\\DTO\\Responses\\ErrorResponse.cs",
@@ -210,32 +272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ErrorContext.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ErrorContext.cs",
-              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\ErrorContext.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ErrorContext.cs",
-              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\ErrorContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T10:02:48.471Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ExceptionHandlerMiddleware.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Middleware\\ExceptionHandlerMiddleware.cs",
-              "RelativeDocumentMoniker": "API\\Middleware\\ExceptionHandlerMiddleware.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Middleware\\ExceptionHandlerMiddleware.cs",
-              "RelativeToolTip": "API\\Middleware\\ExceptionHandlerMiddleware.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAuwDYAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-16T09:56:58.378Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "OperationName.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\OperationName.cs",
               "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\OperationName.cs",
@@ -247,19 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ServiceName.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ServiceName.cs",
-              "RelativeDocumentMoniker": "API\\Exceptions\\ErrorContext\\ServiceName.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\ErrorContext\\ServiceName.cs",
-              "RelativeToolTip": "API\\Exceptions\\ErrorContext\\ServiceName.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T09:43:02.745Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "API\\Services\\UserService.cs",
@@ -271,7 +296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "ProjectService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\ProjectService.cs",
               "RelativeDocumentMoniker": "API\\Services\\ProjectService.cs",
@@ -283,7 +308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "GroupService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Services\\GroupService.cs",
               "RelativeDocumentMoniker": "API\\Services\\GroupService.cs",
@@ -295,7 +320,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "TokenExtractorService.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Helpers\\TokenExtractorService.cs",
               "RelativeDocumentMoniker": "API\\Helpers\\TokenExtractorService.cs",
@@ -307,7 +332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "ProjectsController.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Controllers\\ProjectsController.cs",
               "RelativeDocumentMoniker": "API\\Controllers\\ProjectsController.cs",
@@ -316,42 +341,6 @@
               "ViewState": "AgIAABUAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-15T13:25:47.268Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "InvalidTokenException.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\Models\\InvalidTokenException.cs",
-              "RelativeDocumentMoniker": "API\\Exceptions\\Models\\InvalidTokenException.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Exceptions\\Models\\InvalidTokenException.cs",
-              "RelativeToolTip": "API\\Exceptions\\Models\\InvalidTokenException.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T08:31:31.159Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "DbContextExtensions.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\DbContextExtensions.cs",
-              "RelativeDocumentMoniker": "API\\Extensions\\DbContextExtensions.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\DbContextExtensions.cs",
-              "RelativeToolTip": "API\\Extensions\\DbContextExtensions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-16T16:00:18.384Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ExceptionExtensions.cs",
-              "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\ExceptionExtensions.cs",
-              "RelativeDocumentMoniker": "API\\Extensions\\ExceptionExtensions.cs",
-              "ToolTip": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Extensions\\ExceptionExtensions.cs",
-              "RelativeToolTip": "API\\Extensions\\ExceptionExtensions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T05:47:10.41Z"
             },
             {
               "$type": "Document",
@@ -367,7 +356,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\appsettings.json",
               "RelativeDocumentMoniker": "API\\appsettings.json",
@@ -379,7 +368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 17,
               "Title": "API.csproj.user",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.csproj.user",
               "RelativeDocumentMoniker": "API\\API.csproj.user",
@@ -391,7 +380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 24,
               "Title": ".dockerignore",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\.dockerignore",
               "RelativeDocumentMoniker": ".dockerignore",
@@ -403,7 +392,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 19,
               "Title": "20250630162650_TestMigration.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250630162650_TestMigration.cs",
@@ -415,7 +404,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 20,
               "Title": "20250608154716_InitialCreate.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
               "RelativeDocumentMoniker": "DataBaseInfo\\Migrations\\20250608154716_InitialCreate.cs",
@@ -427,7 +416,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 25,
               "Title": "API.http",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\API.http",
               "RelativeDocumentMoniker": "API\\API.http",
@@ -439,7 +428,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 26,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\API\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "API\\Properties\\launchSettings.json",
@@ -451,7 +440,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 21,
               "Title": "20250421115047_CreateTableForPasswords.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421115047_CreateTableForPasswords.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421115047_CreateTableForPasswords.cs",
@@ -462,7 +451,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 22,
               "Title": "20250421094357_TryMigrat.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421094357_TryMigrat.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250421094357_TryMigrat.cs",
@@ -473,7 +462,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 23,
               "Title": "20250420102607_TryCreateMigration.cs",
               "DocumentMoniker": "C:\\Users\\Windows 11\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250420102607_TryCreateMigration.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\source\\repos\\DataBaseTrello\\DataBaseInfo\\Migrations\\20250420102607_TryCreateMigration.cs",
@@ -484,7 +473,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 27,
               "Title": "DataBaseInfo",
               "DocumentMoniker": "C:\\Users\\Windows 11\\Projects\\DontAskApp\\backend\\DataBaseTrello\\DataBaseInfo\\DataBaseInfo.csproj",
               "RelativeDocumentMoniker": "DataBaseInfo\\DataBaseInfo.csproj",

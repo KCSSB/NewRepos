@@ -10,7 +10,9 @@ using System.Data.Common;
 using API.DTO.Requests;
 using Microsoft.IdentityModel.Tokens;
 using API.Exceptions;
-using API.Exceptions.Models;
+using API.Exceptions.ErrorContext;
+using API.Exceptions.Enumes;
+using System.Net;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -86,11 +88,12 @@ namespace API.Controllers
             //Валидация здесь
             
             var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
- 
             if (refreshToken == null)
-                throw new InvalidTokenException("Ошибка при получении RefreshToken из Cookies",
-                    "AuthController",
-                    "RefreshAccessToken");
+                throw new AppException(new ErrorContext(ServiceName.AuthController,
+                    OperationName.RefreshAccessToken,
+                    HttpStatusCode.Unauthorized,
+                    "Ошибка авторизации",
+                    "Произошла ошибка во время получения RefreshToken из Cookies"));
               
             //Валидация здесь
             //Возможно проблемы

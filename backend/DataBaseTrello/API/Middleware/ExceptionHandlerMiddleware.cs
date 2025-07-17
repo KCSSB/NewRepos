@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using API.DTO.Responses;
-using API.Exceptions.Models;
+using API.Exceptions.ErrorContext;
 using API.Extensions;
 using API.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -30,36 +30,28 @@ namespace API.Middleware
 
             await _next(context);
             }
-            catch(DbUpdateException ex)
+            catch(AppException ex)
             {
                 var exceptionMessage = new StringBuilder();
-                if (ex.TryGetFromExceptionData("service", out string service))
-                    exceptionMessage.AppendLine($"Service: {service}");
-                if (ex.TryGetFromExceptionData("operation", out string operation))
-                    exceptionMessage.AppendLine($"Operation: {operation}");
-                if (ex.TryGetFromExceptionData("message", out string message))
-                    exceptionMessage.AppendLine($"Message: {message}");
-                if (exceptionMessage.Length == 0)
-                    exceptionMessage.Append("Контекст ошибки повреждён");
-                await HandleExceptionAsync(context, 
-                    exceptionMessage.ToString(),
-                    HttpStatusCode.InternalServerError,
-                    "Ошибка при обновлении базы данных");
+                if (ex.Context.Service != null)
+                    exceptionMessage.AppendLine($"Service: {ex.Context.Service}");
+                if (ex.Context.Operation != null)
+                    exceptionMessage.AppendLine($"Operation: {ex.Context.Operation}");
+                if (ex.Context.StatusCode != null)
+                    exceptionMessage.AppendLine($"StatusCode: {ex.Context.StatusCode}");
+                if (ex.Context.LoggerMessage != null)
+                    exceptionMessage.AppendLine($"LoggerMessage: {ex.Context.LoggerMessage}");
+
+                    await HandleExceptionAsync(context,
+                        exceptionMessage.ToString(),
+                        (HttpStatusCode)ex.Context.StatusCode,
+                        ex.Context.UserMessage);
+                
                 
             }
-            catch(InvalidTokenException ex)
+            catch(Exception ex)
             {
-                var exceptionMessage = new StringBuilder();
-                if (!ex.Service.IsNullOrEmpty())
-                    exceptionMessage.AppendLine($"Service: {ex.Service}");
-                if (!ex.Operation.IsNullOrEmpty())
-                    exceptionMessage.AppendLine($"Operation: {ex.Operation}");
-                if (!ex.Message.IsNullOrEmpty())
-                    exceptionMessage.AppendLine($"Message: {ex.Message}");
-                await HandleExceptionAsync(context, 
-                    exceptionMessage.ToString(),
-                    HttpStatusCode.Unauthorized,
-                    "Произошла ошибка: Вы не авторизованы");
+              
             }
         }
         private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode, string message)

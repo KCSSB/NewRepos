@@ -1,24 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using API.Exceptions.ErrorContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
     public static class DbContextExtensions
     {
-        public static async Task<int> SaveChangesWithContextAsync(this DbContext context, string serviceName, string operationName, string message)
+        public static async Task<int> SaveChangesWithContextAsync(this DbContext context,
+            string serviceName,
+            string operationName,
+            string loggerMessage,
+            string userMessage,
+            HttpStatusCode statusCode)
         {
 
        try
     {
-               
+     
                 return await context.SaveChangesAsync();
                 
     }
     catch (DbUpdateException ex)
     {
-        ex.Data.Add("service", serviceName);
-        ex.Data.Add("operation", operationName);
-                ex.Data.Add("message", message);
-        throw;
+
+                throw new AppException(new ErrorContext(serviceName,
+                    operationName,
+                    statusCode,
+                    userMessage,
+                    loggerMessage), ex);
     }
         }
     }
