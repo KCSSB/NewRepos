@@ -13,6 +13,7 @@ using API.Exceptions;
 using API.Exceptions.ErrorContext;
 using API.Exceptions.Enumes;
 using System.Net;
+using API.Extensions;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -39,38 +40,37 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-           //Возможны проблемы
-           var user = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            if(!ModelState.IsValid)
+                throw new AppException(new ErrorContext(ServiceName.AuthController,
+                   OperationName.Register,
+                   HttpStatusCode.BadRequest,
+                   "Вы ввели некорректыне данные",
+                   "Данные переданные в экземпляр RegisterUserRequest не валидны"));
+            //Возможны проблемы
+            int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
 
-            using (var context = _contextFactory.CreateDbContext()) 
-            {
-
-                context.Users.Add(user);
-                //Возможны проблемы
-                await context.SaveChangesAsync();
-                //Возможны проблемы
-
-                user.UserName = $"user{user.Id:D6}";
-                //Возможны проблемы
-                await context.SaveChangesAsync();
-                //Возможны проблемы
-            }
-            return Ok("User registered successfully");
+            return Created(); //Возвращать URL
 
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            //Возможны проблемы
+            if(!ModelState.IsValid)
+                throw new AppException(new ErrorContext(ServiceName.AuthController,
+                   OperationName.Login,
+                   HttpStatusCode.BadRequest,
+                   "Вы ввели некорректыне данные",
+                   "Данные переданные в экземпляр loginRequest не валидны"));
+            
             var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
-            //Возможны проблемы
+           
 
 
 
-            var accessToken = tokens?.AccessToken;
-            var refreshToken = tokens?.RefreshToken;
-            Response.Cookies.Append("refreshToken", (refreshToken.ToString()), new CookieOptions
+            
+           
+            Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -78,7 +78,7 @@ namespace API.Controllers
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
             
-            return Ok(accessToken);
+            return Ok(new { accessToken = tokens.AccessToken });
             
         }
 
@@ -106,21 +106,25 @@ namespace API.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
-            return Ok(tokens.accessToken);
+            return Ok(new { accessToken = tokens.accessToken });
 
         }
             [HttpDelete("Logout")]
             public async Task<IActionResult> Logout()
             {
-            //Валдиация Здесь
+            
                 var refreshToken = Request.Cookies["refreshToken"];
-            if (refreshToken.IsNullOrEmpty())
-                throw new Exception();
-            //Валидация Здесь
-            //Возможны проблемы
-                bool flag = await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
-            //Возможно проблемы
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new AppException(new ErrorContext(ServiceName.AuthController,
+                    OperationName.Logout,
+                    HttpStatusCode.Unauthorized,
+                    "Ошибка авторизации",
+                    "Произошла ошибка во время получения RefreshToken из Cookies"));
 
+            
+            
+            await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
+            
                 Response.Cookies.Delete("refreshToken");
                 return Ok("User success unauthorized");
 

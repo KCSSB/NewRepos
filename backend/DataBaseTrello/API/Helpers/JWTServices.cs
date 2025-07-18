@@ -20,18 +20,8 @@ namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
     {
-        public string GenerateAccessToken(User? user)
+        public string GenerateAccessToken(User user)
         {
-            try
-            {
-                if (user == null)
-                    throw new Exception("Ошибка при получении пользователя");
-                }
-        catch (Exception)
-                {
-                //Логирование ошибки при получении пользователя
-                throw;
-                }
             var claims = new List<Claim>
             {
                new Claim("UserName", user.UserName),
@@ -49,12 +39,8 @@ namespace API.Helpers
 
     
 
-        public async Task CreateRefreshTokenAsync(User? user, string token)
+        public async Task CreateRefreshTokenAsync(User user, string token)
         {
-            try
-            {
-                if (user == null)
-                    throw new Exception("Ошибка при получении пользователя");
                 using (var context = contextFactory.CreateDbContext())
                 {
 
@@ -71,21 +57,13 @@ namespace API.Helpers
                     await context.RefreshTokens.AddAsync(hashedToken);
 
 
-                    await context.SaveChangesAsync();
-
+                await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
+                    OperationName.CreateRefreshTokenAsync,
+                    "Ошибка при сохранении Hashed Refresh Token",
+                    "Ошибка во время авторизации, повторите попытку позже",
+                    HttpStatusCode.InternalServerError);
                 }
-            }
-            catch (DbUpdateException ex)
-            {
-                //Логгирование ошибки DbUpdateException
-                throw;
-            }
-            catch (Exception ex)
-            {
-                    //Логгриование ошибки При получении пользователя
-                    throw;
-                
-            }
+            
         }
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
         {
@@ -137,30 +115,28 @@ namespace API.Helpers
             
     
         }
-        public async Task<bool> RevokeRefreshTokenAsync(string? refreshToken) // Где то тут может быть ошибка, поищи
+        public async Task RevokeRefreshTokenAsync(string refreshToken) // Где то тут может быть ошибка, поищи
         {
-            try
-            {
-                if (string.IsNullOrEmpty(refreshToken))
-                    throw new Exception("Рефреш токен отсутствует");
-                using (var context = contextFactory.CreateDbContext())
-                {
+
+            using var context = contextFactory.CreateDbContext();
 
                     var hashedRequestToken = hash.HashToken(refreshToken);
                     var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
                     if (token == null)
-                        throw new Exception("Ошибка при получении Рефреш токена из базы данных");
+                throw new AppException(new ErrorContext(
+                    ServiceName.JWTServices,
+                    OperationName.RevokeRefreshTokenAsync,
+                    HttpStatusCode.Unauthorized,
+                    "Ошибка авторизации",
+                    "В базе не найден refresh token, соответствующий значению из cookie при попытке разлогирования."));
 
-                    context.RefreshTokens.Remove(token);
-                    await context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                //Рефреш токен отсутствует в бд
-                throw;
-            }
+            context.RefreshTokens.Remove(token);
+                    await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
+                        OperationName.RevokeRefreshTokenAsync, $"Ошибка при удалении Refresh Token из базы данных refresh token id: {token.Id}",
+                        "Ошибка при попытке выйти из системы", HttpStatusCode.InternalServerError);
+                   
+                
+            
         }
     }
 }
