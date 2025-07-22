@@ -6,6 +6,10 @@ using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using API.Helpers;
 using System.Data.Common;
+using API.Extensions;
+using API.Exceptions.Enumes;
+using API.Exceptions.ErrorContext;
+using System.Net;
 
 namespace API.Services
 {
@@ -20,40 +24,24 @@ namespace API.Services
         }
         public async Task<int> CreateProjectAsync(string projectName)
         {
-            try
-            {
-                
-
+            
                 Project project = new Project(projectName);
 
                 using var context = await _contextFactory.CreateDbContextAsync();
 
                 await context.Projects.AddAsync(project);
-                await context.SaveChangesAsync();
+                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
+                    OperationName.CreateProjectAsync,
+                    UserExceptionMessages.CreateProjectExceptionMessage,
+                    "Произошла ошибка, в момент добавления проекта в базу данных",
+                    HttpStatusCode.InternalServerError);
 
                 return project.Id;
-            }  
-            catch (DbUpdateException ex)
-            {
-                //Логирование ошибки "Error while updateDataBase!"
-                throw;
-            }
-            catch(Exception ex)
-            {
-                //Логирование ошибки "Unexpected error creating project"
-                throw;
-            }
 
-            
         }
-        public async Task<int> AddUserInProjectAsync(int? userId, int? projectId)
+        public async Task<int> AddUserInProjectAsync(int userId, int projectId)
         {
-            try
-            {
-                if (userId == null)
-                    throw new ArgumentNullException("Ошибка при получении UserId");
-                if (projectId == null)
-                    throw new ArgumentNullException("Ошибка при получении ProjectId");
+              
                 using var context = _contextFactory.CreateDbContext();
                 var user = await context.Users
     .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
@@ -63,40 +51,35 @@ namespace API.Services
                     .Include(p => p.ProjectUsers) // Явно загружаем ProjectUsers
                     .FirstOrDefaultAsync(p => p.Id == projectId);
 
+                
                 var projectUser = new ProjectUser()
                 {
-                    UserId = (int)userId,
-                    ProjectId = (int)projectId,
-                    projectRole = "Owner"
+                    UserId = userId,
+                    ProjectId = projectId,
+                    projectRole = (project.ProjectUsers.Count <=0) ? "Owner": "Member"
                 };
-                if (user == null || project == null)
-                    throw new ArgumentNullException("Произошла ошибка во время связи моделей с ProjectUsers");
+                if (user == null)
+                throw new AppException(new ErrorContext(ServiceName.ProjectService,
+                 OperationName.AddUserInProjectAsync,
+                 HttpStatusCode.InternalServerError,
+                UserExceptionMessages.InternalExceptionMessage,
+                $"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
+            if (project == null)
+                throw new AppException(new ErrorContext(ServiceName.ProjectService,
+                 OperationName.AddUserInProjectAsync,
+                 HttpStatusCode.InternalServerError,
+                UserExceptionMessages.InternalExceptionMessage,
+                $"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
 
                 user.ProjectUsers.Add(projectUser);
                 project.ProjectUsers.Add(projectUser);
-                await context.SaveChangesAsync();
+                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
+                    OperationName.AddUserInProjectAsync,
+                    $"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}",
+                    UserExceptionMessages.CreateProjectExceptionMessage,
+                    HttpStatusCode.InternalServerError);
                 return projectUser.Id;
-            }
-            catch (DbUpdateException ex)
-            {
-                //Логирование ошибки DbUpdateException
-                throw;
-            }
-            catch (ArgumentNullException)
-            {
-                throw;
-                //Ошибка  при получении UserId
-            }
-            catch (DbException ex)
-            {
-                throw;
-                //Общая ошибка бд
-            }
-            catch(Exception ex)
-            {
-                throw;
-                //Непредвиденная ошибка
-            }
+           
             
 
         }

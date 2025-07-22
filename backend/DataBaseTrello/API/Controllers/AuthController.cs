@@ -44,13 +44,12 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Register,
                    HttpStatusCode.BadRequest,
-                   "Вы ввели некорректыне данные",
+                   UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
             //Возможны проблемы
             int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
-
-            return Created(); //Возвращать URL
+            return Created($"/api/users/{UserId}", new { id = UserId }); //Возвращать URL
 
         }
         [HttpPost("login")]
@@ -60,7 +59,7 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Login,
                    HttpStatusCode.BadRequest,
-                   "Вы ввели некорректыне данные",
+                   UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр loginRequest не валидны"));
             
             var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
@@ -92,7 +91,7 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.RefreshAccessToken,
                     HttpStatusCode.Unauthorized,
-                    "Ошибка авторизации",
+                    UserExceptionMessages.AuthorizeExceptionMessage,
                     "Произошла ошибка во время получения RefreshToken из Cookies"));
               
             //Валидация здесь
@@ -118,7 +117,7 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.Logout,
                     HttpStatusCode.Unauthorized,
-                    "Ошибка авторизации",
+                    UserExceptionMessages.AuthorizeExceptionMessage,
                     "Произошла ошибка во время получения RefreshToken из Cookies"));
 
             

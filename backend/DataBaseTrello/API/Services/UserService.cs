@@ -51,7 +51,7 @@ namespace DataBaseInfo.Services
                     throw new AppException(new ErrorContext(ServiceName.UserService,
                         OperationName.RegisterAsync,
                         HttpStatusCode.InternalServerError,
-                        "Ошибка регистрации, повторите попытку позже",
+                        UserExceptionMessages.RegistrationExceptionMessage,
                         "Ошибка во время хэширования пароля"));
 
                     user.UserPassword = passHash;
@@ -61,7 +61,7 @@ namespace DataBaseInfo.Services
                     await context.SaveChangesWithContextAsync(ServiceName.UserService,
                         OperationName.RegisterAsync,
                         "Ошибка во время сохранения данных о user в базу данных",
-                        "Ошибка во время регистрации, повторите попытку позже",
+                        UserExceptionMessages.RegistrationExceptionMessage,
                         HttpStatusCode.InternalServerError);
                     //Возможны проблемы
 
@@ -70,7 +70,7 @@ namespace DataBaseInfo.Services
                 await context.SaveChangesWithContextAsync(ServiceName.UserService,
                      OperationName.RegisterAsync,
                      $"Ошибка во время изменения UserName на: {user.UserName}",
-                     "Ошибка во время регистрации, повторите попытку позже",
+                     UserExceptionMessages.RegistrationExceptionMessage,
                      HttpStatusCode.InternalServerError);
                 //Возможны проблемы
 

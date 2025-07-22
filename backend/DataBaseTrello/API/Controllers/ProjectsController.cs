@@ -13,6 +13,9 @@ using API.Helpers;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 using API.DTO.Requests;
+using API.Exceptions.Enumes;
+using API.Exceptions.ErrorContext;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -37,6 +40,12 @@ namespace API.Controllers
         {
             
             var accessToken = await HttpContext.GetTokenAsync("access_token");
+            if(string.IsNullOrEmpty(accessToken))
+                throw new AppException(new ErrorContext(ServiceName.ProjectsController,
+                OperationName.CreateProject,
+                HttpStatusCode.BadRequest,
+                UserExceptionMessages.CreateProjectExceptionMessage,
+                "Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
             int userId = _tokenExtractor.TokenExtractorId(accessToken);
             int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
@@ -44,12 +53,9 @@ namespace API.Controllers
             int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
             //Остановился
-            int groupId = await _groupService.CreateGroupAsync(projectUserId);
-            if (groupId == null)
-                return BadRequest("Ошибка при создании группы");
-            int? memberOfGroupId = await _groupService.AddUserInGroupAsync((int)projectUserId, (int)groupId);
-            if (memberOfGroupId == null)
-                return BadRequest("Ошибка при добавлении основателя в группу");
+            int groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
+            
+            int memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             return Ok("Проект успешно создан");
             
             

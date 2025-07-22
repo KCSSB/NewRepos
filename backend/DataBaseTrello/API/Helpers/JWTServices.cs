@@ -80,14 +80,14 @@ namespace API.Helpers
                throw new AppException(new ErrorContext(ServiceName.JWTServices,
                    OperationName.RefreshTokenAsync,
                    HttpStatusCode.Unauthorized,
-                   "Ошибка авторизации",
+                   UserExceptionMessages.AuthorizeExceptionMessage,
                    "RefreshToken не существует в базе данных или его время истекло"));
 
             storedToken.IsRevoked = true;
                 await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
                     OperationName.RefreshTokenAsync,
                     "Ошибка при отзыве старого Refresh token",
-                    "Не удалось завершить авторизацию. Повторите попытку позже",
+                    UserExceptionMessages.AuthorizeExceptionMessage,
                     HttpStatusCode.InternalServerError);
             //Возможны проблемы
                 var token = Guid.NewGuid().ToString();
@@ -127,7 +127,7 @@ namespace API.Helpers
                     ServiceName.JWTServices,
                     OperationName.RevokeRefreshTokenAsync,
                     HttpStatusCode.Unauthorized,
-                    "Ошибка авторизации",
+                    UserExceptionMessages.AuthorizeExceptionMessage,
                     "В базе не найден refresh token, соответствующий значению из cookie при попытке разлогирования."));
 
             context.RefreshTokens.Remove(token);
