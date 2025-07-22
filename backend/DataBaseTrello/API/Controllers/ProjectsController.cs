@@ -38,7 +38,6 @@ namespace API.Controllers
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
         {
-            
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             if(string.IsNullOrEmpty(accessToken))
                 throw new AppException(new ErrorContext(ServiceName.ProjectsController,
@@ -49,7 +48,7 @@ namespace API.Controllers
 
             int userId = _tokenExtractor.TokenExtractorId(accessToken);
             int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
-
+            
             int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
             //Остановился
@@ -57,10 +56,6 @@ namespace API.Controllers
             
             int memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             return Ok("Проект успешно создан");
-            
-            
-
-
         }
         
     }

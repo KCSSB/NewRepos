@@ -10,6 +10,9 @@ using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
 using API.Services;
+using API.Exceptions.Enumes;
+using API.Exceptions.ErrorContext;
+using System.Net;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -63,9 +66,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
 
 if (string.IsNullOrEmpty(connectionString))
-{
-    throw new Exception("Connection string is not configured!");
-}
+    throw new AppException(new ErrorContext("Program",
+                           "Program",
+                           (HttpStatusCode)1001,
+                           "Произошла ошибка в момент запуска приложения",
+                           $"Произошла ошибка в момент подключения к базе данных"));
+
+
 using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
@@ -81,10 +88,13 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        
-        logger.LogError(ex, "Ошибка при выполнении миграции");
-        throw;
-    }
+            throw new AppException(new ErrorContext("Program",
+                               "Program",
+                               (HttpStatusCode)1001,
+                               "Произошла ошибка в момент запуска приложения",
+                               $"Произошла ошибка при попытке применить миграции"));
+
+        }
     }
 }
    
