@@ -11,9 +11,9 @@ using API.DTO.Requests;
 using Microsoft.IdentityModel.Tokens;
 using API.Exceptions;
 using API.Exceptions.ErrorContext;
-using API.Exceptions.Enumes;
 using System.Net;
 using API.Extensions;
+using API.Constants;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -24,23 +24,26 @@ namespace API.Controllers
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
+        private readonly ILogger<AuthController> _logger;
         
       
 
        
-        public AuthController(UserService userService, IDbContextFactory<AppDbContext> contextFactory, JWTServices jwtServices, IOptions<AuthSettings> options)
+        public AuthController(UserService userService, IDbContextFactory<AppDbContext> contextFactory, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
         {
             _userService = userService;
             _contextFactory = contextFactory;
             _jwtServices = jwtServices;
             _options = options;
+            _logger = logger;
           
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-           
+
+            _logger.LogInformation(InfoMessages.StartOperation + OperationName.Register);
             if (!ModelState.IsValid)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Register,
@@ -50,13 +53,15 @@ namespace API.Controllers
             //Возможны проблемы
             int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
+            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
             return Created($"/api/users/{UserId}", new { id = UserId }); //Возвращать URL
 
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            if(!ModelState.IsValid)
+            _logger.LogInformation(InfoMessages.StartOperation + OperationName.Login);
+            if (!ModelState.IsValid)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Login,
                    HttpStatusCode.BadRequest,
@@ -77,7 +82,7 @@ namespace API.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
-            
+            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Login);
             return Ok(new { accessToken = tokens.AccessToken });
             
         }
@@ -86,7 +91,7 @@ namespace API.Controllers
         public async Task<IActionResult> RefreshAccessToken()
         {
             //Валидация здесь
-            
+            _logger.LogInformation(InfoMessages.StartOperation + OperationName.RefreshAccessToken);
             var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
             if (refreshToken == null)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
@@ -106,14 +111,15 @@ namespace API.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
+            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.RefreshAccessToken);
             return Ok(new { accessToken = tokens.accessToken });
 
         }
             [HttpDelete("Logout")]
             public async Task<IActionResult> Logout()
             {
-            
-                var refreshToken = Request.Cookies["refreshToken"];
+            _logger.LogInformation(InfoMessages.StartOperation + OperationName.Logout);
+            var refreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.Logout,
@@ -126,7 +132,8 @@ namespace API.Controllers
             await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
             
                 Response.Cookies.Delete("refreshToken");
-                return Ok("User success unauthorized");
+            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.RefreshAccessToken);
+            return Ok("User success unauthorized");
 
             }
         

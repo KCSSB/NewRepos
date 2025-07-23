@@ -51,13 +51,23 @@ namespace API.Middleware
             }
             catch(Exception ex)
             {
-              
+                await HandleExceptionAsync(context,
+                          "Произошла непредвиденная ошибка",
+                          HttpStatusCode.BadRequest,
+                          "Произошла неизвестная ошибка, повторите попытку позже");
             }
         }
         private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode, string message)
         {
-            _logger.LogError(exMessage);
-            HttpResponse response = context.Response;
+            if((int)httpStatusCode/100 == 4)
+            _logger.LogWarning(exMessage);
+            else
+            {
+                _logger.LogError(exMessage);
+            }
+
+
+                HttpResponse response = context.Response;
 
             response.ContentType = "application/json";
             response.StatusCode = (int)httpStatusCode;

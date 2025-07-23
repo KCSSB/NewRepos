@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using API.Exceptions.Enumes;
 using System.Net;
 using API.Exceptions.ErrorContext;
 using Microsoft.IdentityModel.Tokens;
+using API.Constants;
 
 namespace API.Helpers
 {

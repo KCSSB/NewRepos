@@ -1,4 +1,4 @@
-﻿namespace API.Exceptions.ErrorContext
+﻿namespace API.Constants
 {
     public static class UserExceptionMessages
     {

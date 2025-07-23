@@ -14,8 +14,8 @@ using System.Runtime.CompilerServices;
 using API.Extensions;
 using API.Exceptions;
 using API.Exceptions.ErrorContext;
-using API.Exceptions.Enumes;
 using System.Net;
+using API.Constants;
 namespace API.Helpers
 {
     public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)

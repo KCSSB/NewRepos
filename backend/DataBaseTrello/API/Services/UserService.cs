@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using API.Exceptions.Enumes;
+using API.Constants;
 using API.Exceptions.ErrorContext;
 using API.Extensions;
 using API.Helpers;

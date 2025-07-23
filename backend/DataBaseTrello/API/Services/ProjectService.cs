@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using API.Helpers;
 using System.Data.Common;
 using API.Extensions;
-using API.Exceptions.Enumes;
 using API.Exceptions.ErrorContext;
 using System.Net;
+using API.Constants;
 
 namespace API.Services
 {

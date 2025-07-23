@@ -13,9 +13,9 @@ using API.Helpers;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 using API.DTO.Requests;
-using API.Exceptions.Enumes;
 using API.Exceptions.ErrorContext;
 using System.Net;
+using API.Constants;
 
 namespace API.Controllers
 {
@@ -28,16 +28,19 @@ namespace API.Controllers
         private readonly ProjectService _projectService;
         private readonly TokenExtractorService _tokenExtractor;
         private readonly GroupService _groupService;
-        public ProjectsController(ProjectService projectService, TokenExtractorService tokenExtractor, GroupService groupService)
+        private readonly ILogger<ProjectsController> _logger;
+        public ProjectsController(ProjectService projectService, TokenExtractorService tokenExtractor, GroupService groupService, ILogger<ProjectsController> logger)
         {
             _projectService = projectService;
             _tokenExtractor = tokenExtractor;
             _groupService = groupService;
+            _logger = logger;
         }
 
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
         {
+            _logger.LogInformation(InfoMessages.StartOperation + OperationName.CreateProject);
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             if(string.IsNullOrEmpty(accessToken))
                 throw new AppException(new ErrorContext(ServiceName.ProjectsController,
@@ -55,6 +58,7 @@ namespace API.Controllers
             int groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
             
             int memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
+            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.CreateProject);
             return Ok("Проект успешно создан");
         }
         

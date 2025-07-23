@@ -1,4 +1,4 @@
-﻿namespace API.Exceptions.Enumes
+﻿namespace API.Constants
 {
     public static class OperationName
     {

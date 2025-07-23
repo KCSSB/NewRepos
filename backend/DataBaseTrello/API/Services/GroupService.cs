@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo.models;
 using System;
-using API.Exceptions.Enumes;
 using API.Exceptions.ErrorContext;
 using System.Net;
 using API.Extensions;
+using API.Constants;
 
 namespace API.Services
 {

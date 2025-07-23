@@ -10,7 +10,6 @@ using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
 using API.Services;
-using API.Exceptions.Enumes;
 using API.Exceptions.ErrorContext;
 using System.Net;
 using Serilog;
