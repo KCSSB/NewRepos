@@ -13,9 +13,15 @@ using API.Services;
 using API.Exceptions.Enumes;
 using API.Exceptions.ErrorContext;
 using System.Net;
+using Serilog;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
+
+
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
 // Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 

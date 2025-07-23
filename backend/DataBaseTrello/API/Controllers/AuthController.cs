@@ -40,7 +40,8 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
         {
-            if(!ModelState.IsValid)
+           
+            if (!ModelState.IsValid)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Register,
                    HttpStatusCode.BadRequest,

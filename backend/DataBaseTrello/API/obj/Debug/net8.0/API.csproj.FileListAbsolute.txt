@@ -448,3 +448,15 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\API.RazorAssemblyInfo.cs
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\appsettings.json
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.AspNetCore.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.Console.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.File.dll
