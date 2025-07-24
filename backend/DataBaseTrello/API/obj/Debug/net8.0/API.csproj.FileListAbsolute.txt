@@ -316,7 +316,6 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\ref\API.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\API.sourcelink.json
-C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.Build.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Microsoft.Build.Framework.dll
