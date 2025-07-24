@@ -1,0 +1,36 @@
+
+services:
+    backend:
+      image: back
+      build:
+        context: .
+      ports:
+        - "8080:8080"
+      depends_on:
+        db:
+          condition: service_healthy
+      environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PGSSLMODE=Disable 
+
+
+    #Todo
+    db:
+      image: postgres:17.0
+      ports:
+        - "5433:5432"
+      environment:
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+        POSTGRES_DB: ${DB_NAME}
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+        interval: 5s
+        timeout: 10s
+        retries: 5
+      volumes:
+       - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+  

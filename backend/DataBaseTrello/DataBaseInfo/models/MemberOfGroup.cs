@@ -10,11 +10,11 @@ namespace DataBaseInfo.models
     public class MemberOfGroup
     {
         public int Id { get; set; }
-
+        public string GroupRole { get; set; } = string.Empty;
         public int ProjectUserId { get; set; }
-        public virtual ProjectUser User { get; set; } = null!;
-
+        public virtual ProjectUser? User { get; set; }
         public int GroupId { get; set; }
-        public virtual Group Group { get; set; } = null!;
+        public virtual Group? Group { get; set; }
+     
     }
 }

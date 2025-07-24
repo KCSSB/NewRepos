@@ -10,11 +10,12 @@ namespace DataBaseInfo.models
     public class Project
     {
         public int Id { get; set; }
-        public string ProjectName { get; set; } = null!;
-
+        public string ProjectName { get; set; } = string.Empty;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
-        public virtual List<Group> Groups { get; set; } = new();
-        public virtual List<Board> Boards { get; set; } = new();
 
+        public Project(string ProjectName)
+        {
+           this.ProjectName = ProjectName;
+        }
     }
 }

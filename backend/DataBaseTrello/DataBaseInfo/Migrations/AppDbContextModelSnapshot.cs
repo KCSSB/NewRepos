@@ -38,16 +38,11 @@ namespace DataBaseInfo.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Boards", (string)null);
+                    b.ToTable("Boards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
@@ -77,7 +72,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Cards", (string)null);
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Group", b =>
@@ -88,27 +83,16 @@ namespace DataBaseInfo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BoardId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("LeadId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeadId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
@@ -122,6 +106,10 @@ namespace DataBaseInfo.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("GroupRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("ProjectUserId")
                         .HasColumnType("integer");
 
@@ -131,7 +119,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("ProjectUserId");
 
-                    b.ToTable("MembersOfGroups", (string)null);
+                    b.ToTable("MembersOfGroups");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
@@ -149,7 +137,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
@@ -166,6 +154,10 @@ namespace DataBaseInfo.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("projectRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
@@ -173,7 +165,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserId", "ProjectId")
                         .IsUnique();
 
-                    b.ToTable("ProjectUsers", (string)null);
+                    b.ToTable("ProjectUsers");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.RefreshToken", b =>
@@ -205,7 +197,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>
@@ -235,7 +227,7 @@ namespace DataBaseInfo.Migrations
                     b.HasIndex("UserEmail")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
@@ -261,7 +253,7 @@ namespace DataBaseInfo.Migrations
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Board", b =>
@@ -272,15 +264,7 @@ namespace DataBaseInfo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataBaseInfo.models.Project", "Project")
-                        .WithMany("Boards")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Group");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
@@ -292,25 +276,6 @@ namespace DataBaseInfo.Migrations
                         .IsRequired();
 
                     b.Navigation("Board");
-                });
-
-            modelBuilder.Entity("DataBaseInfo.models.Group", b =>
-                {
-                    b.HasOne("DataBaseInfo.models.ProjectUser", "Lead")
-                        .WithMany("LedGroups")
-                        .HasForeignKey("LeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataBaseInfo.models.Project", "Project")
-                        .WithMany("Groups")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lead");
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
@@ -392,26 +357,19 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
                 {
-                    b.Navigation("Boards");
-
-                    b.Navigation("Groups");
-
                     b.Navigation("ProjectUsers");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
                 {
                     b.Navigation("Groups");
-
-                    b.Navigation("LedGroups");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>
                 {
                     b.Navigation("ProjectUsers");
 
-                    b.Navigation("RefreshToken")
-                        .IsRequired();
+                    b.Navigation("RefreshToken");
                 });
 #pragma warning restore 612, 618
         }

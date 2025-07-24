@@ -6,10 +6,22 @@ using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Internal;
+using API.Helpers;
+using API.BackGroundServices;
+using API.Configuration;
+using API.Services;
+using API.Exceptions.ErrorContext;
+using System.Net;
+using Serilog;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
-//Создаёт билдер для настройки приложения
+
+
+// Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
-//Добавление секции AuthSettings в Сервисы Билдера
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
+// Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 
 // Регистрация фабрики контекста
@@ -48,11 +60,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<HashService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<TokenExtractorService>();
+builder.Services.AddScoped<GroupService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
+
+if (string.IsNullOrEmpty(connectionString))
+    throw new AppException(new ErrorContext("Program",
+                           "Program",
+                           (HttpStatusCode)1001,
+                           "Произошла ошибка в момент запуска приложения",
+                           $"Произошла ошибка в момент подключения к базе данных"));
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -60,19 +84,22 @@ using (var scope = app.Services.CreateScope())
     var dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
     using(var dbContext = dbFactory.CreateDbContext())
     {
-
-    try
+        var logger = service.GetService<ILogger<Program>>();
+        try
     {
         dbContext.Database.Migrate();
-            var logger = service.GetService<ILogger<Program>>();
+            
             logger.LogInformation("Миграции были успешно применены");
     }
     catch (Exception ex)
     {
-        var logger = service.GetService<ILogger<Program>>();
-        logger.LogError(ex, "Ошибка при выполнении миграции");
-        throw;
-    }
+            throw new AppException(new ErrorContext("Program",
+                               "Program",
+                               (HttpStatusCode)1001,
+                               "Произошла ошибка в момент запуска приложения",
+                               $"Произошла ошибка при попытке применить миграции"));
+
+        }
     }
 }
    
@@ -92,6 +119,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("MyPolicy");
+app.UseExceptionHandling();
 app.MapControllers();
 
 app.Run();

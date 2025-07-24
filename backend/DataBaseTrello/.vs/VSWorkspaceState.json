@@ -1,11 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\DataBaseInfo",
-    "\\DataBaseInfo\\archieve",
-    "\\DataBaseInfo\\models",
-    "\\DataBaseInfo\\Services"
+    "\\API",
+    "\\API\\Controllers",
+    "\\API\\Services",
+    "\\DataBaseInfo"
   ],
-  "SelectedNode": "\\DataBaseInfo\\DataBaseInfo.csproj",
+  "SelectedNode": "\\API\\API.csproj",
   "PreviewInSolutionExplorer": false
 }

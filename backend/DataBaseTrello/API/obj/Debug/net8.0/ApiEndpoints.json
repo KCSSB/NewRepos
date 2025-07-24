@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "loginRequest",
-        "Type": "API.Requests.LoginRequest",
+        "Type": "API.DTO.Requests.LoginRequest",
         "IsRequired": true
       }
     ],
@@ -19,7 +19,7 @@
     "ContainingType": "API.Controllers.AuthController",
     "Method": "Logout",
     "RelativePath": "api/Auth/Logout",
-    "HttpMethod": "POST",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
@@ -27,7 +27,7 @@
   },
   {
     "ContainingType": "API.Controllers.AuthController",
-    "Method": "RefreshAcessToken",
+    "Method": "RefreshAccessToken",
     "RelativePath": "api/Auth/RefreshAccessToken",
     "HttpMethod": "POST",
     "IsController": true,
@@ -45,7 +45,23 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "API.Requests.RegisterUserRequest",
+        "Type": "API.DTO.Requests.RegisterUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.ProjectsController",
+    "Method": "CreateProject",
+    "RelativePath": "api/Projects/CreateProject",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectRequest",
+        "Type": "API.DTO.Requests.CreateProjectRequest",
         "IsRequired": true
       }
     ],
