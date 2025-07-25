@@ -33,7 +33,9 @@ namespace DataBaseInfo
                 //Первичный ключ
                 entity.HasKey(u => u.Id);
                 //Настройка полей
-                entity.Property(u => u.UserName).IsRequired().HasMaxLength(35);
+                entity.Property(u => u.FirstName).HasMaxLength(35);
+                entity.Property(u => u.SecondName).HasMaxLength(35);
+                entity.Property(u => u.InviteId).IsRequired();
                 entity.Property(u => u.UserEmail).IsRequired().HasMaxLength(50);
                 entity.HasIndex(u => u.UserEmail).IsUnique();
                 //Настройка связи между полями(Нэту)

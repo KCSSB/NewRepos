@@ -13,6 +13,7 @@ namespace DataBaseInfo.models
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string SecondName { get; set; } = string.Empty;
+        public string UserEmail { get; set; } = string.Empty;
         public string UserPassword { get; set; } = string.Empty;
         public Guid InviteId { get; set; } = Guid.Empty;
         public string Sex { get; set; } = string.Empty;

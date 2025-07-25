@@ -44,7 +44,8 @@ namespace DataBaseInfo.Services
                 var user = new User
                     {
                         UserEmail = userEmail,
-                        UserName = "Temporary_Name",
+                        Avatar = DefaultImages.UserAvatar,
+                        InviteId = Guid.NewGuid()
                     };
                     var passHash = new PasswordHasher<User>().HashPassword(user, password);
                     if (passHash == null)
@@ -64,16 +65,6 @@ namespace DataBaseInfo.Services
                         UserExceptionMessages.RegistrationExceptionMessage,
                         HttpStatusCode.InternalServerError);
                     //Возможны проблемы
-
-                    user.UserName = $"user{user.Id:D6}";
-                //Возможны проблемы
-                await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                     OperationName.RegisterAsync,
-                     $"Ошибка во время изменения UserName на: {user.UserName}",
-                     UserExceptionMessages.RegistrationExceptionMessage,
-                     HttpStatusCode.InternalServerError);
-                //Возможны проблемы
-
                 return user.Id;
 
                 }

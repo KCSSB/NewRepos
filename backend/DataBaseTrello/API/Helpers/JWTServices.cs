@@ -24,7 +24,10 @@ namespace API.Helpers
         {
             var claims = new List<Claim>
             {
-               new Claim("UserName", user.UserName),
+               new Claim("FirstName", user.FirstName),
+                new Claim("SecondName", user.SecondName),
+               new Claim("Sex", user.Sex),
+               new Claim("InviteId", user.InviteId.ToString()),
                 new Claim("UserEmail", user.UserEmail),
                 new Claim("UserId", user.Id.ToString()),
             };
