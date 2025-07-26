@@ -229,9 +229,8 @@ namespace DataBaseInfo.Migrations
                         .HasMaxLength(35)
                         .HasColumnType("character varying(35)");
 
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Sex")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()

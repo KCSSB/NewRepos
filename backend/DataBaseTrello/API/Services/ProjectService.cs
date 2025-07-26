@@ -25,7 +25,12 @@ namespace API.Services
         public async Task<int> CreateProjectAsync(string projectName)
         {
             
-                Project project = new Project(projectName);
+                Project project = new Project
+                {
+                    ProjectName = projectName,
+                    Avatar = DefaultImages.ProjectAvatar
+
+                };
 
                 using var context = await _contextFactory.CreateDbContextAsync();
 

@@ -45,7 +45,8 @@ namespace DataBaseInfo.Services
                     {
                         UserEmail = userEmail,
                         Avatar = DefaultImages.UserAvatar,
-                        InviteId = Guid.NewGuid()
+                        InviteId = Guid.NewGuid(),
+                        Sex = Sex.Unknown
                     };
                     var passHash = new PasswordHasher<User>().HashPassword(user, password);
                     if (passHash == null)

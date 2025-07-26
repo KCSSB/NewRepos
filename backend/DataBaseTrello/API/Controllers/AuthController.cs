@@ -86,7 +86,7 @@ namespace API.Controllers
             return Ok(new { accessToken = tokens.AccessToken });
             
         }
-
+        
         [HttpPost("RefreshAccessToken")]
         public async Task<IActionResult> RefreshAccessToken()
         {
@@ -115,6 +115,7 @@ namespace API.Controllers
             return Ok(new { accessToken = tokens.accessToken });
 
         }
+            [Authorize]
             [HttpDelete("Logout")]
             public async Task<IActionResult> Logout()
             {
