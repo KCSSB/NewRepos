@@ -11,7 +11,6 @@ namespace DataBaseInfo.models
     {
         public int Id { get; set; }
         public string ProjectName { get; set; } = string.Empty;
-
         public string Avatar { get; set; } = string.Empty;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
 

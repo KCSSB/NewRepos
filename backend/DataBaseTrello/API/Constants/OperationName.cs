@@ -26,5 +26,8 @@
         public const string AddFirstUserInGroupAsync = "AddFirstUserInGroupAsync";
 
         public const string LoginAsync = "LoginAsync";
+        public const string UploadUserAvatar = "UploadUserAvatar";
+        public const string UploadUserAvatarAsync = "UploadUserAvatarAsync";
+
     }
 }

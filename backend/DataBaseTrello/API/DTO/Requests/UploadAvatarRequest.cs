@@ -1,0 +1,9 @@
+﻿using System.ComponentModel.DataAnnotations;
+namespace API.DTO.Requests
+{
+    public class UploadAvatarRequest
+    {
+        [Required(ErrorMessage = "Необходимо загрузить изображение")]
+        public IFormFile File { get; set; }
+    }
+}

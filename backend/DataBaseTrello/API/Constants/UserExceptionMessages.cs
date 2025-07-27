@@ -11,5 +11,6 @@
 
         public const string IncorrectDataExceptionMessage = "Вы ввели некорректные данные";
         public const string InternalExceptionMessage = "Произошла внутренняя ошибка в момент выполнения операции";
+        public const string UploadFilesExceptionMessage = "Произошла ошибка при перемещении файлов";
     }
 }

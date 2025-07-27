@@ -1,4 +1,4 @@
-﻿namespace API.Constants
+﻿namespace DataBaseInfo
 {
     public class DefaultImages
     {

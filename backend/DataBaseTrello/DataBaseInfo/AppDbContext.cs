@@ -21,8 +21,6 @@ namespace DataBaseInfo
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
-       // public DbSet<HashedPassword> Passwords { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
