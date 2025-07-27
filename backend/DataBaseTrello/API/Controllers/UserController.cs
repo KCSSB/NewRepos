@@ -41,9 +41,12 @@ namespace API.Controllers
 
             int userId = _tokenExtractor.TokenExtractorId(accessToken);
 
-            string result = await _userService.UploadUserAvatarAsync(request.File, userId);
+            string url = await _userService.UploadUserAvatarAsync(request.File, userId);
             
-            return Ok();
+            return Ok(new
+            {
+                Url = url
+            });
         }
     }
 }

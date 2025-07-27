@@ -54,7 +54,7 @@ namespace API.Controllers
             int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
-            return Created($"/api/users/{UserId}", new { id = UserId }); //Возвращать URL
+            return Ok(new{ id = UserId }); //Возвращать URL
 
         }
         [HttpPost("login")]

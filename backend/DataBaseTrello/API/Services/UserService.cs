@@ -62,7 +62,7 @@ namespace DataBaseInfo.Services
                  HttpStatusCode.InternalServerError,
                 UserExceptionMessages.UploadFilesExceptionMessage,
                 $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
-                if(user.Avatar != DefaultImages.UserAvatar)
+                
 
                 user.Avatar = result.url;
                 await context.SaveChangesWithContextAsync(ServiceName.UserService,
