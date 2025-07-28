@@ -31,6 +31,18 @@ namespace API.Controllers
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                var errorMessages = string.Join(Environment.NewLine, ModelState.Values
+         .SelectMany(v => v.Errors)
+         .Select(e => e.ErrorMessage));
+                throw new AppException(new ErrorContext(
+                    ServiceName.UserController,
+                    OperationName.UploadUserAvatar,
+                     HttpStatusCode.BadRequest,
+                    "Вы указали некорректное изображение",
+                    "Произошли ошибки валидации изображения: \n" + errorMessages));
+            }
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             if (string.IsNullOrEmpty(accessToken))
                 throw new AppException(new ErrorContext(ServiceName.UserController,
