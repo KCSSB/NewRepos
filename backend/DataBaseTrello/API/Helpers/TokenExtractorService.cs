@@ -8,7 +8,7 @@ namespace API.Helpers
 {
     public class TokenExtractorService
     {
-        public  int TokenExtractorId(string accessToken)
+        public  Guid TokenExtractorId(string accessToken)
         {
         
         var jwtHandler = new JwtSecurityTokenHandler();
@@ -27,7 +27,7 @@ namespace API.Helpers
                     HttpStatusCode.InternalServerError,
                     "Произошла внутренняя ошибка в момент выполнения операции",
                      $"Ошибка, не удалось получить UserId из токена, Claim в access token, не содержит UserId"));
-            int UserId = int.Parse(UserIdClaim.Value);
+            Guid UserId = Guid.Parse(UserIdClaim.Value);
             return UserId;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,12 +10,13 @@ namespace DataBaseInfo.models
 {
     public class ProjectUser
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string projectRole { get; set; } = string.Empty;//owner или member
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual User? User { get; set; } 
 
-        public int ProjectId { get; set; }
+        public Guid ProjectId { get; set; }
         public virtual Project? Project { get; set; } = null!;
 
         public virtual List<MemberOfGroup> Groups { get; set; } = new();

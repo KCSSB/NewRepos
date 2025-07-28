@@ -10,7 +10,8 @@ namespace DataBaseInfo.models
 {
     public class User
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string FirstName { get; set; } = "Не указано";
         public string SecondName { get; set; } = "Не указано";
         public string UserEmail { get; set; } = string.Empty;

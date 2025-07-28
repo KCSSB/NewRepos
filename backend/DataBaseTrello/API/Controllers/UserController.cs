@@ -39,7 +39,7 @@ namespace API.Controllers
                 UserExceptionMessages.UploadFilesExceptionMessage,
                 "Не удалось получить данные из access token"));
 
-            int userId = _tokenExtractor.TokenExtractorId(accessToken);
+            Guid userId = _tokenExtractor.TokenExtractorId(accessToken);
 
             string url = await _userService.UploadUserAvatarAsync(request.File, userId);
             
