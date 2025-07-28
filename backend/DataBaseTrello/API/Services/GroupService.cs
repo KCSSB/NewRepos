@@ -19,7 +19,7 @@ namespace API.Services
             _contextFactory = contextFactory;
         }
         //Добавить транзацкции и уникальные индексы, Сделать кастомные ошибки
-        public async Task<int> CreateGlobalGroupAsync(int projectUserId)
+        public async Task<Guid> CreateGlobalGroupAsync(Guid projectUserId)
         {
 
             using var context = await _contextFactory.CreateDbContextAsync();
@@ -45,7 +45,7 @@ namespace API.Services
             return group.Id;
 
         }
-        public async Task<int> CreateGroupAsync(int projectUserId, string groupName)
+        public async Task<Guid> CreateGroupAsync(Guid projectUserId, string groupName)
         {
             
                 using var context = await _contextFactory.CreateDbContextAsync();
@@ -72,7 +72,7 @@ namespace API.Services
                 return group.Id;
            
         }
-        public async Task<int> AddFirstUserInGroupAsync(int projectUserId, int groupId)
+        public async Task<Guid> AddFirstUserInGroupAsync(Guid projectUserId, Guid groupId)
         {
 
             using var context = await _contextFactory.CreateDbContextAsync();
@@ -117,7 +117,7 @@ namespace API.Services
                 HttpStatusCode.InternalServerError);
             return member.Id;
         }
-        public async Task<int> AddUserInGroupAsync(int projectUserId, int groupId)
+        public async Task<Guid> AddUserInGroupAsync(Guid projectUserId, Guid groupId)
         {
             
             using var context = await _contextFactory.CreateDbContextAsync();

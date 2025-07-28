@@ -49,15 +49,15 @@ namespace API.Controllers
                 UserExceptionMessages.CreateProjectExceptionMessage,
                 "Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
-            int userId = _tokenExtractor.TokenExtractorId(accessToken);
-            int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
+            Guid userId = _tokenExtractor.TokenExtractorId(accessToken);
+            Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
             
-            int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
             //Остановился
-            int groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
+            Guid groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
             
-            int memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
+           Guid memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.CreateProject);
             return Ok("Проект успешно создан");
         }

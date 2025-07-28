@@ -37,7 +37,7 @@ namespace DataBaseInfo.Services
                 privateKey: _settings.PrivateKey,
                 urlEndPoint: _settings.UrlEndpoint);
         }
-        public async Task<string> UploadUserAvatarAsync(IFormFile file, int userId)
+        public async Task<string> UploadUserAvatarAsync(IFormFile file, Guid userId)
         {
             using var ms = new MemoryStream();
             file.CopyTo(ms);
@@ -83,7 +83,7 @@ namespace DataBaseInfo.Services
             $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
             }
            }
-        public async Task<int> RegisterAsync(string userEmail, string password)
+        public async Task<Guid> RegisterAsync(string userEmail, string password)
         {
 
                 using (var context = _contextFactory.CreateDbContext())

@@ -22,7 +22,7 @@ namespace API.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<int> CreateProjectAsync(string projectName)
+        public async Task<Guid> CreateProjectAsync(string projectName)
         {
             
                 Project project = new Project
@@ -44,7 +44,7 @@ namespace API.Services
                 return project.Id;
 
         }
-        public async Task<int> AddUserInProjectAsync(int userId, int projectId)
+        public async Task<Guid> AddUserInProjectAsync(Guid userId, Guid projectId)
         {
               
                 using var context = _contextFactory.CreateDbContext();

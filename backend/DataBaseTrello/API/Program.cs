@@ -97,7 +97,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
+.AllowAnyHeader()
+.AllowAnyMethod()));
 
 var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

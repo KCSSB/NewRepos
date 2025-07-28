@@ -51,7 +51,7 @@ namespace API.Controllers
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
             //Возможны проблемы
-            int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            Guid UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
             return Ok(new{ id = UserId }); //Возвращать URL
