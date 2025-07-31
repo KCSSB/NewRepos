@@ -12,6 +12,7 @@ using API.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using API.DTO.Requests;
+using API.Extensions;
 namespace API.Controllers
 {
     [Authorize]
@@ -43,15 +44,8 @@ namespace API.Controllers
                     "Вы указали некорректное изображение",
                     "Произошли ошибки валидации изображения: \n" + errorMessages));
             }
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            if (string.IsNullOrEmpty(accessToken))
-                throw new AppException(new ErrorContext(ServiceName.UserController,
-                OperationName.UploadUserAvatar,
-                HttpStatusCode.Unauthorized,
-                UserExceptionMessages.UploadFilesExceptionMessage,
-                "Не удалось получить данные из access token"));
 
-            Guid userId = _tokenExtractor.TokenExtractorId(accessToken);
+            Guid userId = User.GetUserIdAsGuidOrThrow();
 
             string url = await _userService.UploadUserAvatarAsync(request.File, userId);
             
