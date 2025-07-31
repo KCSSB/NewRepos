@@ -67,6 +67,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<TokenExtractorService>();
+builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<GroupService>();
 builder.Services.AddSwaggerGen(c =>
 {

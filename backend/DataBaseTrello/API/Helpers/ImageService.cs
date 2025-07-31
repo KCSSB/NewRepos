@@ -16,8 +16,8 @@ namespace API.Helpers
             {
 
                 var bytes = await CropAndResizeAsync(image, size);
-
-                return;
+                var changedFile = ConvertBytesToFormFile(bytes, file.FileName, file.ContentType);
+                return changedFile;
             }
 
             return file;
@@ -43,6 +43,18 @@ namespace API.Helpers
 
             await image.SaveAsJpegAsync(outPutStream);
             return outPutStream.ToArray();
+        }
+        public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
+        {
+            var stream = new MemoryStream(fileBytes);
+
+            var formFile = new FormFile(stream, 0, fileBytes.Length, name: "file", fileName: fileName)
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = contentType
+            };
+
+            return formFile;
         }
     }
 }
