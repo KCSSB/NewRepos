@@ -54,12 +54,17 @@ namespace API.Controllers
             
             Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
-            //Остановился
+            
             Guid groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
             
            Guid memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.CreateProject);
             return Ok("Проект успешно создан");
+        }
+        [HttpGet("GetFullProject/{id}")]
+        public async Task<IActionResult> GetFullProject(Guid id)
+        {
+            return Ok();
         }
         
     }

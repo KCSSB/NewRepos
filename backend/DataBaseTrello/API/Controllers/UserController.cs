@@ -36,6 +36,7 @@ namespace API.Controllers
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
            
+            Guid userId = User.GetUserIdAsGuidOrThrow();
             if (!ModelState.IsValid)
             {
                 var errorMessages = string.Join(Environment.NewLine, ModelState.Values
@@ -46,10 +47,9 @@ namespace API.Controllers
                     OperationName.UploadUserAvatar,
                      HttpStatusCode.BadRequest,
                     "Вы указали некорректное изображение",
-                    "Произошли ошибки валидации изображения: \n" + errorMessages));
+                    $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
-            Guid userId = User.GetUserIdAsGuidOrThrow();
             var file = await _imageService.PrepareImageAsync(request.File, 1024);
             string url = await _userService.UploadUserAvatarAsync(file, userId);
 
