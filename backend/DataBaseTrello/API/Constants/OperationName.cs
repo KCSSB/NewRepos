@@ -16,7 +16,6 @@
         public const string CreateRefreshTokenAsync = "CreateRefreshTokenAsync";
         public const string RefreshTokenAsync = "RefreshTokenAsync";
         public const string RevokeRefreshTokenAsync = "RevokeRefreshTokenAsync";
-        public const string TokenExtractorId = "TokenExtractorId";
         public const string GetUserIdAsGuidOrThrow = "GetUserIdAsGuidOrThrow";
 
         public const string CreateGroupAsync = "CreateGroupAsync";

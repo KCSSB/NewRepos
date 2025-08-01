@@ -10,7 +10,6 @@
         public const string GroupService = "GroupService";
         public const string HashService = "HashService";
         public const string JWTServices = "JWTServices";
-        public const string TokenExtractorService = "TokenExtractorService";
         public const string UserController = "UserController";
         public const string SexHelper = "SexHelper";
     }

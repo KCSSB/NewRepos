@@ -20,14 +20,11 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<ProjectsController> _logger;
-        private readonly TokenExtractorService _tokenExtractor;
         private readonly UserService _userService;
         private readonly ImageService _imageService;
-        public UserController(ILogger<ProjectsController> logger,TokenExtractorService tokenExtractor, UserService userService, ImageService imageService)
+        public UserController(UserService userService, ImageService imageService)
         {
-            _logger = logger;
-            _tokenExtractor = tokenExtractor;
+         
             _userService = userService;
        
             _imageService = imageService;
