@@ -88,5 +88,17 @@ namespace API.Services
             
 
         }
+        public async Task<Project> GetFullProjectAsync(Guid Id)
+        {
+            using var context = await _contextFactory.CreateDbContextAsync();
+            var project = await context.Projects.AsNoTracking().Where(p => p.Id==Id)
+                .Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.Groups)
+                .ThenInclude(mg => mg.Group)
+                .ThenInclude(g => g.Boards)
+                .ThenInclude(b => b.Cards)
+                .ThenInclude(c => c.Tasks).FirstOrDefaultAsync();
+            return project;
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace DataBaseInfo.models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
-        public string Priority { get; set; } = string.Empty;
+        [Range(0,100)]
         public int Progress { get; set; } = 0;
 
         // Внешний ключ на Board (карточка принадлежит доске)
