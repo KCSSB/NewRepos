@@ -91,6 +91,18 @@
         }
       }
     },
+    "/api/GetPages/GetHomePage": {
+      "get": {
+        "tags": [
+          "GetPages"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Projects/CreateProject": {
       "post": {
         "tags": [

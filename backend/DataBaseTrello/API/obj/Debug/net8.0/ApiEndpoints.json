@@ -52,6 +52,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.GetPagesController",
+    "Method": "GetHomePage",
+    "RelativePath": "api/GetPages/GetHomePage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.ProjectsController",
     "Method": "CreateProject",
     "RelativePath": "api/Projects/CreateProject",

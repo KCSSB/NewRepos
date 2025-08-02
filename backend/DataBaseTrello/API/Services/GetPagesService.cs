@@ -25,7 +25,7 @@ namespace API.Services
             if(user == null)
                 throw new AppException(new ErrorContext(ServiceName.UserService,
                      OperationName.UploadUserAvatarAsync,
-                     HttpStatusCode.InternalServerError,
+                     HttpStatusCode.NotFound,
                     UserExceptionMessages.InternalExceptionMessage,
                     $"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
 
