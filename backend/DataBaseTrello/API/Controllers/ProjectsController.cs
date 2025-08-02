@@ -29,6 +29,7 @@ namespace API.Controllers
         private readonly ProjectService _projectService;
         private readonly GroupService _groupService;
         
+        
         public ProjectsController(ProjectService projectService, GroupService groupService)
         {
             _projectService = projectService;
@@ -57,7 +58,8 @@ namespace API.Controllers
         [HttpGet("GetFullProject/{id}")]
         public async Task<IActionResult> GetFullProject(Guid id)
         {
-            return Ok();
+            var project = await _projectService.GetFullProjectAsync(id);
+            return Ok(new {});
         }
         
     }
