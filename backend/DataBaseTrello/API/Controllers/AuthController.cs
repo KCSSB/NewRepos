@@ -21,7 +21,6 @@ namespace API.Controllers
     public class AuthController: ControllerBase
     {
         private readonly UserService _userService;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
         private readonly ILogger<AuthController> _logger;
@@ -29,10 +28,9 @@ namespace API.Controllers
       
 
        
-        public AuthController(UserService userService, IDbContextFactory<AppDbContext> contextFactory, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
+        public AuthController(UserService userService, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
         {
             _userService = userService;
-            _contextFactory = contextFactory;
             _jwtServices = jwtServices;
             _options = options;
             _logger = logger;
