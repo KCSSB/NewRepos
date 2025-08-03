@@ -16,6 +16,7 @@ using API.DTO.Requests;
 using API.Exceptions.ErrorContext;
 using System.Net;
 using API.Constants;
+using API.Extensions;
 
 namespace API.Controllers
 {
@@ -26,40 +27,39 @@ namespace API.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly ProjectService _projectService;
-        private readonly TokenExtractorService _tokenExtractor;
         private readonly GroupService _groupService;
-        private readonly ILogger<ProjectsController> _logger;
-        public ProjectsController(ProjectService projectService, TokenExtractorService tokenExtractor, GroupService groupService, ILogger<ProjectsController> logger)
+        
+        
+        public ProjectsController(ProjectService projectService, GroupService groupService)
         {
             _projectService = projectService;
-            _tokenExtractor = tokenExtractor;
+          
             _groupService = groupService;
-            _logger = logger;
+          
         }
 
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
         {
-            _logger.LogInformation(InfoMessages.StartOperation + OperationName.CreateProject);
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            if(string.IsNullOrEmpty(accessToken))
-                throw new AppException(new ErrorContext(ServiceName.ProjectsController,
-                OperationName.CreateProject,
-                HttpStatusCode.BadRequest,
-                UserExceptionMessages.CreateProjectExceptionMessage,
-                "Данные переданные в экземпляр RegisterUserRequest не валидны"));
+        
 
-            int userId = _tokenExtractor.TokenExtractorId(accessToken);
-            int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
-            
-            int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+            Guid userId = User.GetUserIdAsGuidOrThrow();
 
-            //Остановился
-            int groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
+            Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
             
-            int memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
-            _logger.LogInformation(InfoMessages.FinishOperation + OperationName.CreateProject);
+            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+
+            
+            Guid groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
+            
+           Guid memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             return Ok("Проект успешно создан");
+        }
+        [HttpGet("GetFullProject/{id}")]
+        public async Task<IActionResult> GetFullProject(Guid id)
+        {
+            var project = await _projectService.GetFullProjectAsync(id);
+            return Ok(new {});
         }
         
     }

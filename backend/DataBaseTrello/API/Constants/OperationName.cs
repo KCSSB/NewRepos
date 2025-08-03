@@ -16,7 +16,7 @@
         public const string CreateRefreshTokenAsync = "CreateRefreshTokenAsync";
         public const string RefreshTokenAsync = "RefreshTokenAsync";
         public const string RevokeRefreshTokenAsync = "RevokeRefreshTokenAsync";
-        public const string TokenExtractorId = "TokenExtractorId";
+        public const string GetUserIdAsGuidOrThrow = "GetUserIdAsGuidOrThrow";
 
         public const string CreateGroupAsync = "CreateGroupAsync";
         public const string CreateGlobalGroupAsync = "CreateGlobalGroupAsync";
@@ -26,5 +26,8 @@
         public const string AddFirstUserInGroupAsync = "AddFirstUserInGroupAsync";
 
         public const string LoginAsync = "LoginAsync";
+        public const string UploadUserAvatar = "UploadUserAvatar";
+        public const string UploadUserAvatarAsync = "UploadUserAvatarAsync";
+
     }
 }
