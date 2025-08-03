@@ -21,7 +21,6 @@ namespace API.Controllers
     public class AuthController: ControllerBase
     {
         private readonly UserService _userService;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
         private readonly ILogger<AuthController> _logger;
@@ -29,10 +28,9 @@ namespace API.Controllers
       
 
        
-        public AuthController(UserService userService, IDbContextFactory<AppDbContext> contextFactory, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
+        public AuthController(UserService userService, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
         {
             _userService = userService;
-            _contextFactory = contextFactory;
             _jwtServices = jwtServices;
             _options = options;
             _logger = logger;
@@ -51,10 +49,10 @@ namespace API.Controllers
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
             //Возможны проблемы
-            int UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            Guid UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
-            return Created($"/api/users/{UserId}", new { id = UserId }); //Возвращать URL
+            return Ok(new{ id = UserId }); //Возвращать URL
 
         }
         [HttpPost("login")]
@@ -67,14 +65,9 @@ namespace API.Controllers
                    HttpStatusCode.BadRequest,
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр loginRequest не валидны"));
-            
+          
             var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
-           
-
-
-
-            
-           
+       
             Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
@@ -82,11 +75,12 @@ namespace API.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
+          
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Login);
             return Ok(new { accessToken = tokens.AccessToken });
             
         }
-
+        
         [HttpPost("RefreshAccessToken")]
         public async Task<IActionResult> RefreshAccessToken()
         {
@@ -115,6 +109,7 @@ namespace API.Controllers
             return Ok(new { accessToken = tokens.accessToken });
 
         }
+            [Authorize]
             [HttpDelete("Logout")]
             public async Task<IActionResult> Logout()
             {

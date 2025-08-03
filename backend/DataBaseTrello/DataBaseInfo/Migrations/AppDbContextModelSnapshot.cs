@@ -24,14 +24,11 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Board", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -47,23 +44,16 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BoardId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("BoardId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("Progress")
                         .HasColumnType("integer");
@@ -77,14 +67,11 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Group", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LeadId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("LeadId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,21 +84,18 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("GroupRole")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ProjectUserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("ProjectUserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -124,11 +108,18 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly?>("DateOfDeadline")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DateStartWork")
+                        .HasColumnType("date");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -142,17 +133,14 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("projectRole")
                         .IsRequired()
@@ -170,11 +158,8 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.RefreshToken", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -189,8 +174,8 @@ namespace DataBaseInfo.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -202,21 +187,33 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<Guid>("InviteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SecondName")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("character varying(35)");
+
+                    b.Property<int>("Sex")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("character varying(35)");
 
                     b.Property<string>("UserPassword")
                         .IsRequired()
@@ -232,22 +229,33 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CardId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CardId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("Complete")
                         .HasColumnType("boolean");
+
+                    b.Property<DateOnly?>("DateOfDeadline")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<Guid>("MemberResponsibleForCard")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

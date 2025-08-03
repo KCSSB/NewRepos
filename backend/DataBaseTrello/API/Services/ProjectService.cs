@@ -22,10 +22,15 @@ namespace API.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<int> CreateProjectAsync(string projectName)
+        public async Task<Guid> CreateProjectAsync(string projectName)
         {
             
-                Project project = new Project(projectName);
+                Project project = new Project
+                {
+                    ProjectName = projectName,
+                    Avatar = DefaultImages.ProjectAvatar
+
+                };
 
                 using var context = await _contextFactory.CreateDbContextAsync();
 
@@ -39,7 +44,7 @@ namespace API.Services
                 return project.Id;
 
         }
-        public async Task<int> AddUserInProjectAsync(int userId, int projectId)
+        public async Task<Guid> AddUserInProjectAsync(Guid userId, Guid projectId)
         {
               
                 using var context = _contextFactory.CreateDbContext();
@@ -82,6 +87,18 @@ namespace API.Services
            
             
 
+        }
+        public async Task<Project> GetFullProjectAsync(Guid Id)
+        {
+            using var context = await _contextFactory.CreateDbContextAsync();
+            var project = await context.Projects.AsNoTracking().Where(p => p.Id==Id)
+                .Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.Groups)
+                .ThenInclude(mg => mg.Group)
+                .ThenInclude(g => g.Boards)
+                .ThenInclude(b => b.Cards)
+                .ThenInclude(c => c.Tasks).FirstOrDefaultAsync();
+            return project;
         }
     }
 }

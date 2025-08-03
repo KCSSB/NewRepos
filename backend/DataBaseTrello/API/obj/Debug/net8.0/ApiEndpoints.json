@@ -52,6 +52,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.GetPagesController",
+    "Method": "GetHomePage",
+    "RelativePath": "api/GetPages/GetHomePage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.ProjectsController",
     "Method": "CreateProject",
     "RelativePath": "api/Projects/CreateProject",
@@ -63,6 +73,38 @@
         "Name": "projectRequest",
         "Type": "API.DTO.Requests.CreateProjectRequest",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.ProjectsController",
+    "Method": "GetFullProject",
+    "RelativePath": "api/Projects/GetFullProject/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.Controllers.UserController",
+    "Method": "UploadUserAvatar",
+    "RelativePath": "api/User/UploadUserAvatar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
