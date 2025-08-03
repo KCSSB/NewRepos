@@ -28,7 +28,8 @@ namespace DataBaseInfo.Services
         private readonly JWTServices _JWTService;
         private readonly ImagekitClient _imagekitClient;
         private readonly ImageKitSettings _settings;
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, IOptions<ImageKitSettings> options)
+        private readonly ILogger<UserService> _logger;
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, IOptions<ImageKitSettings> options, ILogger<UserService> logger)
         {
             _contextFactory = contextFactory;
             _settings = options.Value;
@@ -36,6 +37,7 @@ namespace DataBaseInfo.Services
             _imagekitClient = new ImagekitClient(publicKey: _settings.PublicKey,
                 privateKey: _settings.PrivateKey,
                 urlEndPoint: _settings.UrlEndpoint);
+            _logger = logger;
         }
         public async Task<string> UploadUserAvatarAsync(IFormFile file, Guid userId)
         {
@@ -136,18 +138,17 @@ namespace DataBaseInfo.Services
         {
 
 
-
             using var context = _contextFactory.CreateDbContext();
-                
-                    User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
+         
+            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
                     if (user == null)
                     throw new AppException(new ErrorContext(ServiceName.UserService,
                     OperationName.LoginAsync,
                     HttpStatusCode.Unauthorized,
                "Неправильный логин или пароль",
                $"Учётной записи с Email: {UserEmail} не существует"));
-
-                var activeToken = await context.RefreshTokens
+        
+            var activeToken = await context.RefreshTokens
             .Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => rt.User.UserEmail == UserEmail
                                    && !rt.IsRevoked
@@ -158,14 +159,16 @@ namespace DataBaseInfo.Services
                 HttpStatusCode.BadRequest,
            "Вы уже были авторизованы",
            $"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
-
-
-                var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
+          
+            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
                     if (result == PasswordVerificationResult.Success)
                     {
                         var token = Guid.NewGuid().ToString();
-                        await _JWTService.CreateRefreshTokenAsync(user, token);
-                        return (_JWTService.GenerateAccessToken(user), token);
+             
+                await _JWTService.CreateRefreshTokenAsync(user, token);
+          
+                return (_JWTService.GenerateAccessToken(user), token);
+
                     }
                     else
                     {
@@ -175,7 +178,8 @@ namespace DataBaseInfo.Services
            "Неправильный логин или пароль",
            $"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail} "));
                 }
-                }
+            
+        }
             
         
     } 

@@ -65,14 +65,9 @@ namespace API.Controllers
                    HttpStatusCode.BadRequest,
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр loginRequest не валидны"));
-            
+          
             var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
-           
-
-
-
-            
-           
+       
             Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
@@ -80,6 +75,7 @@ namespace API.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires)
             });
+          
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Login);
             return Ok(new { accessToken = tokens.AccessToken });
             

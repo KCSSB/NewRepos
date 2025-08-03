@@ -18,10 +18,11 @@ using System.Net;
 using API.Constants;
 namespace API.Helpers
 {
-    public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash)
+    public class JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hash, ILogger<JWTServices> _logger)
     {
         public string GenerateAccessToken(User user)
         {
+        
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -32,12 +33,17 @@ namespace API.Helpers
                 new Claim("UserEmail", user.UserEmail),
                 
             };
+            
             var jwtToken = new JwtSecurityToken(
                 expires: DateTime.UtcNow.Add(options.Value.AccessTokenExpires),
                 claims: claims,
                 signingCredentials: new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SecretKey)), SecurityAlgorithms.HmacSha256));
+          
+
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            
+            
         }
         
 
@@ -58,16 +64,18 @@ namespace API.Helpers
 
                     };
                     user.RefreshToken = hashedToken;
-                    await context.RefreshTokens.AddAsync(hashedToken);
+              
+                await context.RefreshTokens.AddAsync(hashedToken);
 
-
+              
                 await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
                     OperationName.CreateRefreshTokenAsync,
                     "Ошибка при сохранении Hashed Refresh Token",
                     "Ошибка во время авторизации, повторите попытку позже",
                     HttpStatusCode.InternalServerError);
-                }
-            
+                
+            }
+          
         }
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
         {
