@@ -459,6 +459,6 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.Console.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Serilog.Sinks.File.dll
-C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\Imagekit.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
