@@ -9,10 +9,19 @@ using Microsoft.EntityFrameworkCore.Internal;
 using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
+using API.Services;
+using API.Exceptions.ErrorContext;
+using System.Net;
+using Serilog;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
-//Создаёт билдер для настройки приложения
+
+
+// Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
-//Добавление секции AuthSettings в Сервисы Билдера
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
+// Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 
 // Регистрация фабрики контекста
@@ -51,6 +60,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<HashService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<TokenExtractorService>();
+builder.Services.AddScoped<GroupService>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
@@ -59,9 +71,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
 
 if (string.IsNullOrEmpty(connectionString))
-{
-    throw new Exception("Connection string is not configured!");
-}
+    throw new AppException(new ErrorContext("Program",
+                           "Program",
+                           (HttpStatusCode)1001,
+                           "Произошла ошибка в момент запуска приложения",
+                           $"Произошла ошибка в момент подключения к базе данных"));
+
+
 using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
@@ -77,10 +93,13 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        
-        logger.LogError(ex, "Ошибка при выполнении миграции");
-        throw;
-    }
+            throw new AppException(new ErrorContext("Program",
+                               "Program",
+                               (HttpStatusCode)1001,
+                               "Произошла ошибка в момент запуска приложения",
+                               $"Произошла ошибка при попытке применить миграции"));
+
+        }
     }
 }
    
@@ -100,6 +119,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("MyPolicy");
+app.UseExceptionHandling();
 app.MapControllers();
 
 app.Run();

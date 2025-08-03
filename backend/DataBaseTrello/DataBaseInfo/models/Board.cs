@@ -9,11 +9,11 @@ namespace DataBaseInfo.models
     public class Board
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = string.Empty;
 
         // Внешний ключ на Group (Доска принадлежит группе)
         public int GroupId { get; set; }
-        public virtual Group Group { get; set; } = null!;
+        public virtual Group? Group { get; set; } = null!;
 
         public virtual List<Card> Cards { get; set; } = new();
     }
