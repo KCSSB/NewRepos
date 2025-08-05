@@ -29,12 +29,12 @@ namespace API.Services
                 {
                     ProjectName = projectName,
                     Avatar = DefaultImages.ProjectAvatar
-
                 };
 
                 using var context = await _contextFactory.CreateDbContextAsync();
 
                 await context.Projects.AddAsync(project);
+
                 await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
                     OperationName.CreateProjectAsync,
                     UserExceptionMessages.CreateProjectExceptionMessage,
@@ -48,9 +48,10 @@ namespace API.Services
         {
               
                 using var context = _contextFactory.CreateDbContext();
+
                 var user = await context.Users
-    .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
-    .FirstOrDefaultAsync(u => u.Id == userId);
+                    .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
+                    .FirstOrDefaultAsync(u => u.Id == userId);
 
                 var project = await context.Projects
                     .Include(p => p.ProjectUsers) // Явно загружаем ProjectUsers
@@ -64,25 +65,29 @@ namespace API.Services
                     projectRole = (project.ProjectUsers.Count <=0) ? "Owner": "Member"
                 };
                 if (user == null)
-                throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                 OperationName.AddUserInProjectAsync,
-                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.InternalExceptionMessage,
-                $"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
-            if (project == null)
-                throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                 OperationName.AddUserInProjectAsync,
-                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.InternalExceptionMessage,
-                $"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
+                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
+                        OperationName.AddUserInProjectAsync,
+                        HttpStatusCode.InternalServerError,
+                        UserExceptionMessages.InternalExceptionMessage,
+                        $"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
+
+                if (project == null)
+                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
+                        OperationName.AddUserInProjectAsync,
+                        HttpStatusCode.InternalServerError,
+                        UserExceptionMessages.InternalExceptionMessage,
+                        $"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
 
                 user.ProjectUsers.Add(projectUser);
+
                 project.ProjectUsers.Add(projectUser);
+
                 await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
                     OperationName.AddUserInProjectAsync,
                     $"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}",
                     UserExceptionMessages.CreateProjectExceptionMessage,
                     HttpStatusCode.InternalServerError);
+
                 return projectUser.Id;
            
             

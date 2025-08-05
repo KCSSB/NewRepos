@@ -47,7 +47,7 @@ namespace API.Controllers
                     $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
-            var file = await _imageService.PrepareImageAsync(request.File, 1024);
+            var file = await _imageService.PrepareImageAsync(request.File, 512);
             string url = await _userService.UploadUserAvatarAsync(file, userId);
 
             return Ok(new

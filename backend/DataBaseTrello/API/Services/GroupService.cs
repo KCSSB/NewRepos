@@ -23,25 +23,30 @@ namespace API.Services
         {
 
             using var context = await _contextFactory.CreateDbContextAsync();
+
             var ProjectUser = await context.ProjectUsers.Include(g => g.Groups)
                 .FirstOrDefaultAsync(pj => pj.Id == projectUserId);
+
             if (ProjectUser == null)
                 throw new AppException(new ErrorContext(ServiceName.GroupService,
                     OperationName.CreateGlobalGroupAsync,
                     HttpStatusCode.InternalServerError,
                     UserExceptionMessages.CreateProjectExceptionMessage,
                     $"ProjectUser по указанному Id: {projectUserId}, не найден"));
+
             Group group = new Group
             {
                 Name = "Global"
             };
 
             await context.Groups.AddAsync(group);
+
             await context.SaveChangesWithContextAsync(ServiceName.GroupService,
                 OperationName.CreateGlobalGroupAsync,
                 "Произошла ошибка во время сохранения группы Global",
                 UserExceptionMessages.CreateProjectExceptionMessage,
                 HttpStatusCode.InternalServerError);
+
             return group.Id;
 
         }

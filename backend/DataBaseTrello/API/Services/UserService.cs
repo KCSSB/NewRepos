@@ -88,9 +88,10 @@ namespace DataBaseInfo.Services
         public async Task<Guid> RegisterAsync(string userEmail, string password)
         {
 
-                using (var context = _contextFactory.CreateDbContext())
-                {
+            using var context = _contextFactory.CreateDbContext();
+                
                     User? em = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
+
                     if (em != null)
                         throw new AppException(new ErrorContext(ServiceName.UserService,
                         OperationName.RegisterAsync,
@@ -106,7 +107,9 @@ namespace DataBaseInfo.Services
                         InviteId = Guid.NewGuid(),
                         Sex = Sex.Unknown
                     };
+
                     var passHash = new PasswordHasher<User>().HashPassword(user, password);
+
                     if (passHash == null)
                     throw new AppException(new ErrorContext(ServiceName.UserService,
                         OperationName.RegisterAsync,
@@ -129,7 +132,7 @@ namespace DataBaseInfo.Services
                 }
             
             
-            }
+            
 
 
         

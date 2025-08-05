@@ -12,6 +12,7 @@ namespace API.Helpers
             await file.CopyToAsync(ms);
             ms.Position = 0;
             using var image = await Image.LoadAsync<Rgba32>(ms);
+
             if (image.Height != size || image.Width != size)
             {
 
