@@ -39,6 +39,7 @@ namespace API.Controllers
                 var errorMessages = string.Join(Environment.NewLine, ModelState.Values
          .SelectMany(v => v.Errors)
          .Select(e => e.ErrorMessage));
+
                 throw new AppException(new ErrorContext(
                     ServiceName.UserController,
                     OperationName.UploadUserAvatar,

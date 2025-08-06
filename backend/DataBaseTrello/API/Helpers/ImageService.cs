@@ -34,7 +34,7 @@ namespace API.Helpers
                 x.Crop(new Rectangle((image.Width - sizeOfSide) / 2, (image.Height - sizeOfSide) / 2, size, size));
                 x.Resize(new ResizeOptions
                 {
-                    Size = new Size(1024, 1024),
+                    Size = new Size(size, size),
                     Mode = ResizeMode.Crop,
 
                 });
