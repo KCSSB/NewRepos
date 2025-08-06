@@ -16,7 +16,7 @@ namespace API.Services
             _contextFactory = contextFactory;
             _logger = logger;
         }
-        public async Task<Guid> CreateBoardAsync(string boardName, Guid LeadOfBoard)
+        public async Task<Guid> CreateBoardAsync(string boardName)
         {
           
             using var context = await _contextFactory.CreateDbContextAsync();
@@ -24,7 +24,7 @@ namespace API.Services
             Board board = new Board
             {
                 Name = boardName,
-                LeadOfBoardId = LeadOfBoard,
+                
             };
 
             await context.Boards.AddAsync(board);
@@ -35,5 +35,33 @@ namespace API.Services
 
             return board.Id;
         }
+        public async Task<Guid> AddProjectUserInBoardAsync(Guid boardId,Guid projectUserId)
+        {
+            using var context = await _contextFactory.CreateDbContextAsync();
+
+            var board = await context.Boards.FirstOrDefaultAsync(b => b.Id == boardId);
+            var projectUser = await context.ProjectUsers.FirstOrDefaultAsync(pu => pu.Id == projectUserId);
+
+            if (projectUser == null) 
+
+            if (board == null)
+                    
+
+            MemberOfBoard member = new MemberOfBoard
+            {
+                
+            };
+
+            await context.MembersOfBoards.AddAsync(member);
+
+            await context.SaveChangesWithContextAsync(ServiceName.BoardService,
+                OperationName.AddUserInBoardAsync, "Произошла ошибка при попытке сохранить MemberOfGroup в бд",
+                UserExceptionMessages.InternalExceptionMessage,
+                HttpStatusCode.InternalServerError);
+
+            return member.Id;
+        }
+
+
     }
 }

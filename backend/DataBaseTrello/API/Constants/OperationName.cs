@@ -21,7 +21,7 @@
         public const string CreateBoardAsync = "CreateBoardAsync";
         public const string CreateProjectAsync = "CreateProjectAsync";
         public const string AddUserInProjectAsync = "AddUserInProjectAsync";
-
+        public const string AddUserInBoardAsync = "AddUserProjectInBoardAsync";
         public const string LoginAsync = "LoginAsync";
         public const string UploadUserAvatar = "UploadUserAvatar";
         public const string UploadUserAvatarAsync = "UploadUserAvatarAsync";
