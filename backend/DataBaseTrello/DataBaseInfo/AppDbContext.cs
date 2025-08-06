@@ -15,7 +15,6 @@ namespace DataBaseInfo
         public DbSet<User> Users { get; set; } // Таблица пользователей
         public DbSet<Project> Projects { get; set; } // Таблица проектов
         public DbSet<ProjectUser> ProjectUsers { get; set; }
-        public DbSet<Group> Groups { get; set; }
         public DbSet<MemberOfGroup> MembersOfGroups { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Card> Cards { get; set; }
@@ -89,18 +88,10 @@ namespace DataBaseInfo
                     .HasForeignKey(mg => mg.ProjectUserId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(m => m.Group)
-                    .WithMany(g => g.Members)
-                    .HasForeignKey(m => m.GroupId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Group>(entity =>
-            {
-                entity.Property(g => g.Id).IsRequired().ValueGeneratedNever();
-
                 
             });
+
+           
 
             modelBuilder.Entity<Board>(entity =>
             {
@@ -110,10 +101,7 @@ namespace DataBaseInfo
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
                 entity.Property(b => b.GroupId).IsRequired();
                 //Настройка связи между полями(Нэту)
-                entity.HasOne(b => b.Group)
-                .WithMany(g => g.Boards)
-                .HasForeignKey(b => b.GroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                
                
                 
             });

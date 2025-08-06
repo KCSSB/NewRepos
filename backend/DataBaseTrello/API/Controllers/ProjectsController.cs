@@ -47,7 +47,7 @@ namespace API.Controllers
 
             Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
             
-            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId); 
 
             
             Guid groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
