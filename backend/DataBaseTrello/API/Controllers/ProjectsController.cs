@@ -27,15 +27,11 @@ namespace API.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly ProjectService _projectService;
-   
-        
         
         public ProjectsController(ProjectService projectService)
         {
             _projectService = projectService;
-          
-         
-          
+           
         }
 
         [HttpPost ("CreateProject")]
@@ -49,10 +45,6 @@ namespace API.Controllers
             
             Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId); 
 
-            
-            //Guid groupId = await _groupService.CreateGlobalGroupAsync(projectUserId);
-            
-           //Guid memberOfGroupId = await _groupService.AddUserInGroupAsync(projectUserId, groupId);
             return Ok("Проект успешно создан");
         }
         [HttpGet("GetFullProject/{id}")]

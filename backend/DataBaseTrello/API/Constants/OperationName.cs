@@ -18,12 +18,9 @@
         public const string RevokeRefreshTokenAsync = "RevokeRefreshTokenAsync";
         public const string GetUserIdAsGuidOrThrow = "GetUserIdAsGuidOrThrow";
 
-        public const string CreateGroupAsync = "CreateGroupAsync";
-        public const string CreateGlobalGroupAsync = "CreateGlobalGroupAsync";
-        public const string AddUserInGroupAsync = "AddUserInGroupAsync";
+        public const string CreateBoardAsync = "CreateBoardAsync";
         public const string CreateProjectAsync = "CreateProjectAsync";
         public const string AddUserInProjectAsync = "AddUserInProjectAsync";
-        public const string AddFirstUserInGroupAsync = "AddFirstUserInGroupAsync";
 
         public const string LoginAsync = "LoginAsync";
         public const string UploadUserAvatar = "UploadUserAvatar";
