@@ -18,6 +18,7 @@ namespace API.Services
         }
         public async Task<Guid> CreateBoardAsync(string boardName, Guid LeadOfBoard)
         {
+          
             using var context = await _contextFactory.CreateDbContextAsync();
 
             Board board = new Board
