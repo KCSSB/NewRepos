@@ -35,11 +35,6 @@ namespace DataBaseInfo
                 entity.Property(u => u.InviteId).IsRequired();
                 entity.Property(u => u.UserEmail).IsRequired().HasMaxLength(50);
                 entity.HasIndex(u => u.UserEmail).IsUnique();
-                //Настройка связи между полями(Нэту)
-                // entity.HasOne(u => u.UserPassword)
-                // ..WithOne(p => p.user)
-                //.HasForeignKey<HashedPassword>(u => u.userId)
-                //.OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(u => u.RefreshToken)
                 .WithOne(r => r.User)
                 .HasForeignKey<RefreshToken>(r => r.UserId);

@@ -37,7 +37,7 @@ namespace API.Services
                     ProjectName = p.ProjectName,
                     CountProjectUsers = p.ProjectUsers.Count(),
                     ProjectLeader = p.ProjectUsers
-                    .Where(pu => pu.projectRole == "Owner")
+                    .Where(pu => pu.ProjectRole == "Owner")
                     .Select(pl => new ProjectLeaderResponse
                     {
                         ProjectLeaderId = pl.UserId,

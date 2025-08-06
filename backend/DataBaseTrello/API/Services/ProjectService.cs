@@ -62,7 +62,7 @@ namespace API.Services
                 {
                     UserId = userId,
                     ProjectId = projectId,
-                    projectRole = (project.ProjectUsers.Count <=0) ? "Owner": "Member"
+                    ProjectRole = (project.ProjectUsers.Count <=0) ? "Owner": "Member"
                 };
                 if (user == null)
                     throw new AppException(new ErrorContext(ServiceName.ProjectService,
@@ -98,7 +98,7 @@ namespace API.Services
             using var context = await _contextFactory.CreateDbContextAsync();
             var project = await context.Projects.AsNoTracking().Where(p => p.Id==Id)
                 .Include(p => p.ProjectUsers)
-                .ThenInclude(pu => pu.Boards)
+                .ThenInclude(pu => pu.MembersOfBoards)
                 .ThenInclude(mb => mb.Board)
                 .ThenInclude(b => b.Cards)
                 .ThenInclude(c => c.Tasks).FirstOrDefaultAsync();
