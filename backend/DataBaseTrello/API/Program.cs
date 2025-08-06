@@ -68,7 +68,6 @@ builder.Services.AddScoped<JWTServices>();
 builder.Services.AddScoped<GetPagesService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<ImageService>();
-builder.Services.AddScoped<GroupService>();
 builder.Services.AddSwaggerGen(c =>
 {
     // Другие настройки Swagger...

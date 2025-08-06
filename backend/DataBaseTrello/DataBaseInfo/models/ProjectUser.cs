@@ -12,14 +12,12 @@ namespace DataBaseInfo.models
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string projectRole { get; set; } = string.Empty;//owner или member
+        public string ProjectRole { get; set; } = string.Empty;//owner или member
         public Guid UserId { get; set; }
         public virtual User? User { get; set; } 
-
         public Guid ProjectId { get; set; }
         public virtual Project? Project { get; set; } = null!;
-
-        public virtual List<MemberOfGroup> Groups { get; set; } = new();
+        public virtual List<MemberOfBoard> MembersOfBoards { get; set; } = new();
 
     }
 }

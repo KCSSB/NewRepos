@@ -15,7 +15,7 @@ namespace DataBaseInfo
         public DbSet<User> Users { get; set; } // Таблица пользователей
         public DbSet<Project> Projects { get; set; } // Таблица проектов
         public DbSet<ProjectUser> ProjectUsers { get; set; }
-        public DbSet<MemberOfGroup> MembersOfGroups { get; set; }
+        public DbSet<MemberOfBoard> MembersOfBoards{ get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
@@ -76,19 +76,23 @@ namespace DataBaseInfo
                       .IsUnique();
             });
 
-            modelBuilder.Entity<MemberOfGroup>(entity =>
+            modelBuilder.Entity<MemberOfBoard>(entity =>
             {
 
                 entity.Property(mg => mg.Id).IsRequired().ValueGeneratedNever();
                 entity.Property(mg => mg.ProjectUserId).IsRequired();
-                entity.Property(mg => mg.GroupId).IsRequired();
 
-                entity.HasOne(mg => mg.User)
-                    .WithMany(pu => pu.Groups)
-                    .HasForeignKey(mg => mg.ProjectUserId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(mb => mb.Board)
+                .WithMany(b => b.MemberOfBoards)
+                .HasForeignKey(mb => mb.BoardId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-                
+                entity.HasOne(mb => mb.ProjectUser)
+                .WithMany(pu => pu.MembersOfBoards)
+                .HasForeignKey(mb => mb.ProjectUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             });
 
            
@@ -99,7 +103,7 @@ namespace DataBaseInfo
                 entity.Property(b => b.Id).IsRequired().ValueGeneratedNever();
                 //Настройка полей
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
-                entity.Property(b => b.GroupId).IsRequired();
+                
                 //Настройка связи между полями(Нэту)
                 
                
