@@ -52,6 +52,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.Controllers.BoardController",
+    "Method": "CreateBoard",
+    "RelativePath": "api/Board/CreateBoard",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createBoardRequest",
+        "Type": "API.DTO.Requests.CreateBoardRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.Controllers.GetPagesController",
     "Method": "GetHomePage",
     "RelativePath": "api/GetPages/GetHomePage",

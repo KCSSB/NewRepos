@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using API.Constants;
+using API.Exceptions.ErrorContext;
 using API.Extensions;
 using DataBaseInfo;
 using DataBaseInfo.models;
@@ -39,17 +40,30 @@ namespace API.Services
         {
             using var context = await _contextFactory.CreateDbContextAsync();
 
-            var board = await context.Boards.FirstOrDefaultAsync(b => b.Id == boardId);
-            var projectUser = await context.ProjectUsers.FirstOrDefaultAsync(pu => pu.Id == projectUserId);
+            var board = await context.Boards.Include(b => b.MemberOfBoards)
+                .FirstOrDefaultAsync(b => b.Id == boardId);
+            
+            var projectUser = await context.ProjectUsers.Include(pu => pu.MembersOfBoards)
+                .FirstOrDefaultAsync(pu => pu.Id == projectUserId);
 
-            if (projectUser == null) 
-
+            if (projectUser == null)
+                throw new AppException(new ErrorContext(ServiceName.BoardService,
+                     OperationName.AddProjectUserInBoardAsync,
+                     HttpStatusCode.NotFound,
+                    UserExceptionMessages.InternalExceptionMessage,
+                    $"ProjectUser с Id: {projectUserId}, не найден"));
             if (board == null)
-                    
+                throw new AppException(new ErrorContext(ServiceName.BoardService,
+                 OperationName.AddProjectUserInBoardAsync,
+                 HttpStatusCode.NotFound,
+                UserExceptionMessages.InternalExceptionMessage,
+                $"Board с Id: {boardId}, не найден"));
 
             MemberOfBoard member = new MemberOfBoard
             {
-                
+                BoardId = boardId,
+                ProjectUserId = projectUserId,
+                BoardRole = (board.MemberOfBoards.Count() == 0) ? "BoardLead" : "BoardMember"
             };
 
             await context.MembersOfBoards.AddAsync(member);

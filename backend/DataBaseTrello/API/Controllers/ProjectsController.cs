@@ -45,7 +45,11 @@ namespace API.Controllers
             
             Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId); 
 
-            return Ok("Проект успешно создан");
+            return Ok(new
+            {
+                projectUserId = projectUserId,
+                projectId = projectId
+            });
         }
         [HttpGet("GetFullProject/{id}")]
         public async Task<IActionResult> GetFullProject(Guid id)

@@ -62,7 +62,7 @@ namespace API.Services
                 {
                     UserId = userId,
                     ProjectId = projectId,
-                    ProjectRole = (project.ProjectUsers.Count <=0) ? "Owner": "Member"
+                    ProjectRole = (project.ProjectUsers.Count <=0) ? "ProjectOwner": "ProjectMember"
                 };
                 if (user == null)
                     throw new AppException(new ErrorContext(ServiceName.ProjectService,
