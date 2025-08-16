@@ -18,6 +18,8 @@
         public const string RevokeRefreshTokenAsync = "RevokeRefreshTokenAsync";
         public const string GetUserIdAsGuidOrThrow = "GetUserIdAsGuidOrThrow";
         public const string AddProjectUserInBoardAsync = "AddProjectUserInBoardAsync";
+        public const string AddBoardMembersToDbAsync = "AddBoardMembersToDbAsync";
+        
 
         public const string CreateBoardAsync = "CreateBoardAsync";
         public const string CreateProjectAsync = "CreateProjectAsync";

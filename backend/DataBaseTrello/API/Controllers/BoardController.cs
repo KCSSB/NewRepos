@@ -22,11 +22,13 @@ namespace API.Controllers
         {
             Guid boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
 
-            Guid memberOfBoardId = await _boardService.AddProjectUserInBoardAsync(boardId, createBoardRequest.BoardLeadId);
+            List<Guid> membersOfBoardId = await _boardService.AddProjectUsersInBoardAsync(boardId, createBoardRequest.BoardLeadId, createBoardRequest.BoardMembers);
 
            return Ok(new
             {
-                BoardId = boardId
+                BoardId = boardId,
+                MembersOfBoardId = membersOfBoardId,
+                BoardLeadId = createBoardRequest.BoardLeadId
             });
            
         }

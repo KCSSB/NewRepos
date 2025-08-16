@@ -24,7 +24,6 @@ namespace API.Services
         }
         public async Task<Guid> CreateProjectAsync(string projectName)
         {
-            
                 Project project = new Project
                 {
                     ProjectName = projectName,

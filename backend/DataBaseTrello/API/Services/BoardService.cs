@@ -1,10 +1,13 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using API.Constants;
 using API.Exceptions.ErrorContext;
 using API.Extensions;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
 {
@@ -25,7 +28,6 @@ namespace API.Services
             Board board = new Board
             {
                 Name = boardName,
-                
             };
 
             await context.Boards.AddAsync(board);
@@ -36,46 +38,71 @@ namespace API.Services
 
             return board.Id;
         }
-        public async Task<Guid> AddProjectUserInBoardAsync(Guid boardId,Guid projectUserId)
+        public async Task<List<Guid>> AddProjectUsersInBoardAsync(Guid boardId, Guid boardLeadId,List<Guid> projectUserIds)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
 
-            var board = await context.Boards.Include(b => b.MemberOfBoards)
+            var existingBoard = await context.Boards.Include(b => b.MemberOfBoards)
                 .FirstOrDefaultAsync(b => b.Id == boardId);
             
-            var projectUser = await context.ProjectUsers.Include(pu => pu.MembersOfBoards)
-                .FirstOrDefaultAsync(pu => pu.Id == projectUserId);
+            var existingProjectUsers = await context.ProjectUsers
+                .Where(pu => projectUserIds.Contains(pu.Id))
+                .Include(pu => pu.MembersOfBoards)
+                .ToListAsync();
 
-            if (projectUser == null)
-                throw new AppException(new ErrorContext(ServiceName.BoardService,
-                     OperationName.AddProjectUserInBoardAsync,
-                     HttpStatusCode.NotFound,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"ProjectUser с Id: {projectUserId}, не найден"));
-            if (board == null)
+           //Ты хотел создать метод для проверки и синхонизации входных ProjectUsers с теми что хранятся в бд
+
+            if (existingBoard == null)
                 throw new AppException(new ErrorContext(ServiceName.BoardService,
                  OperationName.AddProjectUserInBoardAsync,
                  HttpStatusCode.NotFound,
                 UserExceptionMessages.InternalExceptionMessage,
                 $"Board с Id: {boardId}, не найден"));
 
-            MemberOfBoard member = new MemberOfBoard
+            if (!existingIds.Contains(BoardLeadId))
+                throw new Exception();
+
+            var members = CreateBoardMembers(existingProjectUsers, boardId);
+            await AddBoardMembersToDbAsync(members);
+
+            return existingIds;
+        }
+        private async Task VerifyProjectUsersAsync(List<MemberOfBoard> members)
+        {
+
+        }
+
+        private List<MemberOfBoard> CreateBoardMembers(List<ProjectUser> projectUsers, Guid boardId)
+        {
+           var boardMembers = new List<MemberOfBoard>();
+            foreach (var user in projectUsers)
             {
-                BoardId = boardId,
-                ProjectUserId = projectUserId,
-                BoardRole = (board.MemberOfBoards.Count() == 0) ? "BoardLead" : "BoardMember"
-            };
 
-            await context.MembersOfBoards.AddAsync(member);
-
+                MemberOfBoard member = new MemberOfBoard
+                {
+                    BoardId = boardId,
+                    ProjectUserId = user.Id,
+                    BoardRole = "BoardMember"
+                };
+                boardMembers.Add(member);
+            }
+            return boardMembers;
+        }
+        
+        private async Task AddBoardMembersToDbAsync(List<MemberOfBoard> members)
+        {
+            using var context = await _contextFactory.CreateDbContextAsync();
+            foreach (var member in members)
+            {
+                await context.MembersOfBoards.AddAsync(member);
+            }
             await context.SaveChangesWithContextAsync(ServiceName.BoardService,
-                OperationName.AddUserInBoardAsync, "Произошла ошибка при попытке сохранить MemberOfGroup в бд",
+                OperationName.AddBoardMembersToDbAsync,
+                "Произошла ошибка при попытке сохранить MembersOfBoard в бд",
                 UserExceptionMessages.InternalExceptionMessage,
                 HttpStatusCode.InternalServerError);
 
-            return member.Id;
         }
-
-
+        
     }
 }

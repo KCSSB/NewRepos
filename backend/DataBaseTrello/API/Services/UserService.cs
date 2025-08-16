@@ -39,52 +39,6 @@ namespace DataBaseInfo.Services
                 urlEndPoint: _settings.UrlEndpoint);
             _logger = logger;
         }
-        public async Task<string> UploadUserAvatarAsync(IFormFile file, Guid userId)
-        {
-            using var ms = new MemoryStream();
-            file.CopyTo(ms);
-            var fileBytes = ms.ToArray();
-            var base64 = Convert.ToBase64String(fileBytes);
-
-            var request = new FileCreateRequest
-            {
-                file = $"data:{file.ContentType};base64,{base64}",
-                fileName = file.FileName,
-                useUniqueFileName = true,
-                folder = "/UsersAvatars"
-            };
-            var result = await _imagekitClient.UploadAsync(request);
-            if (result.HttpStatusCode >= 200 && result.HttpStatusCode < 300)
-            {
-                using var context = await _contextFactory.CreateDbContextAsync();
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                 OperationName.UploadUserAvatarAsync,
-                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.UploadFilesExceptionMessage,
-                $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
-                
-
-                user.Avatar = result.url;
-                await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                    OperationName.UploadUserAvatarAsync,
-                    $"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}",
-                    UserExceptionMessages.UploadFilesExceptionMessage,
-                    HttpStatusCode.InternalServerError);
-
-                return result.url;
-            }
-            else
-            {
-                throw new AppException(new ErrorContext(
-            ServiceName.UserService,
-            OperationName.UploadUserAvatarAsync,
-            (HttpStatusCode)result.HttpStatusCode,
-            UserExceptionMessages.UploadFilesExceptionMessage,
-            $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
-            }
-           }
         public async Task<Guid> RegisterAsync(string userEmail, string password)
         {
 

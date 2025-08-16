@@ -39,10 +39,11 @@ namespace API.Controllers
         {
         
 
-            Guid userId = User.GetUserIdAsGuidOrThrow();
+            Guid userId = User.GetUserId();
 
             Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
             
+
             Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId); 
 
             return Ok(new

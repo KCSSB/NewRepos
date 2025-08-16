@@ -7,7 +7,7 @@ namespace API.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static Guid GetUserIdAsGuidOrThrow(this ClaimsPrincipal user)
+        public static Guid GetUserId(this ClaimsPrincipal user)
         {
             var userIdString = user.FindFirstValue(ClaimTypes.NameIdentifier);
 
