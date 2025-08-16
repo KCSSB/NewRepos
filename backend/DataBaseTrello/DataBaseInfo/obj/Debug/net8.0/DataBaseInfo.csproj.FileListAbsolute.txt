@@ -27,3 +27,18 @@ C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.genruntimeconfig.cache
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\ref\DataBaseInfo.dll
 C:\Users\Windows 11\Projects\DontAskApp\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.sourcelink.json
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\bin\Debug\net8.0\DataBaseInfo.deps.json
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\bin\Debug\net8.0\DataBaseInfo.runtimeconfig.json
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\bin\Debug\net8.0\DataBaseInfo.dll
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\bin\Debug\net8.0\DataBaseInfo.pdb
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.csproj.AssemblyReference.cache
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.GeneratedMSBuildEditorConfig.editorconfig
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.AssemblyInfoInputs.cache
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.AssemblyInfo.cs
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.csproj.CoreCompileInputs.cache
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.sourcelink.json
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.dll
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\refint\DataBaseInfo.dll
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.pdb
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\DataBaseInfo.genruntimeconfig.cache
+D:\Универ\Проект\git_project\DontAsk\backend\DataBaseTrello\DataBaseInfo\obj\Debug\net8.0\ref\DataBaseInfo.dll
