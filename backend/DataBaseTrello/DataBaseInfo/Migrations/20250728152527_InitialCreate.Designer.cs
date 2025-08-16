@@ -3,6 +3,7 @@ using System;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataBaseInfo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250728152527_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,6 +57,10 @@ namespace DataBaseInfo.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Progress")
                         .HasColumnType("integer");
@@ -114,12 +121,6 @@ namespace DataBaseInfo.Migrations
                     b.Property<string>("Avatar")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateOnly?>("DateOfDeadline")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("DateStartWork")
-                        .HasColumnType("date");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
@@ -238,24 +239,10 @@ namespace DataBaseInfo.Migrations
                     b.Property<bool>("Complete")
                         .HasColumnType("boolean");
 
-                    b.Property<DateOnly?>("DateOfDeadline")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<Guid>("MemberResponsibleForCard")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

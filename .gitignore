@@ -721,3 +721,4 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,aspnetcore,node,react,dotnetcore,windows
+/backend/DataBaseTrello/.vs/DataBaseTrello/v17/.suo
