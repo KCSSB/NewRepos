@@ -75,7 +75,13 @@
 }
 
 .header-right button:hover {
-  background-color: #e04e00;
+  background-color: #d2d3d3;
+  transition: background-color 0.2s ease;
+}
+
+.header-right .help:hover {
+  background-color: #4a4a4d;
+  transition: background-color 0.2s ease;
 }
 
 /* 14 Pro Max*/

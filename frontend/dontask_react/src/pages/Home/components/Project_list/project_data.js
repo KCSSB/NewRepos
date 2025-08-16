@@ -24,4 +24,11 @@ export const projects = [
     creator_name: "Стасян",
     amount_of_people: "256",
   },
+  {
+    logo: dacha,
+    title: "Хата",
+    creator_avatar: vadimych,
+    creator_name: "Стасян",
+    amount_of_people: "256",
+  },
 ];

@@ -5,7 +5,7 @@ import "./Demo.css";
 export default function Demo() {
   return (
     <div className="demo-container">
-      <h5>УСКОРЬТЕ РАБОТУ В ОДИН КЛИК</h5>
+      <h2 className="h2-style-demo">УСКОРЬТЕ РАБОТУ В ОДИН КЛИК</h2>
       <Link to="/auth/register">
         <button>Попробовать Демо</button>
       </Link>

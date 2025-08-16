@@ -5,7 +5,7 @@ import Description from "./components/Description/Description";
 import Steps from "./components/Steps/Steps";
 import Demo from "./components/Demo/Demo";
 import Footer from "./components/Footer/Footer";
-import "./components/fonts/fonts.css";
+import "../../fonts/fonts.css";
 
 export default function Landing() {
   return (

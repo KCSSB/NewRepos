@@ -5,7 +5,7 @@ import { steps } from "../../data";
 export default function Steps() {
   return (
     <div className="steps-container">
-      <h2>НАЧИНАЙТЕ РАБОТАТЬ ЗА 3 ПРОСТЫХ ШАГА</h2>
+      <h2 className="h2-style-steps">НАЧИНАЙТЕ РАБОТАТЬ ЗА 3 ПРОСТЫХ ШАГА</h2>
       <div className="steps-columns">
         <div className="steps-logos">
           {steps.map((step, idx) => (

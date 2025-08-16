@@ -49,9 +49,8 @@ html {
   width: auto;
 }
 
-.landing-page .frame-tasks h1 {
+.landing-page .frame-tasks h6 {
   margin: auto 0;
-  margin-left: 1rem;
   text-align: left;
   font-family: Inter;
   font-weight: 700;
@@ -68,13 +67,11 @@ html {
   width: 100%;
   height: auto;
   padding: 1rem;
-  padding-bottom: 0rem;
 }
 
-.frame-tasks-inside h2 {
+.frame-tasks-inside-text {
   color: white;
   margin: auto 0;
-  margin-bottom: 0.5rem;
   text-align: left;
   font-family: Inter;
   font-weight: 700;
@@ -125,10 +122,10 @@ html {
 .frame-one-place {
   background-color: #eacf85;
   transform: rotate(23.52deg);
-  width: 13%;
+  width: 11%;
   height: auto;
   position: absolute;
-  left: -1.5rem;
+  left: -0.5rem;
   bottom: 35%;
   padding: 2rem 0.75rem 5rem 0.75rem;
   box-shadow: 0.65rem 0.65rem 0.75rem rgba(0, 0, 0, 0.4);
@@ -141,6 +138,7 @@ html {
   line-height: 150%;
   letter-spacing: 0%;
   vertical-align: middle;
+  color: black;
 }
 
 .frame-notice {
@@ -160,10 +158,11 @@ html {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
-.frame-notice h2 {
+.frame-notice-text {
+  margin: 0;
   font-family: Inter;
   font-weight: 700;
   font-size: 1.5rem;
@@ -185,6 +184,7 @@ html {
   font-size: 1rem;
   line-height: 150%;
   letter-spacing: 0%;
+  color: black;
 }
 
 /* АДАПТИВНОСТЬ ПОД РАЗНЫЕ ЭКРАНЫ */

@@ -5,7 +5,7 @@ const Form = ({ isRegister }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [error, setError] = useState(null); // исправлено usestate -> useState
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     // добавлено async
@@ -22,7 +22,7 @@ const Form = ({ isRegister }) => {
       if (isRegister) {
         const response = await api.post("/auth/register", {
           UserEmail: login,
-          UserPassword: password
+          UserPassword: password,
         });
         alert("Регистрация завершена!");
         // Можно сохранить токен, если он приходит в ответе
@@ -30,12 +30,11 @@ const Form = ({ isRegister }) => {
       } else {
         const response = await api.post("/auth/login", {
           UserEmail: login,
-          UserPassword: password
+          UserPassword: password,
         });
         alert("Вход успешен");
-        
+
         localStorage.setItem("token", JSON.stringify(response.data));
-      
       }
     } catch (err) {
       setError(err.response?.data?.message || "Ошибка сервера");
@@ -63,7 +62,7 @@ const Form = ({ isRegister }) => {
       {isRegister && (
         <input
           type="password"
-          placeholder="Повторите Пароль"
+          placeholder="Повторите пароль"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
           className={styles.input}

@@ -1,19 +1,39 @@
-.content-container {
+.project-list-container {
+  height: 34vh;
+  margin: 1rem;
+  border-radius: 1.5rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.project-list-wrapper {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 2rem;
-  box-sizing: border-box;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  justify-content: space-between;
 }
 
 .project-card {
-  flex: 0 0 30%;
+  flex: 0 0 32%;
+  min-width: 300px;
   background-color: #f1f1f1;
   border-radius: 2rem;
   overflow: hidden;
   box-sizing: border-box;
-  margin: 2rem 0;
-  min-width: 200px;
+  margin: 0;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  background-color: #e0e0e0;
+  transition: background-color 0.2s ease;
 }
 
 .card-top {
@@ -53,6 +73,7 @@
 .text-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .people-count {
@@ -62,9 +83,10 @@
 
 .people-logo {
   width: 2.5rem !important;
+  height: auto;
 }
 
-h2 {
+h5 {
   font-family: Inter;
   font-weight: 700;
   font-size: 1.75rem;
@@ -82,10 +104,10 @@ p {
   margin: 0;
 }
 
-h3 {
+h6 {
   font-family: Inter;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.2;
   color: #000000;
   margin: 0;

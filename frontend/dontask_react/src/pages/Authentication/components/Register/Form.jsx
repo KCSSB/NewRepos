@@ -23,16 +23,15 @@ const Form = ({ isRegister }) => {
       if (isRegister) {
         const response = await api.post("/auth/register", {
           UserEmail: login,
-          UserPassword: password
+          UserPassword: password,
         });
         alert("Регистрация завершена!");
         // Можно сохранить токен, если он приходит в ответе
         // localStorage.setItem("token", response.data.token)
-  
       } else {
         const response = await api.post("/auth/login", {
           UserEmail: login,
-          UserPassword: password
+          UserPassword: password,
         });
         alert("Вход успешен");
         localStorage.setItem("token", response.data.token);
@@ -63,7 +62,7 @@ const Form = ({ isRegister }) => {
       {isRegister && (
         <input
           type="password"
-          placeholder="Повторите Пароль"
+          placeholder="Повторите пароль"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}
           className={styles.input}

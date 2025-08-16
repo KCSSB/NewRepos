@@ -11,7 +11,7 @@ export default function Header() {
         <h1>DONTASK</h1>
       </div>
       <div className="header-right">
-        <button className="text-button">Помощь</button>
+        <button className="text-button help">Помощь</button>
         <Link to="/auth/login">
           <button>Войти</button>
         </Link>

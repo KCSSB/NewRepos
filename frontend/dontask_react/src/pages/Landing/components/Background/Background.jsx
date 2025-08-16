@@ -10,14 +10,14 @@ export default function Background({ children }) {
     <div className="landing-page">
       <div className="content">{children}</div>
       <div className="frame-tasks">
-        <h1>Задачи</h1>
+        <h6>Задачи</h6>
         <div className="icons">
           <img src={plus_logo} alt="PLUS" />
           <img src={dots_logo} alt="DOTS" />
         </div>
         <div className="frame-tasks-inside">
-          <h2>17 мая 2024</h2>
-          <h2>Квартальный отчет</h2>
+          <h6 className="frame-tasks-inside-text">17 мая 2024</h6>
+          <h6 className="frame-tasks-inside-text">Квартальный отчет</h6>
           <div className="priority-row">
             <p className="frame-tasks-inside-bottom">Высокий приоритет</p>
             <img src={avatar} alt="avatar" />
@@ -30,7 +30,7 @@ export default function Background({ children }) {
       <div className="frame-notice">
         <div className="notice-header">
           <img src={bell} alt="BELL" />
-          <h2>Уведомление</h2>
+          <h6 className="frame-notice-text">Уведомление</h6>
         </div>
         <p>Вас хотят добавить в новый проект</p>
       </div>

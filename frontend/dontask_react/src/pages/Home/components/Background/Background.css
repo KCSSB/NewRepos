@@ -1,16 +1,19 @@
-.content-container {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  margin: 2.5vh;
+.background-container {
+  height: 50vh;
+  margin: 1rem;
   border-radius: 1.5rem;
   background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 1;
+  box-sizing: border-box;
 }
 
-.content-container img {
+.background-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: bottom;
 }
