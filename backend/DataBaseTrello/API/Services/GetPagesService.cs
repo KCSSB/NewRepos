@@ -45,7 +45,7 @@ namespace API.Services
                         ProjectLeaderImageUrl = pl.User.Avatar
                     }).FirstOrDefault()
                 }).ToListAsync();
-            return new HomePage { SummaryProject = projects, UserAvatarUrl = avatar };
+            return new HomePage { SummaryProject = projects };
         }
     }
 }

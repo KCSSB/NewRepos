@@ -59,13 +59,14 @@ namespace API.Services
                 UserExceptionMessages.InternalExceptionMessage,
                 $"Board с Id: {boardId}, не найден"));
 
-            if (!existingIds.Contains(BoardLeadId))
-                throw new Exception();
+            //if (!existingIds.Contains(boardLeadId))
+               // throw new Exception();
 
             var members = CreateBoardMembers(existingProjectUsers, boardId);
             await AddBoardMembersToDbAsync(members);
 
-            return existingIds;
+            //return existingIds;
+            return null;
         }
         private async Task VerifyProjectUsersAsync(List<MemberOfBoard> members)
         {

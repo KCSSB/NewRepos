@@ -5,15 +5,21 @@ using System.Net;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Microsoft.Extensions.Options;
+using API.Configuration;
 namespace API.Helpers
 {
     public class ImageService
         
     {
         private readonly ImagekitClient _imagekitClient;
-        public ImageService(ImagekitClient imagekitClient)
+        private readonly ImageKitSettings _settings;
+        public ImageService(IOptions<ImageKitSettings> options)
         {
-            _imagekitClient = imagekitClient;
+            _settings = options.Value;
+            _imagekitClient = new ImagekitClient(publicKey: _settings.PublicKey,
+                 privateKey: _settings.PrivateKey,
+                 urlEndPoint: _settings.UrlEndpoint);
         }
         public async Task<IFormFile> PrepareImageAsync(IFormFile file, int size)
         {
@@ -66,7 +72,7 @@ namespace API.Helpers
 
             return formFile;
         }
-        public async Task<string> UploadImageAsync(IFormFile file)
+        public async Task<Result?> UploadImageAsync(IFormFile file, string path)
         {
             using var ms = new MemoryStream();
             file.CopyTo(ms);
@@ -78,39 +84,10 @@ namespace API.Helpers
                 file = $"data:{file.ContentType};base64,{base64}",
                 fileName = file.FileName,
                 useUniqueFileName = true,
-                folder = "/UsersAvatars"
+                folder = $"{path}"
             };
             var result = await _imagekitClient.UploadAsync(request);
-            if (result.HttpStatusCode >= 200 && result.HttpStatusCode < 300)
-            {
-                using var context = await _contextFactory.CreateDbContextAsync();
-                var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                 OperationName.UploadUserAvatarAsync,
-                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.UploadFilesExceptionMessage,
-                $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
-
-
-                user.Avatar = result.url;
-                await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                    OperationName.UploadUserAvatarAsync,
-                    $"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}",
-                    UserExceptionMessages.UploadFilesExceptionMessage,
-                    HttpStatusCode.InternalServerError);
-
-                return result.url;
-            }
-            else
-            {
-                throw new AppException(new ErrorContext(
-            ServiceName.ImageService,
-            OperationName.UploadImageAsync,
-            (HttpStatusCode)result.HttpStatusCode,
-            UserExceptionMessages.UploadFilesExceptionMessage,
-            $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
-            }
+            return result;
         }
     }
 }

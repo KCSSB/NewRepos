@@ -32,7 +32,6 @@ namespace API.Controllers
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
-           
             Guid userId = User.GetUserId();
             if (!ModelState.IsValid)
             {
@@ -49,8 +48,8 @@ namespace API.Controllers
             }
 
             var file = await _imageService.PrepareImageAsync(request.File, 512);
-            string url = await _userService.UploadUserAvatarAsync(file, userId);
-
+            var result = await _imageService.UploadImageAsync(file, CloudPathes.UserAvatarPath);
+            var url = await _userService.UpdateUserAvatarAsync(result, userId);
             return Ok(new
             {
                 Url = url

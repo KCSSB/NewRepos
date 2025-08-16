@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
+﻿
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using API.Configuration;
+
 using API.Constants;
 using API.Exceptions.ErrorContext;
 using API.Extensions;
 using API.Helpers;
 using DataBaseInfo.models;
-using Imagekit.Sdk;
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+
 
 namespace DataBaseInfo.Services
 {
@@ -26,17 +18,12 @@ namespace DataBaseInfo.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-        private readonly ImagekitClient _imagekitClient;
-        private readonly ImageKitSettings _settings;
+     
         private readonly ILogger<UserService> _logger;
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, IOptions<ImageKitSettings> options, ILogger<UserService> logger)
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
         {
             _contextFactory = contextFactory;
-            _settings = options.Value;
             _JWTService = JWTService;
-            _imagekitClient = new ImagekitClient(publicKey: _settings.PublicKey,
-                privateKey: _settings.PrivateKey,
-                urlEndPoint: _settings.UrlEndpoint);
             _logger = logger;
         }
         public async Task<Guid> RegisterAsync(string userEmail, string password)
@@ -84,13 +71,6 @@ namespace DataBaseInfo.Services
                 return user.Id;
 
                 }
-            
-            
-            
-
-
-        
-
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string UserEmail, string Password)
         {
 
@@ -137,7 +117,39 @@ namespace DataBaseInfo.Services
                 }
             
         }
-            
+
+        public async Task<string> UpdateUserAvatarAsync(Result? result, Guid userId)
+        {
+            if (result.HttpStatusCode >= 200 && result.HttpStatusCode < 300)
+            {
+                using var context = await _contextFactory.CreateDbContextAsync();
+                var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                if (user == null)
+                    throw new AppException(new ErrorContext(ServiceName.UserService,
+                 OperationName.UploadUserAvatarAsync,
+                 HttpStatusCode.InternalServerError,
+                UserExceptionMessages.UploadFilesExceptionMessage,
+                $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
+
+                user.Avatar = result.url;
+                await context.SaveChangesWithContextAsync(ServiceName.UserService,
+                    OperationName.UploadUserAvatarAsync,
+                    $"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}",
+                    UserExceptionMessages.UploadFilesExceptionMessage,
+                    HttpStatusCode.InternalServerError);
+
+                return result.url;
+            }
+            else
+            {
+                throw new AppException(new ErrorContext(
+            ServiceName.UserService,
+            OperationName.UploadUserAvatarAsync,
+            (HttpStatusCode)result.HttpStatusCode,
+            UserExceptionMessages.UploadFilesExceptionMessage,
+            $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
+            }
+        }
         
     } 
         
