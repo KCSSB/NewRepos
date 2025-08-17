@@ -86,9 +86,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "projectRequest",
-        "Type": "API.DTO.Requests.CreateProjectRequest",
-        "IsRequired": true
+        "Name": "ProjectName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

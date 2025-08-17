@@ -27,29 +27,34 @@ namespace API.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly ProjectService _projectService;
+        private readonly ImageService _imageService;
         
-        public ProjectsController(ProjectService projectService)
+        public ProjectsController(ProjectService projectService, ImageService imageService)
         {
             _projectService = projectService;
+            _imageService = imageService;
            
         }
 
         [HttpPost ("CreateProject")]
-        public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
+        public async Task<IActionResult> CreateProject([FromForm] CreateProjectRequest projectRequest)
         {
-        
-
             Guid userId = User.GetUserId();
 
             Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
             
+            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
-            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId); 
+            var image = await _imageService.PrepareImageAsync(projectRequest.image,1280,720);
+            var result = await _imageService.UploadImageAsync(image, CloudPathes.ProjectImagesPath);
+
+            var url = result.url;
 
             return Ok(new
             {
                 projectUserId = projectUserId,
-                projectId = projectId
+                projectId = projectId,
+                url = url
             });
         }
         [HttpGet("GetFullProject/{id}")]
