@@ -36,8 +36,9 @@ namespace API.Services
                     ProjectId = p.Id,
                     ProjectName = p.ProjectName,
                     CountProjectUsers = p.ProjectUsers.Count(),
+                    ProjectImageUrl = p.Avatar,
                     ProjectLeader = p.ProjectUsers
-                    .Where(pu => pu.ProjectRole == "Owner")
+                    .Where(pu => pu.ProjectRole == "ProjectOwner")
                     .Select(pl => new ProjectLeaderResponse
                     {
                         ProjectLeaderId = pl.UserId,

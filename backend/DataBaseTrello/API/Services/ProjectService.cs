@@ -10,6 +10,7 @@ using API.Extensions;
 using API.Exceptions.ErrorContext;
 using System.Net;
 using API.Constants;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace API.Services
 {
@@ -80,6 +81,7 @@ namespace API.Services
                 user.ProjectUsers.Add(projectUser);
 
                 project.ProjectUsers.Add(projectUser);
+                
 
                 await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
                     OperationName.AddUserInProjectAsync,
@@ -92,16 +94,19 @@ namespace API.Services
             
 
         }
-        public async Task<Project> GetFullProjectAsync(Guid Id)
+
+        public async Task UpdateProjectImageAsync(Guid projectId, string imageUrl)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
-            var project = await context.Projects.AsNoTracking().Where(p => p.Id==Id)
-                .Include(p => p.ProjectUsers)
-                .ThenInclude(pu => pu.MembersOfBoards)
-                .ThenInclude(mb => mb.Board)
-                .ThenInclude(b => b.Cards)
-                .ThenInclude(c => c.Tasks).FirstOrDefaultAsync();
-            return project;
+            var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null)
+                throw new AppException(new ErrorContext(ServiceName.ProjectService,
+                    OperationName.UpdateProjectImageAsync,
+                    HttpStatusCode.InternalServerError,
+                    UserExceptionMessages.InternalExceptionMessage,
+                    $"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
+            project.Avatar = imageUrl;
+
         }
     }
 }

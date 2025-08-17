@@ -49,7 +49,7 @@ namespace API.Controllers
             var result = await _imageService.UploadImageAsync(image, CloudPathes.ProjectImagesPath);
 
             var url = result.url;
-
+            await _projectService.UpdateProjectImageAsync(projectId, url);
             return Ok(new
             {
                 projectUserId = projectUserId,
@@ -60,8 +60,8 @@ namespace API.Controllers
         [HttpGet("GetFullProject/{id}")]
         public async Task<IActionResult> GetFullProject(Guid id)
         {
-            var project = await _projectService.GetFullProjectAsync(id);
-            return Ok(new {});
+
+            return Ok();
         }
         
     }
