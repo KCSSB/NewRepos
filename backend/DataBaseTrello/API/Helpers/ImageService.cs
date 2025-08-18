@@ -1,21 +1,34 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Imagekit.Sdk;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Microsoft.Extensions.Options;
+using API.Configuration;
 namespace API.Helpers
 {
     public class ImageService
+        
     {
-        public async Task<IFormFile> PrepareImageAsync(IFormFile file, int size)
+        private readonly ImagekitClient _imagekitClient;
+        private readonly ImageKitSettings _settings;
+        public ImageService(IOptions<ImageKitSettings> options)
+        {
+            _settings = options.Value;
+            _imagekitClient = new ImagekitClient(publicKey: _settings.PublicKey,
+                 privateKey: _settings.PrivateKey,
+                 urlEndPoint: _settings.UrlEndpoint);
+        }
+        public async Task<IFormFile> PrepareImageAsync(IFormFile file, int height, int width)
         {
             using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
             ms.Position = 0;
             using var image = await Image.LoadAsync<Rgba32>(ms);
-            if (image.Height != size || image.Width != size)
+
+            if (image.Height != height || image.Width != width)
             {
 
-                var bytes = await CropAndResizeAsync(image, size);
+                var bytes = await CropAndResizeAsync(image, height,width);
                 var changedFile = ConvertBytesToFormFile(bytes, file.FileName, file.ContentType);
                 return changedFile;
             }
@@ -23,17 +36,17 @@ namespace API.Helpers
             return file;
 
         }
-        private async Task<byte[]> CropAndResizeAsync(Image<Rgba32> image, int size)
+        private async Task<byte[]> CropAndResizeAsync(Image<Rgba32> image, int height, int width)
         {
             using var outPutStream = new MemoryStream();
             int sizeOfSide = Math.Min(image.Width, image.Height);
             image.Mutate(x =>
 
             {
-                x.Crop(new Rectangle((image.Width - sizeOfSide) / 2, (image.Height - sizeOfSide) / 2, size, size));
+                x.Crop(new Rectangle((image.Width - sizeOfSide) / 2, (image.Height - sizeOfSide) / 2, height, width));
                 x.Resize(new ResizeOptions
                 {
-                    Size = new Size(1024, 1024),
+                    Size = new Size(height, width),
                     Mode = ResizeMode.Crop,
 
                 });
@@ -55,6 +68,24 @@ namespace API.Helpers
             };
 
             return formFile;
+        }
+        public async Task<Result?> UploadImageAsync(IFormFile file, string path)
+        {
+            using var ms = new MemoryStream();
+            file.CopyTo(ms);
+            var fileBytes = ms.ToArray();
+            var base64 = Convert.ToBase64String(fileBytes);
+
+            var request = new FileCreateRequest
+            {
+                file = $"data:{file.ContentType};base64,{base64}",
+                fileName = file.FileName,
+                useUniqueFileName = true,
+                folder = $"{path}"
+            };
+            var result = await _imagekitClient.UploadAsync(request);
+
+            return result;
         }
     }
 }

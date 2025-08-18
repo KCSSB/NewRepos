@@ -32,13 +32,13 @@ namespace API.Controllers
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
-           
-            Guid userId = User.GetUserIdAsGuidOrThrow();
+            Guid userId = User.GetUserId();
             if (!ModelState.IsValid)
             {
                 var errorMessages = string.Join(Environment.NewLine, ModelState.Values
          .SelectMany(v => v.Errors)
          .Select(e => e.ErrorMessage));
+
                 throw new AppException(new ErrorContext(
                     ServiceName.UserController,
                     OperationName.UploadUserAvatar,
@@ -47,9 +47,9 @@ namespace API.Controllers
                     $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
-            var file = await _imageService.PrepareImageAsync(request.File, 1024);
-            string url = await _userService.UploadUserAvatarAsync(file, userId);
-
+            var file = await _imageService.PrepareImageAsync(request.File, 512, 512);
+            var result = await _imageService.UploadImageAsync(file, CloudPathes.UserAvatarPath);
+            var url = await _userService.UpdateUserAvatarAsync(result, userId);
             return Ok(new
             {
                 Url = url

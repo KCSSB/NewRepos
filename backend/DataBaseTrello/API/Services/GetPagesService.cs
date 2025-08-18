@@ -36,8 +36,9 @@ namespace API.Services
                     ProjectId = p.Id,
                     ProjectName = p.ProjectName,
                     CountProjectUsers = p.ProjectUsers.Count(),
+                    ProjectImageUrl = p.Avatar,
                     ProjectLeader = p.ProjectUsers
-                    .Where(pu => pu.projectRole == "Owner")
+                    .Where(pu => pu.ProjectRole == "ProjectOwner")
                     .Select(pl => new ProjectLeaderResponse
                     {
                         ProjectLeaderId = pl.UserId,
@@ -45,7 +46,7 @@ namespace API.Services
                         ProjectLeaderImageUrl = pl.User.Avatar
                     }).FirstOrDefault()
                 }).ToListAsync();
-            return new HomePage { SummaryProject = projects, UserAvatarUrl = avatar };
+            return new HomePage { SummaryProject = projects };
         }
     }
 }

@@ -7,7 +7,7 @@
         
         public const string UserService = "UserService";
         public const string ProjectService = "ProjectService";
-        public const string GroupService = "GroupService";
+        public const string BoardService = "BoardService";
         public const string HashService = "HashService";
         public const string JWTServices = "JWTServices";
         public const string UserController = "UserController";

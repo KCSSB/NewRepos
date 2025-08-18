@@ -42,12 +42,14 @@ namespace API.Controllers
         {
 
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Register);
+
             if (!ModelState.IsValid)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Register,
                    HttpStatusCode.BadRequest,
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
+
             //Возможны проблемы
             Guid UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
             //Возможны проблемы

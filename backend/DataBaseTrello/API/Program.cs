@@ -15,6 +15,7 @@ using System.Net;
 using Serilog;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.OpenApi.Models;
+using Imagekit.Sdk;
 
 
 
@@ -67,8 +68,9 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JWTServices>();
 builder.Services.AddScoped<GetPagesService>();
 builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<ImageService>();
-builder.Services.AddScoped<GroupService>();
+
 builder.Services.AddSwaggerGen(c =>
 {
     // Другие настройки Swagger...

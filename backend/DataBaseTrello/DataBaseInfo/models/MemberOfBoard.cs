@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace DataBaseInfo.models
 {
-    public class MemberOfGroup
+    public class MemberOfBoard
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string GroupRole { get; set; } = string.Empty;
+        public string BoardRole { get; set; } = string.Empty;
         public Guid ProjectUserId { get; set; }
-        public virtual ProjectUser? User { get; set; }
-        public Guid GroupId { get; set; }
-        public virtual Group? Group { get; set; }
+        public virtual ProjectUser? ProjectUser { get; set; }
+        public Guid BoardId { get; set; }
+        public virtual Board? Board { get; set; }
      
     }
 }

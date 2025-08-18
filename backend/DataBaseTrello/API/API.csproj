@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+	<ConsoleOutputEncoding>utf-8</ConsoleOutputEncoding>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>231786cf-2f51-4f74-8e66-f145590839e2</UserSecretsId>

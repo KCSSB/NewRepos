@@ -17,17 +17,18 @@
         public const string RefreshTokenAsync = "RefreshTokenAsync";
         public const string RevokeRefreshTokenAsync = "RevokeRefreshTokenAsync";
         public const string GetUserIdAsGuidOrThrow = "GetUserIdAsGuidOrThrow";
+        public const string AddProjectUserInBoardAsync = "AddProjectUserInBoardAsync";
+        public const string AddBoardMembersToDbAsync = "AddBoardMembersToDbAsync";
+        
 
-        public const string CreateGroupAsync = "CreateGroupAsync";
-        public const string CreateGlobalGroupAsync = "CreateGlobalGroupAsync";
-        public const string AddUserInGroupAsync = "AddUserInGroupAsync";
+        public const string CreateBoardAsync = "CreateBoardAsync";
         public const string CreateProjectAsync = "CreateProjectAsync";
         public const string AddUserInProjectAsync = "AddUserInProjectAsync";
-        public const string AddFirstUserInGroupAsync = "AddFirstUserInGroupAsync";
-
+        public const string AddUserInBoardAsync = "AddUserProjectInBoardAsync";
         public const string LoginAsync = "LoginAsync";
         public const string UploadUserAvatar = "UploadUserAvatar";
         public const string UploadUserAvatarAsync = "UploadUserAvatarAsync";
+        public const string UpdateProjectImageAsync = "UpdateProjectImageAsync";
 
     }
 }
