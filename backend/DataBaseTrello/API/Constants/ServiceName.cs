@@ -12,5 +12,6 @@
         public const string JWTServices = "JWTServices";
         public const string UserController = "UserController";
         public const string SexHelper = "SexHelper";
+        public const string ResponseCreator = "ResponseCreator";
     }
 }

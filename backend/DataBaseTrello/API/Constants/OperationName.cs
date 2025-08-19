@@ -29,6 +29,8 @@
         public const string UploadUserAvatar = "UploadUserAvatar";
         public const string UploadUserAvatarAsync = "UploadUserAvatarAsync";
         public const string UpdateProjectImageAsync = "UpdateProjectImageAsync";
+      
+        public const string CreateSummaryProjectResponseAsync = "CreateSummaryProjectResponseAsync";
 
     }
 }
