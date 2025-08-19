@@ -46,7 +46,7 @@ namespace DataBaseInfo
                 //Первичный ключ
                 entity.Property(p => p.Id).IsRequired().ValueGeneratedNever();
                 //Настройка полей
-                entity.Property(p => p.ProjectName).IsRequired().HasMaxLength(20);
+                entity.Property(p => p.ProjectName).IsRequired().HasMaxLength(50);
                 //Настройка связи между полями(Нэту)
             });
             modelBuilder.Entity<ProjectUser>(entity =>
