@@ -18,7 +18,6 @@ namespace DataBaseInfo.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-     
         private readonly ILogger<UserService> _logger;
         public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
         {
