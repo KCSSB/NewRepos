@@ -33,10 +33,11 @@ namespace API.Helpers
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                new Claim("FirstName", user.FirstName),
-                new Claim("SecondName", user.SecondName), //Можно объединить в FullName
+                new Claim("SecondName", user.SecondName), 
                new Claim("Sex", SexHelper.GetSexDisplay(user.Sex)),
                new Claim("InviteId", user.InviteId.ToString()),
                 new Claim("UserEmail", user.UserEmail),
+                new Claim("Avatar", user.Avatar)
                 
             };
             
