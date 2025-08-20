@@ -70,6 +70,7 @@ builder.Services.AddScoped<GetPagesService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<ImageService>();
+builder.Services.AddScoped<ResponseCreator>();
 
 builder.Services.AddSwaggerGen(c =>
 {

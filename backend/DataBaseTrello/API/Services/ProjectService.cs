@@ -97,6 +97,7 @@ namespace API.Services
 
         public async Task UpdateProjectImageAsync(Guid projectId, string imageUrl)
         {
+
             using var context = await _contextFactory.CreateDbContextAsync();
             var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)

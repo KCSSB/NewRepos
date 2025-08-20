@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Constants;
 using API.Exceptions.ErrorContext;
 using System.Net;
+using API.DTO.Mappers;
 
 namespace API.Services
 {
@@ -18,7 +19,7 @@ namespace API.Services
           _logger = logger;  
           _contextFactory = contextFactory;
         }
-        public async Task<HomePage> GetHomePageAsync(Guid userId)
+        public async Task<HomePage> CreateHomePageDTOAsync(Guid userId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -29,24 +30,13 @@ namespace API.Services
                     UserExceptionMessages.InternalExceptionMessage,
                     $"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
 
-            var avatar = user.Avatar;
-            var projects = await context.Projects.Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
-                .Select(p => new SummaryProjectResponse
-                {
-                    ProjectId = p.Id,
-                    ProjectName = p.ProjectName,
-                    CountProjectUsers = p.ProjectUsers.Count(),
-                    ProjectImageUrl = p.Avatar,
-                    ProjectLeader = p.ProjectUsers
-                    .Where(pu => pu.ProjectRole == "ProjectOwner")
-                    .Select(pl => new ProjectLeaderResponse
-                    {
-                        ProjectLeaderId = pl.UserId,
-                        ProjectLeaderName = pl.User.FirstName + " " + pl.User.SecondName,
-                        ProjectLeaderImageUrl = pl.User.Avatar
-                    }).FirstOrDefault()
-                }).ToListAsync();
-            return new HomePage { SummaryProject = projects };
+            //var avatar = user.Avatar; 
+            var projects = await context.Projects
+                .Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
+                .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
+                .ToListAsync();
+            var summaryProjects = projects.Select(Mapper.ToSummaryProjectResponse).ToList();
+            return new HomePage { SummaryProject = summaryProjects };
         }
     }
 }
