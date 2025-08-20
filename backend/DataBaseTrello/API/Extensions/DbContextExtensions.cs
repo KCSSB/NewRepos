@@ -14,21 +14,21 @@ namespace API.Extensions
             HttpStatusCode statusCode)
         {
 
-       try
-    {
-     
+             try
+             {
                 return await context.SaveChangesAsync();
-                
-    }
-    catch (DbUpdateException ex)
-    {
+             }
+             catch (DbUpdateException ex)
+             {
 
-                throw new AppException(new ErrorContext(serviceName,
+                throw new AppException(new ErrorContext
+                    (serviceName,
                     operationName,
                     statusCode,
                     userMessage,
-                    loggerMessage), ex);
-    }
+                    loggerMessage), 
+                    ex);
+             }
         }
     }
 }

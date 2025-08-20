@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DataBaseInfo.Services;
-using Microsoft.EntityFrameworkCore;
-using DataBaseInfo;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using API.Helpers;
 using API.Configuration;
-using System.Data.Common;
 using API.DTO.Requests;
-using Microsoft.IdentityModel.Tokens;
-using API.Exceptions;
 using API.Exceptions.ErrorContext;
 using System.Net;
-using API.Extensions;
 using API.Constants;
 namespace API.Controllers
 {
@@ -50,17 +44,20 @@ namespace API.Controllers
                    UserExceptionMessages.IncorrectDataExceptionMessage,
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
-            //Возможны проблемы
+      
             Guid UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
-            //Возможны проблемы
+        
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
-            return Ok(new{ id = UserId }); //Возвращать URL
+
+            return Ok(new{ id = UserId }); //Возвращать Url
 
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Login);
+
             if (!ModelState.IsValid)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                    OperationName.Login,
@@ -79,6 +76,7 @@ namespace API.Controllers
             });
           
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Login);
+
             return Ok(new { accessToken = tokens.AccessToken });
             
         }
