@@ -86,7 +86,9 @@ namespace API.Controllers
         {
             //Валидация здесь
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.RefreshAccessToken);
-            var refreshToken = Request.Cookies["refreshToken"]; //Кастомная ошибка потери refreshToken
+
+            var refreshToken = Request.Cookies["refreshToken"]; 
+
             if (refreshToken == null)
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.RefreshAccessToken,
