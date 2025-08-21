@@ -26,8 +26,6 @@ const Form = ({ isRegister }) => {
           UserPassword: password,
         });
         alert("Регистрация завершена!");
-        // Можно сохранить токен, если он приходит в ответе
-        // localStorage.setItem("token", response.data.token)
       } else {
         const response = await api.post("/auth/login", {
           UserEmail: login,

@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
+import { decodeToken } from "../../../../service/api";
 import dontask_logo from "./dontask_logo.png";
 import home_logo from "./home_logo.png";
 import home_logo_active from "./home_logo_active.png";
@@ -7,13 +9,26 @@ import tasks_logo from "./tasks_logo.png";
 import tasks_logo_active from "./tasks_logo_active.png";
 import settings_logo from "./settings_logo.png";
 import settings_logo_active from "./settings_logo_active.png";
-import avatar from "./avatar.png";
+import default_avatar from "./avatar.png";
 
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
   const isActiveTasks = location.pathname === "/tasks";
   const isActiveSettings = location.pathname === "/settings";
+  const [userAvatar, setUserAvatar] = useState(default_avatar);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const payload = decodeToken(token);
+      console.log("Содержимое токена:", payload);
+      if (payload && payload.avatar) {
+        setUserAvatar(payload.avatar);
+      }
+    }
+  }, []);
+
   return (
     <div className="navbar-container">
       <div className="navbar-top-buttons">
@@ -62,13 +77,11 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
-        <Link to="/profile">
-          <div className="navbar-container-item profile">
-            <button className="navbar-button">
-              <img src={avatar} alt="AVATAR" />
-            </button>
-          </div>
-        </Link>
+
+        <div className="navbar-container-item profile">
+          {/* <img src={default_avatar} alt="AVATAR" /> */}
+          <img src={userAvatar} alt="AVATAR" />
+        </div>
       </div>
     </div>
   );
