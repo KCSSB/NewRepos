@@ -11,9 +11,9 @@ namespace API.Helpers
     {
         private readonly ImagekitClient _imagekitClient;
         private readonly ImageKitSettings _settings;
-        public ImageService(IOptions<ImageKitSettings> options)
+        public ImageService(IOptions<ImageKitSettings> settings)
         {
-            _settings = options.Value;
+            _settings = settings.Value;
             _imagekitClient = new ImagekitClient(publicKey: _settings.PublicKey,
                  privateKey: _settings.PrivateKey,
                  urlEndPoint: _settings.UrlEndpoint);

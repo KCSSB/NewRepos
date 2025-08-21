@@ -41,13 +41,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
 
-        var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>(); 
+        var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>();
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(authSettings.SecretKey))
         };
@@ -106,10 +107,21 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
-.AllowAnyHeader()
-.AllowAnyMethod()));
+//builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
+//.AllowAnyHeader()
+//.AllowAnyMethod()));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
 var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
@@ -159,10 +171,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseCors("MyPolicy");
 // Включение CORS
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("MyPolicy");
 app.UseExceptionHandling();
 app.MapControllers();
 

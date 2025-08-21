@@ -17,6 +17,7 @@ namespace API.Controllers
         [HttpGet("GetHomePage")]
         public async Task<IActionResult> GetHomePage()
         {
+
             Guid userId = User.GetUserId();
             var page = await _getPagesService.CreateHomePageDTOAsync(userId);
             return Ok(page);
