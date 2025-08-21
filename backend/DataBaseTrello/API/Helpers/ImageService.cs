@@ -23,11 +23,11 @@ namespace API.Helpers
             using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
             ms.Position = 0;
+
             using var image = await Image.LoadAsync<Rgba32>(ms);
 
             if (image.Height != height || image.Width != width)
             {
-
                 var bytes = await CropAndResizeAsync(image, height,width);
                 var changedFile = ConvertBytesToFormFile(bytes, file.FileName, file.ContentType);
                 return changedFile;
@@ -72,7 +72,7 @@ namespace API.Helpers
         public async Task<Result?> UploadImageAsync(IFormFile file, string path)
         {
             using var ms = new MemoryStream();
-            file.CopyTo(ms);
+            await file.CopyToAsync(ms);
             var fileBytes = ms.ToArray();
             var base64 = Convert.ToBase64String(fileBytes);
 
@@ -83,6 +83,7 @@ namespace API.Helpers
                 useUniqueFileName = true,
                 folder = $"{path}"
             };
+
             var result = await _imagekitClient.UploadAsync(request);
 
             return result;

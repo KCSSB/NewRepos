@@ -18,6 +18,7 @@ using System.Net;
 using API.Constants;
 using API.Extensions;
 using DataBaseInfo;
+using API.DTO.Responses;
 
 namespace API.Controllers
 {
@@ -30,12 +31,14 @@ namespace API.Controllers
         private readonly ProjectService _projectService;
         private readonly ImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
+        private readonly ResponseCreator _responseCreator;
         
-        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger)
+        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, ResponseCreator responseCreator)
         {
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
+            _responseCreator = responseCreator;
            
         }
 
@@ -46,24 +49,19 @@ namespace API.Controllers
             Guid userId = User.GetUserId();
 
             Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
-            
             Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+
             var url = DefaultImages.ProjectAvatar;
 
             if (projectRequest.image != null)
             {
-            var image = await _imageService.PrepareImageAsync(projectRequest.image,1280,720);
-            var result = await _imageService.UploadImageAsync(image, CloudPathes.ProjectImagesPath);
-            url = result.url;
+                var image = await _imageService.PrepareImageAsync(projectRequest.image, 1280, 720);
+                var result = await _imageService.UploadImageAsync(image, CloudPathes.ProjectImagesPath);
+                url = result.url;
             }
-            
                 await _projectService.UpdateProjectImageAsync(projectId, url);
-            return Ok(new
-            {
-                projectUserId = projectUserId,
-                projectId = projectId,
-                url = url
-            });
+            var response = await _responseCreator.CreateSummaryProjectResponseAsync(projectId);
+            return Ok(response);
         }
         [HttpGet("GetFullProject/{id}")]
         public async Task<IActionResult> GetFullProject(Guid id)

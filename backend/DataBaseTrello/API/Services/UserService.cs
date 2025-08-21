@@ -18,7 +18,6 @@ namespace DataBaseInfo.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-     
         private readonly ILogger<UserService> _logger;
         public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
         {
@@ -100,11 +99,11 @@ namespace DataBaseInfo.Services
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
                     if (result == PasswordVerificationResult.Success)
                     {
-                        var token = Guid.NewGuid().ToString();
+                        var refreshToken = Guid.NewGuid().ToString();
              
-                await _JWTService.CreateRefreshTokenAsync(user, token);
-          
-                return (_JWTService.GenerateAccessToken(user), token);
+                        await _JWTService.CreateRefreshTokenAsync(user, refreshToken);
+                        var accessToken = _JWTService.GenerateAccessToken(user);
+                        return (accessToken, refreshToken);
 
                     }
                     else
@@ -123,7 +122,9 @@ namespace DataBaseInfo.Services
             if (result.HttpStatusCode >= 200 && result.HttpStatusCode < 300)
             {
                 using var context = await _contextFactory.CreateDbContextAsync();
+
                 var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
                 if (user == null)
                     throw new AppException(new ErrorContext(ServiceName.UserService,
                  OperationName.UploadUserAvatarAsync,
