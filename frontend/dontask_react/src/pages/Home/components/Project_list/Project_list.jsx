@@ -15,7 +15,7 @@ export default function Project_list() {
     const fetchProjects = async () => {
       try {
         console.log("Начинаем отправку запроса к API..."); //
-        const data = await fetchWithAuth("api/getpages/GetHomePage");
+        const data = await fetchWithAuth("/getpages/GetHomePage");
         console.log("Данные получены:", data); //
         setProjects(data.summaryProject || []);
       } catch (err) {

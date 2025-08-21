@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Form.module.css";
-import api from "../../axiosInstance.js";
+import api from "../axiosInstance.js";
 import { useNavigate } from "react-router-dom";
 
 const handleLogin = async (login, password, navigate, setError) => {

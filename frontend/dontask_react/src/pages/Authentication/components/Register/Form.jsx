@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Form.module.css";
-import api from "../../axiosInstance.js";
+import api from "../axiosInstance.js";
 
 const Form = ({ isRegister }) => {
   const [login, setLogin] = useState("");
