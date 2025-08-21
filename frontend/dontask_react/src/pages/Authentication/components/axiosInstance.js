@@ -2,8 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api", 
-  
+  baseURL: "http://localhost:8080/api",
 });
 
 // Добавим интерцептор для добавления токена, если он есть

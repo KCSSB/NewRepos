@@ -1,9 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import dontask_logo from "./dontask_logo.png";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // временно, удаление токена
+    navigate("/auth/login");
+  };
+
   return (
     <div className="header-container">
       <div className="header-left">
@@ -11,7 +17,9 @@ export default function Header() {
         <h1>DONTASK</h1>
       </div>
       <div className="header-right">
-        <button className="text-button help">Помощь</button>
+        <button className="text-button help" onClick={handleLogout}>
+          Помощь
+        </button>
         <Link to="/auth/login">
           <button>Войти</button>
         </Link>

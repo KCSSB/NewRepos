@@ -26,7 +26,6 @@ builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration
 // Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
-builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("EmailServiceSettings"));
 // Регистрация фабрики контекста
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -41,7 +40,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
 
-        var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>();
+        var authSettings = builder.Configuration.GetSection("AuthSettings").Get<AuthSettings>(); 
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
@@ -110,7 +109,6 @@ builder.Services.AddSwaggerGen(c =>
 //builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
 //.AllowAnyHeader()
 //.AllowAnyMethod()));
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyPolicy",
@@ -122,6 +120,7 @@ builder.Services.AddCors(options =>
                    .AllowCredentials();
         });
 });
+
 var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine($"Connection string: {connectionString?.Replace("Password=", "Password=***")}");
@@ -172,7 +171,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("MyPolicy");
-// Включение CORS
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandling();

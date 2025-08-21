@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GetPagesController : ControllerBase
     {
         private readonly GetPagesService _getPagesService;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Form.module.css";
-import api from "../../axiosInstance.js";
+import api from "../axiosInstance.js";
 
 const Form = ({ isRegister }) => {
   const [login, setLogin] = useState("");
@@ -26,8 +26,6 @@ const Form = ({ isRegister }) => {
           UserPassword: password,
         });
         alert("Регистрация завершена!");
-        // Можно сохранить токен, если он приходит в ответе
-        // localStorage.setItem("token", response.data.token)
       } else {
         const response = await api.post("/auth/login", {
           UserEmail: login,
