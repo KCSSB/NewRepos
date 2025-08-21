@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(authSettings.SecretKey))
         };
@@ -105,9 +106,20 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
-.AllowAnyHeader()
-.AllowAnyMethod()));
+//builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
+//.AllowAnyHeader()
+//.AllowAnyMethod()));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
 
 var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -158,10 +170,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-// Включение CORS
+app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("MyPolicy");
 app.UseExceptionHandling();
 app.MapControllers();
 
