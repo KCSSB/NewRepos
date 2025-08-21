@@ -26,6 +26,7 @@ builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration
 // Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
+builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("EmailServiceSettings"));
 // Регистрация фабрики контекста
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
