@@ -23,8 +23,8 @@ export default function Navbar() {
     if (token) {
       const payload = decodeToken(token);
       console.log("Содержимое токена:", payload);
-      if (payload && payload.avatar) {
-        setUserAvatar(payload.avatar);
+      if (payload && payload.Avatar) {
+        setUserAvatar(payload.Avatar);
       }
     }
   }, []);
