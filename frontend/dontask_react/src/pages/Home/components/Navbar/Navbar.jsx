@@ -56,7 +56,7 @@ export default function Navbar() {
             >
               <img
                 src={isActiveTasks ? tasks_logo_active : tasks_logo}
-                alt="TASKS"
+                alt="TASK"
               />
             </button>
           </div>
