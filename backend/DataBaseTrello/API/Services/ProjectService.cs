@@ -27,8 +27,7 @@ namespace API.Services
         {
                 Project project = new Project
                 {
-                    ProjectName = projectName,
-                    Avatar = DefaultImages.ProjectAvatar
+                    ProjectName = projectName
                 };
 
                 using var context = await _contextFactory.CreateDbContextAsync();
@@ -107,6 +106,11 @@ namespace API.Services
                     UserExceptionMessages.InternalExceptionMessage,
                     $"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
+            await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
+                OperationName.UpdateProjectImageAsync,
+                $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд",
+                UserExceptionMessages.InternalExceptionMessage,
+                HttpStatusCode.InternalServerError);
 
         }
     }
