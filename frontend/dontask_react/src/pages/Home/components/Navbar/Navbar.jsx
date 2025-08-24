@@ -79,7 +79,6 @@ export default function Navbar() {
         </Link>
 
         <div className="navbar-container-item profile">
-          {/* <img src={default_avatar} alt="AVATAR" /> */}
           <img src={userAvatar} alt="AVATAR" />
         </div>
       </div>
