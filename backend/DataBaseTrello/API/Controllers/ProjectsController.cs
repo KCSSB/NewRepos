@@ -53,8 +53,9 @@ namespace API.Controllers
 
             var url = DefaultImages.ProjectAvatar;
 
-            if (projectRequest.image != null)
+            if (projectRequest.image!= null && projectRequest.image.Length!=0)
             {
+                _logger.LogInformation("Start Update ProjectImage");
                 var image = await _imageService.PrepareImageAsync(projectRequest.image, 1280, 720);
                 var result = await _imageService.UploadImageAsync(image, CloudPathes.ProjectImagesPath);
                 url = result.url;
