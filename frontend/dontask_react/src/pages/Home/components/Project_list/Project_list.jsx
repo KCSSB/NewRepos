@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Project_list.css";
-import people_logo from "./people_logo.png";
-import create_logo from "./create_temporary.png";
 import ProjectSkeleton from "./Project_list_skeleton";
 import { fetchWithAuth, postWithAuth } from "../../../../service/api";
-import { useNavigate } from "react-router-dom";
+import people_logo from "./people_logo.png";
+import create_logo from "./create_temporary.png";
+import load_logo from "./load_logo.png";
 
 export default function Project_list() {
   const [projects, setProjects] = useState([]);
@@ -14,7 +14,7 @@ export default function Project_list() {
   const [projectName, setProjectName] = useState("");
   const [projectImage, setProjectImage] = useState(null);
   const fileInputRef = useRef(null);
-  const navigate = useNavigate();
+  const [imageLoadName, setImageLoadName] = useState("");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -30,7 +30,6 @@ export default function Project_list() {
         setLoading(false);
       }
     };
-
     fetchProjects();
   }, []);
 
@@ -46,19 +45,21 @@ export default function Project_list() {
     const file = e.target.files[0];
     if (file) {
       setProjectImage(file);
+      setImageLoadName(file.name);
+    } else {
+      setImageLoadName("");
     }
   };
 
-  const handleCreateProject = async () => {
-    if (!projectName || !projectImage) {
-      alert("Пожалуйста, введите название проекта и загрузите обложку.");
-      return;
-    }
+  const handleCreateProject = async (e) => {
+    e.preventDefault();
 
     try {
       const formData = new FormData();
       formData.append("ProjectName", projectName);
-      formData.append("Image", projectImage);
+      if (projectImage) {
+        formData.append("Image", projectImage);
+      }
 
       const newProject = await postWithAuth(
         "/Projects/CreateProject",
@@ -75,6 +76,7 @@ export default function Project_list() {
       setIsCreating(false);
       setProjectName("");
       setProjectImage(null);
+      setImageLoadName("");
     } catch (err) {
       console.error(
         "Ошибка при создании проекта:",
@@ -110,11 +112,21 @@ export default function Project_list() {
         {projects.map((project) => (
           <button key={project.projectId} className="project-card">
             <div className="card-top">
-              <img
-                src={project.projectImageUrl}
-                alt="Project Logo"
-                className="project-logo"
-              />
+              {project.projectImageUrl ? (
+                <img
+                  src={project.projectImageUrl}
+                  alt="Project Logo"
+                  className="project-logo"
+                />
+              ) : (
+                <img
+                  src={
+                    "https://ik.imagekit.io/3vhw2fukp/UsersAvatars/ProjectAvatar.jpg"
+                  }
+                  alt="default_project_logo"
+                  className="project-logo"
+                />
+              )}
             </div>
             <div className="card-bottom">
               <div className="creator-info">
@@ -136,12 +148,20 @@ export default function Project_list() {
           </button>
         ))}
         {isCreating ? (
-          <div className="project-card create-project-card">
+          <form
+            className="project-card create-project-card"
+            onSubmit={handleCreateProject}
+          >
             <div className="card-top">
-              <button className="upload-button" onClick={handleUploadClick}>
-                Загрузить обложку проекта
+              <button
+                className="upload-button"
+                onClick={handleUploadClick}
+                type="button"
+              >
+                <img src={load_logo} alt="LOAD" className="load-logo" />
+                {imageLoadName || "Загрузить обложку проекта (необязательно)"}
               </button>
-              <button className="create-button" onClick={handleCreateProject}>
+              <button className="create-button" type="submit">
                 Создать
               </button>
               <input
@@ -149,7 +169,6 @@ export default function Project_list() {
                 ref={fileInputRef}
                 style={{ display: "none" }}
                 onChange={handleImageChange}
-                required
               />
             </div>
             <div className="card-bottom">
@@ -162,7 +181,7 @@ export default function Project_list() {
                 required
               />
             </div>
-          </div>
+          </form>
         ) : (
           <button
             className="project-card create-card"
