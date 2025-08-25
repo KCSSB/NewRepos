@@ -9,6 +9,7 @@ namespace API.DTO.Requests
         [AllowedExtensions(".jpeg",".png",".jpg")]
         [AllowedMIMEType("image/jpeg","image/png","image/jpg")]
         [MinImageResoultion(512,512)]
+        [MaxImageResoultion(2500, 2500)]
         public IFormFile File { get; set; }
     }
 }
