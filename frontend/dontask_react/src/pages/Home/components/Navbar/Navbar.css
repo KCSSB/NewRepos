@@ -88,10 +88,10 @@ html {
   border-radius: 50%;
 }
 
-.navbar-container-item.profile img {
+.avatar-image {
+  margin: 0;
   width: 80%;
   height: 80%;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0;
 }

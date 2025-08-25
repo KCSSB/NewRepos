@@ -156,14 +156,14 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
-  padding: 0 0 5rem 0;
+  padding: 0 0 5.5rem 0;
 }
 
 .load-logo {
   width: 3rem;
   height: auto;
   align-self: flex-start;
-  margin-top: 9rem;
+  margin-top: 8.5rem;
 }
 
 .upload-button:hover {

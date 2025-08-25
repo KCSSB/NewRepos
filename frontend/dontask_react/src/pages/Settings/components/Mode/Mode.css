@@ -1,0 +1,10 @@
+.mode-container {
+  height: 10%;
+  width: 20%;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  border-radius: 1.5rem;
+  background-color: white;
+}

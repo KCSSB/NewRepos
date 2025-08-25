@@ -9,6 +9,18 @@ const refreshAccessToken = async () => {
     throw new Error("Failed to refresh token. Please log in again.");
   }
 };
+// Для страницы настроек
+export const refreshAndSetToken = async () => {
+  try {
+    const newAccessToken = await refreshAccessToken();
+    localStorage.setItem("token", newAccessToken);
+    console.log("RefreshAndSetToken success");
+    return newAccessToken;
+  } catch (error) {
+    console.error("RefreshAndSetToken failed", error);
+    throw error;
+  }
+};
 // Функция для выполнения GET-запросов с токеном и обновления токена (RefreshToken в HttpOnly cookie)
 export const fetchWithAuth = async (url) => {
   let accessToken = localStorage.getItem("token");

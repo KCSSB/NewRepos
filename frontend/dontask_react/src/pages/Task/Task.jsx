@@ -1,4 +1,5 @@
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../Home/components/Navbar/Navbar.jsx";
+import "./Task.css";
 import "../../fonts/fonts.css";
 
 export default function Task() {
