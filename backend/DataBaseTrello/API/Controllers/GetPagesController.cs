@@ -3,6 +3,7 @@ using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg;
 
 namespace API.Controllers
 {
@@ -27,8 +28,9 @@ namespace API.Controllers
         [HttpGet("GetSettingsPage")]
         public async Task<IActionResult> GetSettingsPage()
         {
-
-            
+            Guid userId = User.GetUserId();
+            var page = await _getPagesService.CreateSettingsPageDTOAsync(userId);
+            return Ok(page);
         }
     }
 }
