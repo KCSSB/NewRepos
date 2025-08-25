@@ -47,14 +47,14 @@ namespace API.Controllers
                     $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
-            var file = await _imageService.PrepareImageAsync(request.File, 512, 512);
-            var result = await _imageService.UploadImageAsync(file, CloudPathes.UserAvatarPath);
+            //var file = await _imageService.PrepareImageAsync(request.File, 512, 512);
+            var result = await _imageService.UploadImageAsync(request.File, CloudPathes.UserAvatarPath);
             var url = await _userService.UpdateUserAvatarAsync(result, userId);
             return Ok(new
             {
                 Url = url
             });
-            
+        
         }
     }
 }
