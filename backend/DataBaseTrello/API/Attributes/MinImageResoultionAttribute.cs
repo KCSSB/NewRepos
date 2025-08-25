@@ -8,7 +8,7 @@ namespace API.Attributes
     {
         private readonly int _minHeight;
         private readonly int _minWidth;
-        public MinImageResoultionAttribute(int minHeight, int minWidth)
+        public MinImageResoultionAttribute(int minWidth, int minHeight)
         {
             _minHeight = minHeight;
             _minWidth = minWidth;
@@ -24,7 +24,7 @@ namespace API.Attributes
                 var image = Image.Identify(ms);
                 if(_minHeight >  image.Height || _minWidth > image.Width)
                 {
-                    return new ValidationResult($"Разрешение изображение меньше установленного минимального изображения: {_minHeight}x{_minWidth}");
+                    return new ValidationResult($"Разрешение изображение меньше установленного минимального изображения: {_minWidth}x{_minHeight}");
                 } 
             }
             return ValidationResult.Success;
