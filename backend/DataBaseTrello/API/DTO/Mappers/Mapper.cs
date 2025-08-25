@@ -15,12 +15,12 @@ namespace API.DTO.Mappers
                 ProjectImageUrl = project.Avatar,
                 ProjectLeader = project.ProjectUsers
                     .Where(pu => pu.ProjectRole == "ProjectOwner")
-                    .Select(pl => ToSummaryProjectResponse(pl))
+                    .Select(pl => ToProjectLeaderResponse(pl))
                     .FirstOrDefault()
 
             };
         }
-        public static ProjectLeaderResponse ToSummaryProjectResponse(ProjectUser projectLead)
+        public static ProjectLeaderResponse ToProjectLeaderResponse(ProjectUser projectLead)
         {
             return new ProjectLeaderResponse
             {

@@ -24,5 +24,11 @@ namespace API.Controllers
             var page = await _getPagesService.CreateHomePageDTOAsync(userId);
             return Ok(page);
         }
+        [HttpGet("GetSettingsPage")]
+        public async Task<IActionResult> GetSettingsPage()
+        {
+
+            
+        }
     }
 }
