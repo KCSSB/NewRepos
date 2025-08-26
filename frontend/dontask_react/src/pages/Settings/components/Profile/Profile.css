@@ -114,7 +114,6 @@
 .profile-input {
   background-color: #f1f1f1;
   width: 32rem;
-  padding: 0.75rem;
   border: none;
   border-radius: 1.5rem;
   color: #9c9c9c;
@@ -122,15 +121,15 @@
   font-weight: 700;
   font-style: Bold;
   font-size: 1.25rem;
-  line-height: 147%;
+  line-height: 150%;
   letter-spacing: 0%;
-  text-align: center;
+  padding: 1rem;
   vertical-align: middle;
 }
 
 .profile-input:focus {
   outline: none;
-  border-color: #202124;
+  background: #e0e0e0;
 }
 
 .info-label {
@@ -183,4 +182,35 @@
 .profile-button.inactive:hover {
   background-color: #dddddd;
   transition: background-color 0.2s ease;
+}
+
+.invite-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 32rem;
+  cursor: alias;
+}
+
+.button-light-style {
+  width: 3.8rem;
+  height: 3.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5rem;
+  background-color: #f1f1f1;
+  color: #9c9c9c;
+  cursor: pointer;
+  border: none;
+}
+
+.button-light-style:hover {
+  background-color: #dddddd;
+  transition: background-color 0.2s ease;
+}
+
+.button-light-style img {
+  width: 1.5rem;
+  height: 1.5rem;
 }

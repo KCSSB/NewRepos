@@ -19,4 +19,11 @@ html {
   flex-grow: 1;
   min-width: 0;
   align-items: flex-start;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  width: 100%;
 }

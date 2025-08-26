@@ -13,11 +13,15 @@ export default function Settings() {
     <div className="settings-container">
       <Navbar />
       <div className="settings-main-content">
-        {activeMode === "profile" ? (
-          <ProfileContainer />
-        ) : (
-          <PasswordContainer />
-        )}
+        <div className="content-wrapper">
+          {" "}
+          {/* Обертка для основного контента */}
+          {activeMode === "profile" ? (
+            <ProfileContainer />
+          ) : (
+            <PasswordContainer />
+          )}
+        </div>
         <Mode activeMode={activeMode} setActiveMode={setActiveMode} />
       </div>
     </div>

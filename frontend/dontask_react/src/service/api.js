@@ -9,7 +9,7 @@ const refreshAccessToken = async () => {
     throw new Error("Failed to refresh token. Please log in again.");
   }
 };
-// Для страницы настроек
+// Функция для обновления и установки токена (загрузка аватарки)
 export const refreshAndSetToken = async () => {
   try {
     const newAccessToken = await refreshAccessToken();
@@ -21,7 +21,7 @@ export const refreshAndSetToken = async () => {
     throw error;
   }
 };
-// Функция для выполнения GET-запросов с токеном и обновления токена (RefreshToken в HttpOnly cookie)
+// Функция для GET-запросов с токеном и обновления токена
 export const fetchWithAuth = async (url) => {
   let accessToken = localStorage.getItem("token");
 
@@ -60,7 +60,7 @@ export const fetchWithAuth = async (url) => {
   }
 };
 
-// Функция для выполнения POST-запросов с токеном и обновления токена
+// Функция для POST-запросов с токеном и обновления токена
 export const postWithAuth = async (url, data, config = {}) => {
   let accessToken = localStorage.getItem("token");
 
@@ -85,6 +85,48 @@ export const postWithAuth = async (url, data, config = {}) => {
         localStorage.setItem("token", newAccessToken);
 
         const newResponse = await api.post(url, data, {
+          ...config,
+          headers: {
+            ...config.headers,
+            Authorization: `Bearer ${newAccessToken}`,
+          },
+        });
+        return newResponse.data;
+      } catch (refreshError) {
+        throw new Error(
+          "Unauthorized: Invalid or expired token. Please log in again."
+        );
+      }
+    }
+    throw error;
+  }
+};
+
+// Функция для PATCH-запросов (обновление конкретных полей)
+export const patchWithAuth = async (url, data, config = {}) => {
+  let accessToken = localStorage.getItem("token");
+
+  if (!accessToken) {
+    throw new Error("Access Token not found. Please log in.");
+  }
+
+  try {
+    const response = await api.patch(url, data, {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data ? response.data : response;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      console.log("Token expired. Attempting to refresh...");
+      try {
+        const newAccessToken = await refreshAccessToken();
+        localStorage.setItem("token", newAccessToken);
+
+        const newResponse = await api.patch(url, data, {
           ...config,
           headers: {
             ...config.headers,
