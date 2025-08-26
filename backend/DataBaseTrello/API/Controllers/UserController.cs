@@ -9,9 +9,6 @@ using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers.ToDomainModel;
 using API.DTO.Mappers.ToResponseModel;
-using API.DTO.Responses;
-using API.DTO.Domain;
-using Org.BouncyCastle.Bcpg;
 namespace API.Controllers
 {
     [Authorize]
@@ -25,7 +22,6 @@ namespace API.Controllers
             {
          
             _userService = userService;
-       
             _imageService = imageService;
             }
         [HttpPatch("UpdateGeneralUserInfo")]
