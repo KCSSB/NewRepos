@@ -121,3 +121,40 @@ export const decodeToken = (token) => {
     return null;
   }
 };
+
+// Функция для кропа изображения до квадрата
+export const autoCropImageToSquare = (imageFile, callback) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(imageFile);
+  reader.onload = (event) => {
+    const img = new Image();
+    img.src = event.target.result;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let side = Math.min(img.width, img.height);
+      let dx = 0,
+        dy = 0;
+
+      if (img.width > img.height) {
+        dx = (img.width - img.height) / 2;
+      } else if (img.height > img.width) {
+        dy = (img.height - img.width) / 2;
+      }
+
+      canvas.width = side;
+      canvas.height = side;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(img, dx, dy, side, side, 0, 0, side, side);
+
+      canvas.toBlob(
+        (blob) => {
+          callback(blob);
+        },
+        "image/jpeg",
+        0.9
+      );
+    };
+  };
+};

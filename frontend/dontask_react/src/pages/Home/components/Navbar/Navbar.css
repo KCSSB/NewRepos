@@ -64,7 +64,7 @@ html {
 
 .navbar-button:hover {
   background-color: #cacaca;
-  border: none;
+  transition: background-color 0.2s ease;
 }
 
 .navbar-button.active {
@@ -73,6 +73,7 @@ html {
 
 .navbar-button.active:hover {
   background-color: #2d2e32;
+  transition: background-color 0.2s ease;
 }
 
 .navbar-container-item.profile {
