@@ -2,6 +2,9 @@
 using System.Net;
 
 using API.Constants;
+using API.DTO.Domain;
+using API.DTO.Mappers.ToResponseModel;
+using API.DTO.Responses;
 using API.Exceptions.ErrorContext;
 using API.Extensions;
 using API.Helpers;
@@ -10,6 +13,7 @@ using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
 
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 
 
 namespace DataBaseInfo.Services
@@ -151,7 +155,40 @@ namespace DataBaseInfo.Services
             $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
             }
         }
-        
+        public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, Guid userId)
+        {
+            var context = await _contextFactory.CreateDbContextAsync();
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+                throw new AppException(new ErrorContext(
+                    ServiceName.UserService,
+                    OperationName.UpdateUserAsync,
+                    HttpStatusCode.InternalServerError,
+                    UserExceptionMessages.InternalExceptionMessage,
+                    $"Ошибка при получении данных, user {userId} не найден"));
+            
+            if(!string.IsNullOrEmpty(model.FirstUserName))
+                user.FirstName = model.FirstUserName;
+            if (!string.IsNullOrEmpty(model.LastUserName))
+                user.SecondName = model.LastUserName;
+            if (model.Sex!=null)
+                user.Sex = (Sex)model.Sex;
+            await context.SaveChangesWithContextAsync(ServiceName.UserService,
+                    OperationName.UpdateUserAsync,
+                    $"Ошибка при получении данных, user {userId} не найден",
+                    UserExceptionMessages.InternalExceptionMessage,
+                    HttpStatusCode.InternalServerError);
+
+            var updatedUser = new UpdateUserModel
+            {
+                FirstUserName = user.FirstName,
+                LastUserName = user.SecondName,
+                Sex = user.Sex,
+            };
+            return updatedUser;
+
+        }
+
     } 
         
     

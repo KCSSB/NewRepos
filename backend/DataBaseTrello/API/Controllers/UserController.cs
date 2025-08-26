@@ -1,18 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Imagekit;
-using Imagekit.Sdk;
-using Microsoft.Extensions.Options;
-using API.Configuration;
 using API.Constants;
 using API.Exceptions.ErrorContext;
-using Microsoft.AspNetCore.Authentication;
 using System.Net;
 using API.Helpers;
-using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using API.DTO.Requests;
 using API.Extensions;
+using API.DTO.Mappers.ToDomainModel;
+using API.DTO.Mappers.ToResponseModel;
 namespace API.Controllers
 {
     [Authorize]
@@ -23,12 +19,20 @@ namespace API.Controllers
         private readonly UserService _userService;
         private readonly ImageService _imageService;
         public UserController(UserService userService, ImageService imageService)
-        {
+            {
          
             _userService = userService;
-       
             _imageService = imageService;
             }
+        [HttpPatch("UpdateGeneralUserInfo")]
+        public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
+        {
+            var userId = User.GetUserId();
+            var userInfoModel = ToDomainModelMapper.ToUpdateUserGeneralInfoModel(request);
+            var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
+            var response = ToResponseMapper.ToUpdateUserResponse(updatedUser);
+            return Ok(response);
+        } 
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
@@ -47,7 +51,7 @@ namespace API.Controllers
                     $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
-            //var file = await _imageService.PrepareImageAsync(request.File, 512, 512);
+      
             var result = await _imageService.UploadImageAsync(request.File, CloudPathes.UserAvatarPath);
             var url = await _userService.UpdateUserAvatarAsync(result, userId);
             return Ok(new
