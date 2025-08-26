@@ -31,6 +31,6 @@
         public const string UpdateProjectImageAsync = "UpdateProjectImageAsync";
       
         public const string CreateSummaryProjectResponseAsync = "CreateSummaryProjectResponseAsync";
-
+        public const string UpdateUserAsync = "UpdateUserAsync";
     }
 }

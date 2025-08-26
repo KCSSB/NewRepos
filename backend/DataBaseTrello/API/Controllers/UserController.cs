@@ -7,6 +7,11 @@ using API.Helpers;
 using DataBaseInfo.Services;
 using API.DTO.Requests;
 using API.Extensions;
+using API.DTO.Mappers.ToDomainModel;
+using API.DTO.Mappers.ToResponseModel;
+using API.DTO.Responses;
+using API.DTO.Domain;
+using Org.BouncyCastle.Bcpg;
 namespace API.Controllers
 {
     [Authorize]
@@ -23,10 +28,14 @@ namespace API.Controllers
        
             _imageService = imageService;
             }
-        [HttpPatch("UpdateGeneralInfo")]
-        public async Task<IActionResult> UpdateGeneralInfo()
+        [HttpPatch("UpdateGeneralUserInfo")]
+        public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
         {
-
+            var userId = User.GetUserId();
+            var userInfoModel = ToDomainModelMapper.ToUpdateUserGeneralInfoModel(request);
+            var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
+            var response = ToResponseMapper.ToUpdateUserResponse(updatedUser);
+            return Ok(response);
         } 
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)

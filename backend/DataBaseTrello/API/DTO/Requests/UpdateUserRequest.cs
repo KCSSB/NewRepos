@@ -4,7 +4,7 @@ using DataBaseInfo.models;
 
 namespace API.DTO.Requests
 {
-    public record class UpdateUserGeneralInfoRequest
+    public record class UpdateUserRequest
     {
         [MaxLength(AllowLengthProp.MaxFirstUserName, ErrorMessage = "Имя пользователя должно быть длиннее")]
         [MinLength(AllowLengthProp.MinFirstUserName, ErrorMessage = "Имя пользователя должно быть короче")]
