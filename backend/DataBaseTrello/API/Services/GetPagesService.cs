@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Constants;
 using API.Exceptions.ErrorContext;
 using System.Net;
-using API.DTO.Mappers;
+using API.DTO.Mappers.ToResponseModel;
 
 namespace API.Services
 {
@@ -36,7 +36,7 @@ namespace API.Services
                 .Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
                 .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
                 .ToListAsync();
-            var summaryProjects = projects.Select(Mapper.ToSummaryProjectResponse).ToList();
+            var summaryProjects = projects.Select(ToResponseMapper.ToSummaryProjectResponse).ToList();
             return new HomePage { SummaryProject = summaryProjects };
         }
         public async Task<SettingsPage> CreateSettingsPageDTOAsync(Guid userId)
@@ -53,7 +53,7 @@ namespace API.Services
                     $"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
 
 
-            var page = Mapper.ToSettingsPageResponse(user);
+            var page = ToResponseMapper.ToSettingsPageResponse(user);
             return page;
         }
     }

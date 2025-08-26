@@ -1,12 +1,10 @@
-﻿using API.DTO.Mappers;
-using API.DTO.Responses;
+﻿using API.DTO.Responses;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
-using API.Exceptions;
 using API.Exceptions.ErrorContext;
 using API.Constants;
 using System.Net;
+using API.DTO.Mappers.ToResponseModel;
 
 namespace API.Helpers
 {
@@ -29,7 +27,7 @@ namespace API.Helpers
                     UserExceptionMessages.InternalExceptionMessage,
                     $"Ошибка во время маппинга project {projectId} в SummaryProjectResponse"
                     ));
-            var summaryProject = Mapper.ToSummaryProjectResponse(project);
+            var summaryProject = ToResponseMapper.ToSummaryProjectResponse(project);
             return summaryProject;
         }
     }

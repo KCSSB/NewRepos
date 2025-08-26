@@ -1,10 +1,11 @@
-﻿using API.DTO.Responses;
+﻿using API.DTO.Domain;
+using API.DTO.Responses;
 using API.DTO.Responses.Pages;
 using DataBaseInfo.models;
 
-namespace API.DTO.Mappers
+namespace API.DTO.Mappers.ToResponseModel
 {
-    public static class Mapper
+    public static class ToResponseMapper
     {
         public static SummaryProjectResponse ToSummaryProjectResponse(Project project)
         {
@@ -40,6 +41,15 @@ namespace API.DTO.Mappers
                 Sex = user.Sex,
                 InviteId = user.InviteId,
                 UserAvatarUrl = user.Avatar,
+            };
+        }
+        public static UpdateUserResponse ToUpdateUserResponse(UpdateUserModel updateUser)
+        {
+            return new UpdateUserResponse
+            {
+                FirstUserName = updateUser.FirstUserName,
+                LastUserName = updateUser.LastUserName,
+                Sex = updateUser.Sex
             };
         }
     }
