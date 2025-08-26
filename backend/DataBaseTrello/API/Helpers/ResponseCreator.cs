@@ -2,8 +2,6 @@
 using API.DTO.Responses;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore;
-using API.Exceptions;
 using API.Exceptions.ErrorContext;
 using API.Constants;
 using System.Net;
