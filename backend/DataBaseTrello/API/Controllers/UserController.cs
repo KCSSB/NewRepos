@@ -9,6 +9,7 @@ using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers.ToDomainModel;
 using API.DTO.Mappers.ToResponseModel;
+using NuGet.DependencyResolver;
 namespace API.Controllers
 {
     [Authorize]

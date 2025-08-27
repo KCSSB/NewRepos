@@ -159,6 +159,7 @@ namespace DataBaseInfo.Services
         {
             var context = await _contextFactory.CreateDbContextAsync();
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
             if (user == null)
                 throw new AppException(new ErrorContext(
                     ServiceName.UserService,
@@ -173,9 +174,10 @@ namespace DataBaseInfo.Services
                 user.SecondName = model.LastUserName;
             if (model.Sex!=null)
                 user.Sex = (Sex)model.Sex;
+
             await context.SaveChangesWithContextAsync(ServiceName.UserService,
                     OperationName.UpdateUserAsync,
-                    $"Ошибка при получении данных, user {userId} не найден",
+                    $"Ошибка при обновлении данных о пользователе: {userId}",
                     UserExceptionMessages.InternalExceptionMessage,
                     HttpStatusCode.InternalServerError);
 
@@ -186,6 +188,43 @@ namespace DataBaseInfo.Services
                 Sex = user.Sex,
             };
             return updatedUser;
+
+        }
+        public async Task ChangePasswordAsync(string oldPass, string newPass, Guid userId)
+        {
+            var context = await _contextFactory.CreateDbContextAsync();
+
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+                throw new AppException(new ErrorContext(
+                    ServiceName.UserService,
+                    OperationName.ChangePasswordAsync,
+                    HttpStatusCode.InternalServerError,
+                    UserExceptionMessages.InternalExceptionMessage,
+                    $"Ошибка при получении данных, user {userId} не найден"));
+            var passHasher = new PasswordHasher<User>();
+            var result = passHasher.VerifyHashedPassword(user, user.UserPassword,oldPass);
+            if(result == PasswordVerificationResult.Success)
+            {
+                var newPassHash = passHasher.HashPassword(user, newPass);
+                user.UserPassword = newPassHash;
+                await context.SaveChangesWithContextAsync(ServiceName.UserService,
+                   OperationName.ChangePasswordAsync,
+                   $"Ошибка при обновлении пароля в базе данных: {userId}",
+                   UserExceptionMessages.InternalExceptionMessage,
+                   HttpStatusCode.InternalServerError);
+               
+            }
+            else
+            {
+
+                throw new AppException(new ErrorContext(
+                    ServiceName.UserService,
+                    OperationName.ChangePasswordAsync,
+                    HttpStatusCode.BadRequest,
+                    UserExceptionMessages.IncorrectDataExceptionMessage,
+                    $"Изменение не удалось, неверный старый пароль userId{userId}"));
+            }
 
         }
 

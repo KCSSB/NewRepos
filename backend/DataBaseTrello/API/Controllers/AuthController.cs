@@ -19,9 +19,6 @@ namespace API.Controllers
         private readonly IOptions<AuthSettings> _options;
         private readonly ILogger<AuthController> _logger;
         
-      
-
-       
         public AuthController(UserService userService, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
         {
             _userService = userService;
@@ -45,11 +42,11 @@ namespace API.Controllers
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
       
-            Guid UserId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            Guid userId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
         
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
 
-            return Ok(new{ id = UserId }); //Возвращать Url
+            return Ok(new{ id = userId }); //Возвращать Url
 
         }
 
