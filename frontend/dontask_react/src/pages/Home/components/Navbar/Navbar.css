@@ -64,7 +64,7 @@ html {
 
 .navbar-button:hover {
   background-color: #cacaca;
-  border: none;
+  transition: background-color 0.2s ease;
 }
 
 .navbar-button.active {
@@ -73,6 +73,7 @@ html {
 
 .navbar-button.active:hover {
   background-color: #2d2e32;
+  transition: background-color 0.2s ease;
 }
 
 .navbar-container-item.profile {
@@ -88,10 +89,10 @@ html {
   border-radius: 50%;
 }
 
-.navbar-container-item.profile img {
+.avatar-image {
+  margin: 0;
   width: 80%;
   height: 80%;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0;
 }

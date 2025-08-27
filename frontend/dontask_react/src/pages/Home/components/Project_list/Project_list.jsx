@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Project_list.css";
 import ProjectSkeleton from "./Project_list_skeleton";
-import { fetchWithAuth, postWithAuth } from "../../../../service/api";
+import {
+  fetchWithAuth,
+  postWithAuth,
+  decodeToken,
+} from "../../../../service/api";
 import people_logo from "./people_logo.png";
 import create_logo from "./create_temporary.png";
 import load_logo from "./load_logo.png";
+import default_avatar from "../Navbar/avatar.png";
 
 export default function Project_list() {
   const [projects, setProjects] = useState([]);
@@ -15,10 +20,19 @@ export default function Project_list() {
   const [projectImage, setProjectImage] = useState(null);
   const fileInputRef = useRef(null);
   const [imageLoadName, setImageLoadName] = useState("");
+  const [leaderAvatar, setLeaderAvatar] = useState(default_avatar);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchProjectsAndAvatar = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const payload = decodeToken(token);
+          if (payload && payload.Avatar) {
+            setLeaderAvatar(payload.Avatar);
+          }
+        }
+
         console.log("Начинаем отправку запроса к API...");
         const data = await fetchWithAuth("/getpages/GetHomePage");
         console.log("Данные получены:", data);
@@ -30,7 +44,7 @@ export default function Project_list() {
         setLoading(false);
       }
     };
-    fetchProjects();
+    fetchProjectsAndAvatar();
   }, []);
 
   const handleCreateProjectClick = () => {

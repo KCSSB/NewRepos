@@ -14,19 +14,38 @@ import default_avatar from "./avatar.png";
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
-  const isActiveTasks = location.pathname === "/tasks";
+  const isActiveTasks = location.pathname === "/task";
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
 
-  useEffect(() => {
+  const updateAvatarFromToken = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const payload = decodeToken(token);
       console.log("Содержимое токена:", payload);
       if (payload && payload.Avatar) {
         setUserAvatar(payload.Avatar);
+      } else {
+        setUserAvatar(default_avatar);
       }
+    } else {
+      setUserAvatar(default_avatar);
     }
+  };
+
+  useEffect(() => {
+    updateAvatarFromToken();
+
+    const handleTokenChange = () => {
+      console.log("Событие 'tokenUpdated' получено. Обновляем аватар.");
+      updateAvatarFromToken();
+    };
+
+    window.addEventListener("tokenUpdated", handleTokenChange);
+
+    return () => {
+      window.removeEventListener("tokenUpdated", handleTokenChange);
+    };
   }, []);
 
   return (
@@ -77,9 +96,8 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
-
         <div className="navbar-container-item profile">
-          <img src={userAvatar} alt="AVATAR" />
+          <img src={userAvatar} alt="AVATAR" className="avatar-image" />
         </div>
       </div>
     </div>

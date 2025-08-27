@@ -5,7 +5,7 @@ html {
   height: 100%;
 }
 
-.task-container {
+.settings-container {
   display: flex;
   width: 100vw;
   min-height: 100vh;
@@ -13,9 +13,17 @@ html {
   box-sizing: border-box;
 }
 
-.task-main-content {
+.settings-main-content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.content-wrapper {
+  flex-grow: 1;
+  width: 100%;
 }
