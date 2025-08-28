@@ -9,6 +9,7 @@ using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers.ToDomainModel;
 using API.DTO.Mappers.ToResponseModel;
+using NuGet.DependencyResolver;
 namespace API.Controllers
 {
     [Authorize]
@@ -59,6 +60,13 @@ namespace API.Controllers
                 Url = url
             });
         
+        }
+        [HttpPatch("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var userId = User.GetUserId();
+            await _userService.ChangePasswordAsync(request.OldPassword, request.NewPassword, userId);
+            return Ok("Пароль успешно изменён");
         }
     }
 }

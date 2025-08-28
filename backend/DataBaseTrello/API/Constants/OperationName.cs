@@ -32,5 +32,6 @@
       
         public const string CreateSummaryProjectResponseAsync = "CreateSummaryProjectResponseAsync";
         public const string UpdateUserAsync = "UpdateUserAsync";
+        public const string ChangePasswordAsync = "ChangePasswordAsync";
     }
 }
