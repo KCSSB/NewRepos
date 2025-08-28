@@ -6,16 +6,18 @@ import {
   postWithAuth,
   decodeToken,
 } from "../../../../service/api";
+import { useToast } from "../../../../components/Toast/ToastContext";
 import people_logo from "./people_logo.png";
 import create_logo from "./create_temporary.png";
 import load_logo from "./load_logo.png";
 import default_avatar from "../Navbar/avatar.png";
 
 export default function Project_list() {
+  const showToast = useToast();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectImage, setProjectImage] = useState(null);
   const fileInputRef = useRef(null);
@@ -39,13 +41,16 @@ export default function Project_list() {
         setProjects(data.summaryProject || []);
       } catch (err) {
         console.error("Ошибка при получении проектов:", err);
-        setError(err.message);
+        showToast(
+          "Не удалось загрузить проекты. Пожалуйста, попробуйте снова.",
+          "error"
+        );
       } finally {
         setLoading(false);
       }
     };
     fetchProjectsAndAvatar();
-  }, []);
+  }, [showToast]);
 
   const handleCreateProjectClick = () => {
     setIsCreating(true);
@@ -67,6 +72,12 @@ export default function Project_list() {
 
   const handleCreateProject = async (e) => {
     e.preventDefault();
+
+    if (!projectName.trim()) {
+      showToast("Название проекта не может быть пустым.", "error");
+      return;
+    }
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -91,12 +102,16 @@ export default function Project_list() {
       setProjectName("");
       setProjectImage(null);
       setImageLoadName("");
+
+      showToast("Проект успешно создан!", "success");
     } catch (err) {
       console.error(
         "Ошибка при создании проекта:",
         err.response || err.message
       );
-      alert("Ошибка при создании проекта. Попробуйте снова.");
+      showToast("Ошибка при создании проекта. Попробуйте снова.", "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -108,14 +123,6 @@ export default function Project_list() {
             <ProjectSkeleton key={index} />
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="project-list-container">
-        <div style={{ color: "red" }}>Ошибка: {error}</div>
       </div>
     );
   }
@@ -171,12 +178,17 @@ export default function Project_list() {
                 className="upload-button"
                 onClick={handleUploadClick}
                 type="button"
+                disabled={isSubmitting}
               >
                 <img src={load_logo} alt="LOAD" className="load-logo" />
                 {imageLoadName || "Загрузить обложку проекта (необязательно)"}
               </button>
-              <button className="create-button" type="submit">
-                Создать
+              <button
+                className="create-button"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Создание..." : "Создать"}
               </button>
               <input
                 type="file"
@@ -193,6 +205,7 @@ export default function Project_list() {
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 required
+                disabled={isSubmitting}
               />
             </div>
           </form>

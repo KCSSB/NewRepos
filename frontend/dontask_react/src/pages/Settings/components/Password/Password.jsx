@@ -1,62 +1,108 @@
 import React, { useState, useEffect } from "react";
-import { fetchWithAuth } from "../../../../service/api";
+import { fetchWithAuth, patchWithAuth } from "../../../../service/api";
+import { useToast } from "../../../../components/Toast/ToastContext";
 import "./Password.css";
 import "../Profile/Profile.css";
 import resetPassword_logo from "./resetPassword_logo.png";
+import hide_logo from "./hide_logo.png";
+import show_logo from "./show_logo.png";
 
 export default function Password() {
+  const showToast = useToast();
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [repeatNewPassword, setRepeatNewPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatNewPassword, setShowRepeatNewPassword] = useState(false);
 
   const fetchUserEmail = async () => {
     try {
       setLoading(true);
       const data = await fetchWithAuth("/GetPages/GetSettingsPage");
       setUserEmail(data.userEmail || "");
-      setLoading(false);
     } catch (err) {
       console.error("Ошибка при получении данных:", err);
-      setError("Не удалось загрузить данные. Пожалуйста, попробуйте снова.");
+      showToast(
+        "Не удалось загрузить данные. Пожалуйста, попробуйте снова.",
+        "error"
+      );
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUserEmail();
-  }, []);
+  }, [showToast]);
 
   const handleToggleForm = () => {
     setShowForm(!showForm);
+    setOldPassword("");
+    setNewPassword("");
+    setRepeatNewPassword("");
   };
 
-  if (loading) {
-    return <div className="password-container">Загрузка...</div>;
-  }
+  const handleChangePassword = async (event) => {
+    event.preventDefault();
 
-  if (error) {
-    return (
-      <div className="password-container" style={{ color: "red" }}>
-        Ошибка: {error}
-      </div>
-    );
-  }
+    if (!oldPassword || !newPassword || !repeatNewPassword) {
+      showToast("Все поля обязательны для заполнения.", "error");
+      return;
+    }
+
+    if (newPassword !== repeatNewPassword) {
+      showToast("Пароли не совпадают.", "error");
+      return;
+    }
+
+    if (newPassword === oldPassword) {
+      showToast("Новый пароль не может совпадать со старым.", "info");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      };
+      await patchWithAuth("/User/ChangePassword", payload);
+      showToast("Пароль успешно изменен!", "success");
+      handleToggleForm();
+    } catch (err) {
+      console.error("Ошибка при смене пароля:", err);
+      showToast(
+        "Не удалось изменить пароль. Проверьте текущий пароль и попробуйте снова.",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="password-container">
-      <div className="input-group">
+      <div className="input-group floating-label-group">
         <input
           type="text"
-          className="profile-input"
+          className="profile-input read-only-input"
           value={userEmail}
           readOnly
         />
-        <span className="info-label">Почта</span>
+        <label className="floating-label">Почта</label>
       </div>
-      <div className="input-group">
-        <input type="text" className="profile-input" readOnly />
-        <span className="info-label">Пароль</span>
+      <div className="input-group floating-label-group">
+        <input
+          type="password"
+          className="profile-input read-only-input"
+          value="********"
+          readOnly
+        />
+        <label className="floating-label">Пароль</label>
       </div>
       <div className="action-buttons-group">
         <button className="profile-button" onClick={handleToggleForm}>
@@ -64,31 +110,76 @@ export default function Password() {
         </button>
       </div>
       {showForm && (
-        <form className="password-form-container">
-          <div className="input-group">
+        <form
+          className="password-form-container"
+          onSubmit={handleChangePassword}
+        >
+          <div className="input-group floating-label-group password-input-group">
             <input
-              type="password"
+              type={showOldPassword ? "text" : "password"}
               className="profile-input"
-              placeholder="Текущий пароль"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
             />
+            <label className="floating-label">Текущий пароль</label>
+            <button
+              type="button"
+              className="toggle-password-button"
+              onClick={() => setShowOldPassword(!showOldPassword)}
+            >
+              <img
+                src={showOldPassword ? hide_logo : show_logo}
+                alt="Показать/Скрыть"
+              />
+            </button>
           </div>
-          <div className="input-group">
+
+          <div className="input-group floating-label-group password-input-group">
             <input
-              type="password"
+              type={showNewPassword ? "text" : "password"}
               className="profile-input"
-              placeholder="Новый пароль"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
             />
+            <label className="floating-label">Новый пароль</label>
+            <button
+              type="button"
+              className="toggle-password-button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+              <img
+                src={showNewPassword ? hide_logo : show_logo}
+                alt="Показать/Скрыть"
+              />
+            </button>
           </div>
-          <div className="input-group">
+
+          <div className="input-group floating-label-group password-input-group">
             <input
-              type="password"
+              type={showRepeatNewPassword ? "text" : "password"}
               className="profile-input"
-              placeholder="Повторите новый пароль"
+              value={repeatNewPassword}
+              onChange={(e) => setRepeatNewPassword(e.target.value)}
+              required
             />
+            <label className="floating-label">Повторите новый пароль</label>
+            <button
+              type="button"
+              className="toggle-password-button"
+              onClick={() => setShowRepeatNewPassword(!showRepeatNewPassword)}
+            >
+              <img
+                src={showRepeatNewPassword ? hide_logo : show_logo}
+                alt="Показать/Скрыть"
+              />
+            </button>
           </div>
+
           <div className="action-buttons-group">
-            <button type="submit" className="profile-button">
-              Принять
+            <button type="submit" className="profile-button" disabled={loading}>
+              {loading ? "Загрузка..." : "Принять"}
             </button>
           </div>
         </form>
