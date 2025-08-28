@@ -6,12 +6,16 @@ import {
   autoCropImageToSquare,
   postWithAuth,
 } from "../../../../service/api";
+import { useNavigate } from "react-router-dom"; // 👈 Added import
 import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
 import copy_inviteId_logo from "./copy_inviteId_logo.png";
+import { useToast } from "../../../../components/Toast/ToastContext";
 
 export default function Profile() {
+  const showToast = useToast();
+  const navigate = useNavigate(); // 👈 Initialized hook
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userAvatar, setUserAvatar] = useState(default_avatar);
@@ -55,6 +59,10 @@ export default function Profile() {
       setLoading(false);
     } catch (err) {
       console.error("Ошибка при получении данных настроек:", err);
+      showToast(
+        "Не удалось загрузить данные. Пожалуйста, попробуйте снова.",
+        "error"
+      );
       setError("Не удалось загрузить данные. Пожалуйста, попробуйте снова.");
       setLoading(false);
     }
@@ -62,7 +70,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchSettingsPageData();
-  }, []);
+  }, [showToast]);
 
   const handleLoadClick = () => {
     fileInputRef.current.click();
@@ -88,11 +96,12 @@ export default function Profile() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+    showToast("Выбор изображения отменен.", "info");
   };
 
   const handleUpload = async () => {
     if (!croppedFile) {
-      setError("Пожалуйста, сначала выберите файл.");
+      showToast("Пожалуйста, сначала выберите файл.", "error");
       return;
     }
     setLoading(true);
@@ -113,14 +122,38 @@ export default function Profile() {
       await fetchSettingsPageData();
       setSelectedFile(null);
       setCroppedFile(null);
+      showToast("Аватар успешно загружен!", "success");
     } catch (err) {
       console.error("Ошибка при загрузке аватара:", err);
+      showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
       setError("Не удалось загрузить аватар. Попробуйте снова.");
       setLoading(false);
     }
   };
 
   const handleSaveChanges = async () => {
+    if (initialData) {
+      let currentSexValue;
+      if (gender === "unknown") {
+        currentSexValue = 0;
+      } else if (gender === "male") {
+        currentSexValue = 1;
+      } else if (gender === "female") {
+        currentSexValue = 2;
+      }
+
+      const isFirstNameChanged =
+        firstName !== (initialData.firstUserName || "");
+      const isSecondNameChanged =
+        secondName !== (initialData.lastUserName || "");
+      const isGenderChanged = currentSexValue !== initialData.sex;
+
+      if (!isFirstNameChanged && !isSecondNameChanged && !isGenderChanged) {
+        showToast("Вы не внесли никаких изменений.", "info");
+        return;
+      }
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -142,8 +175,10 @@ export default function Profile() {
       await patchWithAuth("/User/UpdateGeneralUserInfo", payload);
       setInitialData(payload);
       await fetchSettingsPageData();
+      showToast("Изменения успешно сохранены!", "success");
     } catch (err) {
       console.error("Ошибка при сохранении изменений:", err);
+      showToast("Не удалось сохранить изменения. Попробуйте снова.", "error");
       setError("Не удалось сохранить изменения. Попробуйте снова.");
     } finally {
       setLoading(false);
@@ -152,6 +187,7 @@ export default function Profile() {
 
   const handleCopyInviteId = () => {
     navigator.clipboard.writeText(inviteId);
+    showToast("ID скопирован в буфер обмена!", "success");
   };
 
   const handleResetChanges = () => {
@@ -170,7 +206,13 @@ export default function Profile() {
       setGender(initialGender);
 
       setError(null);
+      showToast("Изменения отменены.", "info");
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth/register");
   };
 
   if (error) {
@@ -206,28 +248,28 @@ export default function Profile() {
             {loading ? "Загрузка..." : "Загрузить"}
           </button>
           <button className="profile-button delete" onClick={handleDeleteClick}>
-            Удалить
+            Отменить
           </button>
         </div>
       </div>
       <div className="profile-info-group">
-        <div className="input-group">
+        <div className="input-group floating-label-group">
           <input
             type="text"
             className="profile-input"
             value={secondName}
             onChange={(e) => setSecondName(e.target.value)}
           />
-          <span className="info-label">Фамилия</span>
+          <label className="floating-label">Фамилия</label>
         </div>
-        <div className="input-group">
+        <div className="input-group floating-label-group">
           <input
             type="text"
             className="profile-input"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
-          <span className="info-label">Имя</span>
+          <label className="floating-label">Имя</label>
         </div>
         <div className="profile-actions-row">
           <div className="action-buttons-group">
@@ -264,19 +306,17 @@ export default function Profile() {
           </div>
           <span className="info-label">Пол</span>
         </div>
-        <div className="input-group">
-          <div className="invite-group">
-            <input
-              type="text"
-              className="profile-input"
-              value={inviteId}
-              readOnly
-            />
-            <button className="button-light-style" onClick={handleCopyInviteId}>
-              <img src={copy_inviteId_logo} alt="COPY" />
-            </button>
-          </div>
-          <span className="info-label">ID</span>
+        <div className="input-group floating-label-group invite-input-group">
+          <input
+            type="text"
+            className="profile-input read-only-input"
+            value={inviteId}
+            readOnly
+          />
+          <label className="floating-label">ID</label>
+          <button className="button-light-style" onClick={handleCopyInviteId}>
+            <img src={copy_inviteId_logo} alt="COPY" />
+          </button>
         </div>
         <div className="action-buttons-group">
           <button className="profile-button" onClick={handleSaveChanges}>
@@ -284,6 +324,9 @@ export default function Profile() {
           </button>
           <button className="profile-button" onClick={handleResetChanges}>
             Сбросить
+          </button>
+          <button className="profile-button delete" onClick={handleLogout}>
+            Выйти
           </button>
         </div>
       </div>
