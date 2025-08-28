@@ -188,7 +188,7 @@ namespace DataBaseInfo.Services
                 Sex = user.Sex,
             };
             return updatedUser;
-
+                                                                
         }
         public async Task ChangePasswordAsync(string oldPass, string newPass, Guid userId)
         {

@@ -61,5 +61,12 @@ namespace API.Controllers
             });
         
         }
+        [HttpPatch("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var userId = User.GetUserId();
+            await _userService.ChangePasswordAsync(request.OldPassword, request.NewPassword, userId);
+            return Ok("Пароль успешно изменён");
+        }
     }
 }
