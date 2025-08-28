@@ -21,14 +21,14 @@ namespace API.Controllers
         public async Task<IActionResult> GetHomePage()
         {
 
-            Guid userId = User.GetUserId();
+            int userId = User.GetUserId();
             var page = await _getPagesService.CreateHomePageDTOAsync(userId);
             return Ok(page);
         }
         [HttpGet("GetSettingsPage")]
         public async Task<IActionResult> GetSettingsPage()
         {
-            Guid userId = User.GetUserId();
+            int userId = User.GetUserId();
             var page = await _getPagesService.CreateSettingsPageDTOAsync(userId);
             return Ok(page);
         }

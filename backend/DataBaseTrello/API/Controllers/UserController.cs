@@ -37,7 +37,7 @@ namespace API.Controllers
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
-            Guid userId = User.GetUserId();
+            int userId = User.GetUserId();
             if (!ModelState.IsValid)
             {
                 var errorMessages = string.Join(Environment.NewLine, ModelState.Values

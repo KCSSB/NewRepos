@@ -11,11 +11,11 @@ namespace DataBaseInfo.models
     public class MemberOfBoard
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string BoardRole { get; set; } = string.Empty;
-        public Guid ProjectUserId { get; set; }
+        public int ProjectUserId { get; set; }
         public virtual ProjectUser? ProjectUser { get; set; }
-        public Guid BoardId { get; set; }
+        public int BoardId { get; set; }
         public virtual Board? Board { get; set; }
      
     }

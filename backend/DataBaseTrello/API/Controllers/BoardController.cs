@@ -20,9 +20,9 @@ namespace API.Controllers
         [HttpPost("CreateBoard")]
         public async Task<IActionResult> CreateBoard([FromBody] CreateBoardRequest createBoardRequest)
         {
-            Guid boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
+            int boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
 
-            List<Guid> membersOfBoardId = await _boardService.AddProjectUsersInBoardAsync(boardId, createBoardRequest.BoardLeadId, createBoardRequest.BoardMembers);
+            List<int> membersOfBoardId = await _boardService.AddProjectUsersInBoardAsync(boardId, createBoardRequest.BoardLeadId, createBoardRequest.BoardMembers);
 
            return Ok(new
             {

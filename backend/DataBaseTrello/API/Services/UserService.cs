@@ -29,7 +29,7 @@ namespace DataBaseInfo.Services
             _JWTService = JWTService;
             _logger = logger;
         }
-        public async Task<Guid> RegisterAsync(string userEmail, string password)
+        public async Task<int> RegisterAsync(string userEmail, string password)
         {
 
             using var context = _contextFactory.CreateDbContext();
@@ -121,7 +121,7 @@ namespace DataBaseInfo.Services
             
         }
 
-        public async Task<string> UpdateUserAvatarAsync(Result? result, Guid userId)
+        public async Task<string> UpdateUserAvatarAsync(Result? result, int userId)
         {
             if (result.HttpStatusCode >= 200 && result.HttpStatusCode < 300)
             {
@@ -155,7 +155,7 @@ namespace DataBaseInfo.Services
             $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
             }
         }
-        public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, Guid userId)
+        public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, int userId)
         {
             var context = await _contextFactory.CreateDbContextAsync();
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -190,7 +190,7 @@ namespace DataBaseInfo.Services
             return updatedUser;
                                                                 
         }
-        public async Task ChangePasswordAsync(string oldPass, string newPass, Guid userId)
+        public async Task ChangePasswordAsync(string oldPass, string newPass, int userId)
         {
             var context = await _contextFactory.CreateDbContextAsync();
 
