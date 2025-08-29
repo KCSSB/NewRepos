@@ -9,6 +9,7 @@ const refreshAccessToken = async () => {
     throw new Error("Failed to refresh token. Please log in again.");
   }
 };
+
 // Функция для обновления и установки токена (загрузка аватарки)
 export const refreshAndSetToken = async () => {
   try {
@@ -21,11 +22,13 @@ export const refreshAndSetToken = async () => {
     throw error;
   }
 };
+
 // Функция для GET-запросов с токеном и обновления токена
 export const fetchWithAuth = async (url) => {
   let accessToken = localStorage.getItem("token");
 
   if (!accessToken) {
+    window.location.href = "/auth/login";
     throw new Error("Access Token not found. Please log in.");
   }
 
@@ -38,12 +41,9 @@ export const fetchWithAuth = async (url) => {
     return response.data;
   } catch (error) {
     if (error.response?.status === 401) {
-      console.log("Token expired. Attempting to refresh...");
-
       try {
         const newAccessToken = await refreshAccessToken();
         localStorage.setItem("token", newAccessToken);
-
         const newResponse = await api.get(url, {
           headers: {
             Authorization: `Bearer ${newAccessToken}`,
@@ -51,6 +51,7 @@ export const fetchWithAuth = async (url) => {
         });
         return newResponse.data;
       } catch (refreshError) {
+        window.location.href = "/auth/login";
         throw new Error(
           "Unauthorized: Invalid or expired token. Please log in again."
         );
@@ -59,6 +60,44 @@ export const fetchWithAuth = async (url) => {
     throw error;
   }
 };
+
+// export const fetchWithAuth = async (url) => {
+//   let accessToken = localStorage.getItem("token");
+
+//   if (!accessToken) {
+//     throw new Error("Access Token not found. Please log in.");
+//   }
+
+//   try {
+//     const response = await api.get(url, {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     if (error.response?.status === 401) {
+//       console.log("Token expired. Attempting to refresh...");
+
+//       try {
+//         const newAccessToken = await refreshAccessToken();
+//         localStorage.setItem("token", newAccessToken);
+
+//         const newResponse = await api.get(url, {
+//           headers: {
+//             Authorization: `Bearer ${newAccessToken}`,
+//           },
+//         });
+//         return newResponse.data;
+//       } catch (refreshError) {
+//         throw new Error(
+//           "Unauthorized: Invalid or expired token. Please log in again."
+//         );
+//       }
+//     }
+//     throw error;
+//   }
+// };
 
 // Функция для POST-запросов с токеном и обновления токена
 export const postWithAuth = async (url, data, config = {}) => {
@@ -199,4 +238,25 @@ export const autoCropImageToSquare = (imageFile, callback) => {
       );
     };
   };
+};
+
+// Функция выхода из аккаунта
+export const logout = async () => {
+  let accessToken = localStorage.getItem("token");
+
+  if (!accessToken) {
+    console.warn("Токен не найден. Выход из системы не требуется.");
+    return;
+  }
+
+  try {
+    await api.delete("/Auth/Logout", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log("Успешный выход из аккаунта на сервере.");
+  } catch (error) {
+    console.error("Ошибка при выходе из системы:", error);
+  }
 };

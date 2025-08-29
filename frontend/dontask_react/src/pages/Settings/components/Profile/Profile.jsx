@@ -5,6 +5,7 @@ import {
   refreshAndSetToken,
   autoCropImageToSquare,
   postWithAuth,
+  logout,
 } from "../../../../service/api";
 import { useNavigate } from "react-router-dom"; // 👈 Added import
 import "./Profile.css";
@@ -173,8 +174,12 @@ export default function Profile() {
       };
 
       await patchWithAuth("/User/UpdateGeneralUserInfo", payload);
-      setInitialData(payload);
-      await fetchSettingsPageData();
+      setInitialData((prev) => ({
+        ...prev,
+        firstUserName: firstName,
+        lastUserName: secondName,
+        sex: sexValue,
+      }));
       showToast("Изменения успешно сохранены!", "success");
     } catch (err) {
       console.error("Ошибка при сохранении изменений:", err);
@@ -210,9 +215,19 @@ export default function Profile() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/auth/register");
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error("Ошибка при выходе из системы:", err);
+      showToast(
+        "Не удалось полностью выйти из системы. Попробуйте снова.",
+        "error"
+      );
+    } finally {
+      localStorage.removeItem("token");
+      navigate("/auth/login");
+    }
   };
 
   if (error) {
