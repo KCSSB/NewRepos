@@ -50,10 +50,10 @@ namespace API.Controllers
             if(ModelState.IsValid)
             {
 
-            Guid userId = User.GetUserId();
+            int userId = User.GetUserId();
 
-            Guid projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
-            Guid projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
+            int projectId = await _projectService.CreateProjectAsync(projectRequest.ProjectName);
+            int projectUserId = await _projectService.AddUserInProjectAsync(userId, projectId);
 
             var url = DefaultImages.ProjectAvatar;
 
@@ -81,7 +81,7 @@ namespace API.Controllers
             }
             }
         [HttpGet("GetFullProject/{id}")]
-        public async Task<IActionResult> GetFullProject(Guid id)
+        public async Task<IActionResult> GetFullProject(int id)
         {
 
             return Ok();

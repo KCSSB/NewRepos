@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataBaseInfo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250728152527_InitialCreate")]
+    [Migration("20250828102257_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,11 +27,14 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Board", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LeadOfBoardId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -40,27 +43,24 @@ namespace DataBaseInfo.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
-
                     b.ToTable("Boards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BoardId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("Progress")
                         .HasColumnType("integer");
@@ -72,60 +72,55 @@ namespace DataBaseInfo.Migrations
                     b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("DataBaseInfo.models.Group", b =>
+            modelBuilder.Entity("DataBaseInfo.models.MemberOfBoard", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("LeadId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<int>("BoardId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BoardRole")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("GroupRole")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ProjectUserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ProjectUserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("BoardId");
 
                     b.HasIndex("ProjectUserId");
 
-                    b.ToTable("MembersOfGroups");
+                    b.ToTable("MembersOfBoards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Avatar")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateOnly?>("DateOfDeadline")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("DateStartWork")
+                        .HasColumnType("date");
+
                     b.Property<string>("ProjectName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -134,18 +129,21 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("projectRole")
+                    b.Property<string>("ProjectRole")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -159,8 +157,11 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.RefreshToken", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -175,8 +176,8 @@ namespace DataBaseInfo.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -188,8 +189,11 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Avatar")
                         .IsRequired()
@@ -230,36 +234,42 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("CardId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Complete")
                         .HasColumnType("boolean");
+
+                    b.Property<DateOnly?>("DateOfDeadline")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("MemberResponsibleForCard")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CardId");
 
                     b.ToTable("Tasks");
-                });
-
-            modelBuilder.Entity("DataBaseInfo.models.Board", b =>
-                {
-                    b.HasOne("DataBaseInfo.models.Group", "Group")
-                        .WithMany("Boards")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
@@ -273,23 +283,23 @@ namespace DataBaseInfo.Migrations
                     b.Navigation("Board");
                 });
 
-            modelBuilder.Entity("DataBaseInfo.models.MemberOfGroup", b =>
+            modelBuilder.Entity("DataBaseInfo.models.MemberOfBoard", b =>
                 {
-                    b.HasOne("DataBaseInfo.models.Group", "Group")
-                        .WithMany("Members")
-                        .HasForeignKey("GroupId")
+                    b.HasOne("DataBaseInfo.models.Board", "Board")
+                        .WithMany("MemberOfBoards")
+                        .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataBaseInfo.models.ProjectUser", "User")
-                        .WithMany("Groups")
+                    b.HasOne("DataBaseInfo.models.ProjectUser", "ProjectUser")
+                        .WithMany("MembersOfBoards")
                         .HasForeignKey("ProjectUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Group");
+                    b.Navigation("Board");
 
-                    b.Navigation("User");
+                    b.Navigation("ProjectUser");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
@@ -336,18 +346,13 @@ namespace DataBaseInfo.Migrations
             modelBuilder.Entity("DataBaseInfo.models.Board", b =>
                 {
                     b.Navigation("Cards");
+
+                    b.Navigation("MemberOfBoards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
                 {
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("DataBaseInfo.models.Group", b =>
-                {
-                    b.Navigation("Boards");
-
-                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
@@ -357,7 +362,7 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.ProjectUser", b =>
                 {
-                    b.Navigation("Groups");
+                    b.Navigation("MembersOfBoards");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.User", b =>

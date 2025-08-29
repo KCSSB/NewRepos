@@ -10,13 +10,13 @@ namespace DataBaseInfo.models
     public class Card
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         [Range(0,100)]
         public int Progress { get; set; } = 0;
 
         // Внешний ключ на Board (карточка принадлежит доске)
-        public Guid BoardId { get; set; }
+        public int BoardId { get; set; }
         public virtual Board? Board { get; set; } = null!;
         public virtual List<_Task> Tasks { get; set; } = new();
 

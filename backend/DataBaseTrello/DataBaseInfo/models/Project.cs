@@ -11,7 +11,7 @@ namespace DataBaseInfo.models
     public class Project
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string ProjectName { get; set; } = string.Empty;
         public string Avatar { get; set; } = string.Empty;
         public DateOnly DateStartWork { get; set; }

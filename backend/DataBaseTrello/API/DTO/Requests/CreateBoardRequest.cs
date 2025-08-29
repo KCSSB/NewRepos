@@ -9,8 +9,8 @@ namespace API.DTO.Requests
         [MinLength(AllowLengthProp.MinBoardName)]
         [MaxLength(AllowLengthProp.MaxBoardName)]
         public required string BoardName { get; set; }
-        public required Guid BoardLeadId { get; set; }
-        public required Guid ProjectId { get; set; }
-        public List<Guid> BoardMembers { get; set; } = new List<Guid>();
+        public required int BoardLeadId { get; set; }
+        public required int ProjectId { get; set; }
+        public List<int> BoardMembers { get; set; } = new List<int>();
         }
 }
