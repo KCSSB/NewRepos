@@ -9,6 +9,7 @@ namespace API.Helpers
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IOptions<EmailService> _settings;
+        
         public EmailService(IDbContextFactory<AppDbContext> contextFactory, IOptions<EmailService> settings)
         {
             _contextFactory = contextFactory;

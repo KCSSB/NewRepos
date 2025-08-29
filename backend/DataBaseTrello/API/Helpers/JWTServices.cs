@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using API.Configuration;
 using API.Extensions;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
 namespace API.Helpers

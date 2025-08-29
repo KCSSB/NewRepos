@@ -13,7 +13,7 @@ using API.Helpers;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 using API.DTO.Requests;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
 using API.Extensions;

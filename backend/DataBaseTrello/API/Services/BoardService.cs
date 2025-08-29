@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using API.Extensions;
 using DataBaseInfo;
 using DataBaseInfo.models;

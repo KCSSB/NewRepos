@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions

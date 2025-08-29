@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using API.Helpers;
 using API.Configuration;
 using API.DTO.Requests;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
 namespace API.Controllers
@@ -90,7 +90,7 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.RefreshAccessToken,
                     HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.AuthorizeExceptionMessage,
+                    UserExceptionMessages.UnauthorizedExceptionMessage,
                     "Произошла ошибка во время получения RefreshToken из Cookies"));
               
             //Валидация здесь
@@ -118,7 +118,7 @@ namespace API.Controllers
                 throw new AppException(new ErrorContext(ServiceName.AuthController,
                     OperationName.Logout,
                     HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.AuthorizeExceptionMessage,
+                    UserExceptionMessages.UnauthorizedExceptionMessage,
                     "Произошла ошибка во время получения RefreshToken из Cookies"));
             
             

@@ -5,17 +5,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using DataBaseInfo.Services;
 using System.Text;
-using Microsoft.EntityFrameworkCore.Internal;
 using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
 using API.Services;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using Serilog;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.OpenApi.Models;
-using Imagekit.Sdk;
+using API.Exceptions;
 
 
 

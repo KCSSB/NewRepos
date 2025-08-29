@@ -5,7 +5,7 @@ using API.Constants;
 using API.DTO.Domain;
 using API.DTO.Mappers.ToResponseModel;
 using API.DTO.Responses;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using API.Extensions;
 using API.Helpers;
 using DataBaseInfo.models;

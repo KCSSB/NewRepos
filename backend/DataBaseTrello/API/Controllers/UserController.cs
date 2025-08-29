@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Helpers;
 using DataBaseInfo.Services;

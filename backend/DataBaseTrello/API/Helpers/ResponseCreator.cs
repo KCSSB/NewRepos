@@ -1,7 +1,7 @@
 ﻿using API.DTO.Responses;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using API.Constants;
 using System.Net;
 using API.DTO.Mappers.ToResponseModel;

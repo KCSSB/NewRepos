@@ -1,10 +1,9 @@
 ﻿using API.DTO.Responses.Pages;
 using API.DTO.Responses;
 using DataBaseInfo;
-using DataBaseInfo.models;
 using Microsoft.EntityFrameworkCore;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.DTO.Mappers.ToResponseModel;
 

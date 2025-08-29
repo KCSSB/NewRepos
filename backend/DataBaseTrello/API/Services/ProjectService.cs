@@ -4,20 +4,19 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http.HttpResults;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using API.Helpers;
-using System.Data.Common;
 using API.Extensions;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using API.Exceptions.Context;
+using API.Exceptions;
 
 namespace API.Services
 {
     public class ProjectService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-       
+        private readonly ErrorContextCreator errCreator = new ErrorContextCreator(ServiceName.ProjectService);
 
         public ProjectService(IDbContextFactory<AppDbContext> contextFactory)
         {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 
 namespace API.Extensions
 {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using API.DTO.Responses;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using API.Extensions;
 using API.Middleware;
 using Microsoft.AspNetCore.Builder;

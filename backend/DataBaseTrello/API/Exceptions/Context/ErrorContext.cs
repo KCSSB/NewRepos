@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace API.Exceptions.ErrorContext
+namespace API.Exceptions.Context
 {
     public class ErrorContext
     {
