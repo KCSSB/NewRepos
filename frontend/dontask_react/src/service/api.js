@@ -102,7 +102,7 @@ export const postWithAuth = async (url, data, config = {}) => {
   }
 };
 
-// Функция для PATCH-запросов (обновление конкретных полей)
+// Функция для PATCH-запросов (обновление конкретных данных)
 export const patchWithAuth = async (url, data, config = {}) => {
   let accessToken = localStorage.getItem("token");
 

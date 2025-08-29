@@ -15,7 +15,6 @@ export default function Settings() {
       <div className="settings-main-content">
         <div className="content-wrapper">
           {" "}
-          {/* Обертка для основного контента */}
           {activeMode === "profile" ? (
             <ProfileContainer />
           ) : (
