@@ -11,7 +11,7 @@ namespace DataBaseInfo.models
     public class User
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string FirstName { get; set; } = "Не указано";
         public string SecondName { get; set; } = "Не указано";
         public string UserEmail { get; set; } = string.Empty;

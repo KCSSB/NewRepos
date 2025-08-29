@@ -25,7 +25,7 @@ namespace API.Helpers
         {
             return;
         }
-        public async Task SendInviteMessage(Guid projectId, Guid userId)
+        public async Task SendInviteMessage(int projectId, int userId)
         {
             var msg = await CreateMessageAsync();
             //await SendMessageAsync(msg);

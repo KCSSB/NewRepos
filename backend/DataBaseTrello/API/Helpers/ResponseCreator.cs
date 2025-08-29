@@ -15,7 +15,7 @@ namespace API.Helpers
         {
             _contextFactory = contextFactory;
         }
-        public async Task<SummaryProjectResponse> CreateSummaryProjectResponseAsync(Guid projectId)
+        public async Task<SummaryProjectResponse> CreateSummaryProjectResponseAsync(int projectId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
             var project = await context.Projects.Include(p => p.ProjectUsers)

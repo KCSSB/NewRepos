@@ -28,7 +28,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<User>(entity =>
             {
                 //Первичный ключ
-                entity.Property(u => u.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(u => u.Id).IsRequired();
                 //Настройка полей
                 entity.Property(u => u.FirstName).HasMaxLength(35);
                 entity.Property(u => u.SecondName).HasMaxLength(35);
@@ -44,7 +44,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<Project>(entity =>
             {
                 //Первичный ключ
-                entity.Property(p => p.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(p => p.Id).IsRequired();
                 //Настройка полей
                 entity.Property(p => p.ProjectName).IsRequired().HasMaxLength(50);
                 //Настройка связи между полями(Нэту)
@@ -53,7 +53,7 @@ namespace DataBaseInfo
             {
 
                 //первичный ключ
-                entity.Property(up => up.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(up => up.Id).IsRequired();
                 entity.Property(up => up.UserId).IsRequired();
                 entity.Property(up=> up.ProjectId).IsRequired();
                 //Связь между моделями User и ProjectUser
@@ -74,7 +74,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<MemberOfBoard>(entity =>
             {
 
-                entity.Property(mg => mg.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(mg => mg.Id).IsRequired();
                 entity.Property(mg => mg.ProjectUserId).IsRequired();
 
                 entity.HasOne(mb => mb.Board)
@@ -95,7 +95,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<Board>(entity =>
             {
                 //Первичный ключ
-                entity.Property(b => b.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(b => b.Id).IsRequired();
                 //Настройка полей
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
                 
@@ -108,7 +108,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<Card>(entity =>
             {
                 //Первичный ключ
-                entity.Property(c => c.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(c => c.Id).IsRequired();
                 //Настройка полей
                 entity.Property(c => c.Name).IsRequired().HasMaxLength(20);
                 entity.Property(c => c.BoardId).IsRequired();
@@ -123,7 +123,7 @@ namespace DataBaseInfo
             modelBuilder.Entity<_Task>(entity =>
             {
                 //Первичный ключ
-                entity.Property(t => t.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(t => t.Id).IsRequired();
                 //Настройка полей
                 entity.Property(t => t.Name).IsRequired().HasMaxLength(20);
                 entity.Property(t => t.CardId).IsRequired();
@@ -137,7 +137,7 @@ namespace DataBaseInfo
             });
             modelBuilder.Entity<RefreshToken>(entity =>
             {
-                entity.Property(r => r.Id).IsRequired().ValueGeneratedNever();
+                entity.Property(r => r.Id).IsRequired();
                 entity.Property(r => r.CreatedAt).IsRequired();
                
              

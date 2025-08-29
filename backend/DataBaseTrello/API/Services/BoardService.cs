@@ -20,7 +20,7 @@ namespace API.Services
             _contextFactory = contextFactory;
             _logger = logger;
         }
-        public async Task<Guid> CreateBoardAsync(string boardName)
+        public async Task<int> CreateBoardAsync(string boardName)
         {
           
             using var context = await _contextFactory.CreateDbContextAsync();
@@ -38,7 +38,7 @@ namespace API.Services
 
             return board.Id;
         }
-        public async Task<List<Guid>> AddProjectUsersInBoardAsync(Guid boardId, Guid boardLeadId,List<Guid> projectUserIds)
+        public async Task<List<int>> AddProjectUsersInBoardAsync(int boardId, int boardLeadId,List<int> projectUserIds)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
 
@@ -73,7 +73,7 @@ namespace API.Services
 
         }
 
-        private List<MemberOfBoard> CreateBoardMembers(List<ProjectUser> projectUsers, Guid boardId)
+        private List<MemberOfBoard> CreateBoardMembers(List<ProjectUser> projectUsers, int boardId)
         {
            var boardMembers = new List<MemberOfBoard>();
             foreach (var user in projectUsers)

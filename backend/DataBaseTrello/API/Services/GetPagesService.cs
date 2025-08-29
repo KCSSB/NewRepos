@@ -19,7 +19,7 @@ namespace API.Services
           _logger = logger;  
           _contextFactory = contextFactory;
         }
-        public async Task<HomePage> CreateHomePageDTOAsync(Guid userId)
+        public async Task<HomePage> CreateHomePageDTOAsync(int userId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
 
@@ -39,7 +39,7 @@ namespace API.Services
             var summaryProjects = projects.Select(ToResponseMapper.ToSummaryProjectResponse).ToList();
             return new HomePage { SummaryProject = summaryProjects };
         }
-        public async Task<SettingsPage> CreateSettingsPageDTOAsync(Guid userId)
+        public async Task<SettingsPage> CreateSettingsPageDTOAsync(int userId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();
 

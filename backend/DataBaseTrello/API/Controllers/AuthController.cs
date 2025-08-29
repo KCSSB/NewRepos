@@ -42,7 +42,7 @@ namespace API.Controllers
                    "Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
       
-            Guid userId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
+            int userId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
         
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.Register);
 

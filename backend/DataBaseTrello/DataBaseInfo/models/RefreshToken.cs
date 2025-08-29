@@ -11,12 +11,12 @@ namespace DataBaseInfo.models
     public class RefreshToken
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Token { get; set; } = string.Empty; //Это хэшируется
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
         public bool IsRevoked { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public virtual User? User { get; set; }
     }
 }
