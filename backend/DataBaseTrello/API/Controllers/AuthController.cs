@@ -120,7 +120,7 @@ namespace API.Controllers
                     HttpStatusCode.Unauthorized,
                     UserExceptionMessages.AuthorizeExceptionMessage,
                     "Произошла ошибка во время получения RefreshToken из Cookies"));
-
+            
             
             
             await _jwtServices.RevokeRefreshTokenAsync(refreshToken);

@@ -6,9 +6,7 @@ namespace API.Exceptions.ErrorContext
     {
         public string Service { get; set; } = string.Empty;
         public string Operation { get; set; } = string.Empty;
-
         public HttpStatusCode? StatusCode { get; set; }
-        
         public string UserMessage { get; set; } = string.Empty ;
         public string LoggerMessage { get; set; } = string.Empty ;
 

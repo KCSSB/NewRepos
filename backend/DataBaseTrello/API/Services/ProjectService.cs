@@ -30,7 +30,7 @@ namespace API.Services
                     ProjectName = projectName
                 };
 
-                using var context = await _contextFactory.CreateDbContextAsync();
+                using var context = _contextFactory.CreateDbContext();
 
                 await context.Projects.AddAsync(project);
 
@@ -46,7 +46,7 @@ namespace API.Services
         public async Task<int> AddUserInProjectAsync(int userId, int projectId)
         {
               
-                using var context = _contextFactory.CreateDbContext();
+                await using var context = await _contextFactory.CreateDbContextAsync();
 
                 var user = await context.Users
                     .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
