@@ -99,14 +99,14 @@ namespace API.Helpers
                throw new AppException(new ErrorContext(ServiceName.JWTServices,
                    OperationName.RefreshTokenAsync,
                    HttpStatusCode.Unauthorized,
-                   UserExceptionMessages.AuthorizeExceptionMessage,
+                   UserExceptionMessages.UnauthorizedExceptionMessage,
                    "RefreshToken не существует в базе данных или его время истекло"));
 
             storedToken.IsRevoked = true;
                 await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
                     OperationName.RefreshTokenAsync,
                     "Ошибка при отзыве старого Refresh token",
-                    UserExceptionMessages.AuthorizeExceptionMessage,
+                    UserExceptionMessages.UnauthorizedExceptionMessage,
                     HttpStatusCode.InternalServerError);
            
                 var token = Guid.NewGuid().ToString();
@@ -145,7 +145,7 @@ namespace API.Helpers
                     ServiceName.JWTServices,
                     OperationName.RevokeRefreshTokenAsync,
                     HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.AuthorizeExceptionMessage,
+                    UserExceptionMessages.UnauthorizedExceptionMessage,
                     "В базе не найден refresh token, соответствующий значению из cookie при попытке разлогирования."));
 
             context.RefreshTokens.Remove(token);

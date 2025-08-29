@@ -15,7 +15,7 @@ namespace API.Extensions
                 throw new AppException(new ErrorContext(ServiceName.UserController,
                     OperationName.GetUserId,
                     HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.AuthorizeExceptionMessage,
+                    UserExceptionMessages.UnauthorizedExceptionMessage,
                     "Ошибка при получении Claim NameIdentifier из User"));
 
             if (!int.TryParse(userIdString, out int userId))

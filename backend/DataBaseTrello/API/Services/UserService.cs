@@ -5,6 +5,7 @@ using API.Constants;
 using API.DTO.Domain;
 using API.DTO.Mappers.ToResponseModel;
 using API.DTO.Responses;
+using API.Exceptions;
 using API.Exceptions.Context;
 using API.Extensions;
 using API.Helpers;
@@ -22,26 +23,24 @@ namespace DataBaseInfo.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
+        private readonly ErrorContextCreator _errorContextCreator;
         private readonly ILogger<UserService> _logger;
         public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
         {
             _contextFactory = contextFactory;
             _JWTService = JWTService;
             _logger = logger;
+            _errorContextCreator = new ErrorContextCreator(ServiceName.UserService);
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
-
+            
             using var context = _contextFactory.CreateDbContext();
                 
                     User? em = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
 
-                    if (em != null)
-                        throw new AppException(new ErrorContext(ServiceName.UserService,
-                        OperationName.RegisterAsync,
-                        HttpStatusCode.Conflict,
-                        "Пользователь с таким email уже существует",
-                        $"Конфликт уникальности поля email: {userEmail}")); 
+            if (em != null)
+                throw new AppException(_errorContextCreator.Conflict($"Конфликт уникальности поля email: {userEmail}"));
 
 
                 var user = new User
