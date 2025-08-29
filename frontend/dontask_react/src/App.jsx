@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/Landing/Landing";
 import AuthPage from "./pages/Authentication/Auth";
 import HomePage from "./pages/Home/Home";
@@ -8,6 +8,21 @@ import SettingsPage from "./pages/Settings/Settings";
 import { ToastProvider } from "./components/Toast/ToastContext";
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "token" && !e.newValue) {
+        navigate("/auth/login");
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [navigate]);
+
   return (
     <ToastProvider>
       <Routes>

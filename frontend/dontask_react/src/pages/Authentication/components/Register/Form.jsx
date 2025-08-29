@@ -63,36 +63,45 @@ const Form = ({ isRegister }) => {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Логин"
-        value={login}
-        onChange={(e) => setLogin(e.target.value)}
-        className={styles.input}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Пароль"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className={styles.input}
-        required
-      />
-      {isRegister && (
+      <div className={styles["floating-label-group"]}>
         <input
-          type="password"
-          placeholder="Повторите пароль"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-          className={styles.input}
+          type="text"
+          className={styles["profile-input"]}
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          placeholder=" "
           required
         />
+        <label className={styles["floating-label"]}>Логин</label>
+      </div>
+      <div className={styles["floating-label-group"]}>
+        <input
+          type="password"
+          className={styles["profile-input"]}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder=" "
+          required
+        />
+        <label className={styles["floating-label"]}>Пароль</label>
+      </div>
+      {isRegister && (
+        <div className={styles["floating-label-group"]}>
+          <input
+            type="password"
+            className={styles["profile-input"]}
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label className={styles["floating-label"]}>Повторите пароль</label>
+        </div>
       )}
       {error && (
         <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
       )}
-      <button type="submit" className={styles.button}>
+      <button type="submit" className={styles["profile-button"]}>
         {isRegister ? "Создать" : "Войти"}
       </button>
     </form>
