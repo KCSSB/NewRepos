@@ -28,16 +28,13 @@ namespace API.Services
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user == null)
-                throw new AppException(new ErrorContext(ServiceName.UserService,
-                     OperationName.UploadUserAvatarAsync,
-                     HttpStatusCode.NotFound,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
 
             var projects = await context.Projects
                 .Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
                 .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
                 .ToListAsync();
+
             var summaryProjects = projects.Select(ToResponseMapper.ToSummaryProjectResponse).ToList();
             return new HomePage { SummaryProject = summaryProjects };
         }
@@ -48,12 +45,7 @@ namespace API.Services
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                throw new AppException(new ErrorContext(ServiceName.UserService,
-                     OperationName.UploadUserAvatarAsync,
-                     HttpStatusCode.NotFound,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
-
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
 
             var page = ToResponseMapper.ToSettingsPageResponse(user);
             return page;

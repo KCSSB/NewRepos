@@ -98,30 +98,26 @@ namespace API.Helpers
                 .FirstOrDefaultAsync(rt => HashToken == rt.Token);
 
             if (storedToken == null || storedToken.IsRevoked || storedToken.ExpiresAt < DateTime.UtcNow)
-               throw new AppException(new ErrorContext(ServiceName.JWTServices,
-                   OperationName.RefreshTokenAsync,
-                   HttpStatusCode.Unauthorized,
-                   UserExceptionMessages.UnauthorizedExceptionMessage,
-                   "RefreshToken не существует в базе данных или его время истекло"));
+               throw new AppException(_errCreator.Unauthorized("RefreshToken не существует в базе данных или его время истекло"));
 
             storedToken.IsRevoked = true;
-                await context.SaveChangesWithContextAsync("Ошибка при отзыве старого Refresh token");
+
+            await context.SaveChangesWithContextAsync("Ошибка при отзыве старого Refresh token");
            
-                var token = Guid.NewGuid().ToString();
+            var token = Guid.NewGuid().ToString();
             var newRefreshToken = new RefreshToken
             {
                 Token = _hashService.HashToken(token),
                 CreatedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires),
                 UserId = storedToken.UserId,
-               
             };
 
                 storedToken.User.RefreshToken = newRefreshToken;
 
                 await context.RefreshTokens.AddAsync(newRefreshToken);
           
-            await context.SaveChangesAsync();
+            await context.SaveChangesWithContextAsync("Ошибка при сохранении RefreshToken в базу данных");
             
             var newAccessToken = GenerateAccessToken(newRefreshToken.User);
          
@@ -136,15 +132,10 @@ namespace API.Helpers
 
             using var context = _contextFactory.CreateDbContext();
 
-                    var hashedRequestToken = _hashService.HashToken(refreshToken);
-                    var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
-                    if (token == null)
-                throw new AppException(new ErrorContext(
-                    ServiceName.JWTServices,
-                    OperationName.RevokeRefreshTokenAsync,
-                    HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.UnauthorizedExceptionMessage,
-                    "В базе не найден refresh token, соответствующий значению из cookie при попытке разлогирования."));
+            var hashedRequestToken = _hashService.HashToken(refreshToken);
+            var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
+            if (token == null)
+                throw new AppException(_errCreator.Unauthorized("В базе не найден refresh token, соответствующий значению из cookie при попытке выйти из аккаунта"));
 
             context.RefreshTokens.Remove(token);
                     await context.SaveChangesWithContextAsync($"Ошибка при удалении Refresh Token из базы данных refresh token id: {token.Id}");

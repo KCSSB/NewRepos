@@ -57,7 +57,7 @@ namespace API.Middleware
                 _logger.LogWarning(exMessage);
             else
             {
-                _logger.LogError(exMessage);
+                _logger.LogError('\n'+exMessage);
             }
 
 

@@ -60,18 +60,10 @@ namespace API.Services
                     ProjectRole = (project.ProjectUsers.Count <=0) ? "ProjectOwner": "ProjectMember"
                 };
                 if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                        OperationName.AddUserInProjectAsync,
-                        HttpStatusCode.InternalServerError,
-                        UserExceptionMessages.InternalExceptionMessage,
-                        $"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
+                    throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
 
                 if (project == null)
-                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                        OperationName.AddUserInProjectAsync,
-                        HttpStatusCode.InternalServerError,
-                        UserExceptionMessages.InternalExceptionMessage,
-                        $"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
+                    throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
 
                 user.ProjectUsers.Add(projectUser);
 
@@ -92,11 +84,7 @@ namespace API.Services
             using var context = await _contextFactory.CreateDbContextAsync();
             var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
-                throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                    OperationName.UpdateProjectImageAsync,
-                    HttpStatusCode.InternalServerError,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
             await context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 

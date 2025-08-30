@@ -74,23 +74,17 @@ namespace DataBaseInfo.Services
          
             User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
                     if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                    OperationName.LoginAsync,
-                    HttpStatusCode.Unauthorized,
-               "Неправильный логин или пароль",
-               $"Учётной записи с Email: {UserEmail} не существует"));
+                    throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {UserEmail} не существует"));
         
             var activeToken = await context.RefreshTokens
             .Include(rt => rt.User)
-            .FirstOrDefaultAsync(rt => rt.User.UserEmail == UserEmail
-                                   && !rt.IsRevoked
-                                   && rt.ExpiresAt > DateTime.UtcNow);
+            .FirstOrDefaultAsync(rt => 
+                rt.User.UserEmail == UserEmail
+                && !rt.IsRevoked
+                && rt.ExpiresAt > DateTime.UtcNow);
+
                     if (activeToken != null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                OperationName.LoginAsync,
-                HttpStatusCode.BadRequest,
-           "Вы уже были авторизованы",
-           $"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
+                    throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
           
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
                     if (result == PasswordVerificationResult.Success)
@@ -104,11 +98,7 @@ namespace DataBaseInfo.Services
                     }
                     else
                     {
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                OperationName.LoginAsync,
-                HttpStatusCode.Unauthorized,
-           "Неправильный логин или пароль",
-           $"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail} "));
+                    throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail}"));
                 }
             
         }
@@ -122,11 +112,7 @@ namespace DataBaseInfo.Services
                 var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
                 if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                 OperationName.UploadUserAvatarAsync,
-                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.UploadFilesExceptionMessage,
-                $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
+                    throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
 
                 user.Avatar = result.url;
                 await context.SaveChangesWithContextAsync($"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
@@ -135,12 +121,7 @@ namespace DataBaseInfo.Services
             }
             else
             {
-                throw new AppException(new ErrorContext(
-            ServiceName.UserService,
-            OperationName.UploadUserAvatarAsync,
-            (HttpStatusCode)result.HttpStatusCode,
-            UserExceptionMessages.UploadFilesExceptionMessage,
-            $"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
+                throw new AppException(_errCreator.InternalServerError($"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
             }
         }
         public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, int userId)
@@ -149,12 +130,7 @@ namespace DataBaseInfo.Services
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                throw new AppException(new ErrorContext(
-                    ServiceName.UserService,
-                    OperationName.UpdateUserAsync,
-                    HttpStatusCode.InternalServerError,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Ошибка при получении данных, user {userId} не найден"));
+                throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
             
             if(!string.IsNullOrEmpty(model.FirstUserName))
                 user.FirstName = model.FirstUserName;
@@ -180,12 +156,7 @@ namespace DataBaseInfo.Services
 
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
-                throw new AppException(new ErrorContext(
-                    ServiceName.UserService,
-                    OperationName.ChangePasswordAsync,
-                    HttpStatusCode.InternalServerError,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Ошибка при получении данных, user {userId} не найден"));
+                throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
             var passHasher = new PasswordHasher<User>();
             var result = passHasher.VerifyHashedPassword(user, user.UserPassword,oldPass);
             if(result == PasswordVerificationResult.Success)
@@ -198,12 +169,7 @@ namespace DataBaseInfo.Services
             else
             {
 
-                throw new AppException(new ErrorContext(
-                    ServiceName.UserService,
-                    OperationName.ChangePasswordAsync,
-                    HttpStatusCode.BadRequest,
-                    UserExceptionMessages.IncorrectDataExceptionMessage,
-                    $"Изменение не удалось, неверный старый пароль userId{userId}"));
+                throw new AppException(_errCreator.BadRequest($"Изменение не удалось, неверный старый пароль userId{userId}"));
             }
 
         }

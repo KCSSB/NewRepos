@@ -5,7 +5,7 @@ namespace API.DTO.Mappers.ToDomainModel
 {
     public static class ToDomainModelMapper
     {
-        public static UpdateUserModel ToUpdateUserGeneralInfoModel(UpdateUserRequest request)
+        public static UpdateUserModel ToUpdateUserModel(UpdateUserRequest request)
         {
             return new UpdateUserModel
             {

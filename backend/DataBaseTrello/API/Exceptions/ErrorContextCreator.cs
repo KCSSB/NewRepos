@@ -2,9 +2,6 @@
 using System.Runtime.CompilerServices;
 using API.Constants;
 using API.Exceptions.Context;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Logging;
-
 
 namespace API.Exceptions
 {

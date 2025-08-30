@@ -8,6 +8,7 @@ using API.DTO.Requests;
 using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
+using API.Exceptions;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +19,7 @@ namespace API.Controllers
         private readonly JWTServices _jwtServices;
         private readonly IOptions<AuthSettings> _options;
         private readonly ILogger<AuthController> _logger;
+        private readonly ErrorContextCreator _errCreator;
         
         public AuthController(UserService userService, JWTServices jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger)
         {
@@ -25,21 +27,17 @@ namespace API.Controllers
             _jwtServices = jwtServices;
             _options = options;
             _logger = logger;
-          
+            _errCreator = new ErrorContextCreator(ServiceName.AuthController);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
+        public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)//Refactor
         {
 
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Register);
 
             if (!ModelState.IsValid)
-                throw new AppException(new ErrorContext(ServiceName.AuthController,
-                   OperationName.Register,
-                   HttpStatusCode.BadRequest,
-                   UserExceptionMessages.IncorrectDataExceptionMessage,
-                   "Данные переданные в экземпляр RegisterUserRequest не валидны"));
+                throw new AppException(_errCreator.BadRequest("Данные переданные в экземпляр RegisterUserRequest не валидны"));
 
       
             int userId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
@@ -50,17 +48,13 @@ namespace API.Controllers
 
         }
 
-        [HttpPost("login")]
+        [HttpPost("login")] //Refactoring
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Login);
 
             if (!ModelState.IsValid)
-                throw new AppException(new ErrorContext(ServiceName.AuthController,
-                   OperationName.Login,
-                   HttpStatusCode.BadRequest,
-                   UserExceptionMessages.IncorrectDataExceptionMessage,
-                   "Данные переданные в экземпляр loginRequest не валидны"));
+                throw new AppException(_errCreator.BadRequest("Данные переданные в экземпляр loginRequest не валидны"));
           
             var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
        
@@ -87,11 +81,7 @@ namespace API.Controllers
             var refreshToken = Request.Cookies["refreshToken"]; 
 
             if (refreshToken == null)
-                throw new AppException(new ErrorContext(ServiceName.AuthController,
-                    OperationName.RefreshAccessToken,
-                    HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.UnauthorizedExceptionMessage,
-                    "Произошла ошибка во время получения RefreshToken из Cookies"));
+                throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
               
             //Валидация здесь
             //Возможно проблемы
@@ -115,11 +105,7 @@ namespace API.Controllers
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Logout);
             var refreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
-                throw new AppException(new ErrorContext(ServiceName.AuthController,
-                    OperationName.Logout,
-                    HttpStatusCode.Unauthorized,
-                    UserExceptionMessages.UnauthorizedExceptionMessage,
-                    "Произошла ошибка во время получения RefreshToken из Cookies"));
+                throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
             
             
             

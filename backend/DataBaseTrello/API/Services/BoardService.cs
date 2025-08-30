@@ -53,11 +53,7 @@ namespace API.Services
            //Ты хотел создать метод для проверки и синхонизации входных ProjectUsers с теми что хранятся в бд
 
             if (existingBoard == null)
-                throw new AppException(new ErrorContext(ServiceName.BoardService,
-                 OperationName.AddProjectUserInBoardAsync,
-                 HttpStatusCode.NotFound,
-                UserExceptionMessages.InternalExceptionMessage,
-                $"Board с Id: {boardId}, не найден"));
+                throw new AppException(_errCreator.NotFound($"Board с Id: {boardId}, не найден"));
 
             //if (!existingIds.Contains(boardLeadId))
                // throw new Exception();

@@ -9,7 +9,7 @@ using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers.ToDomainModel;
 using API.DTO.Mappers.ToResponseModel;
-using NuGet.DependencyResolver;
+using API.Exceptions;
 namespace API.Controllers
 {
     [Authorize]
@@ -19,17 +19,19 @@ namespace API.Controllers
     {
         private readonly UserService _userService;
         private readonly ImageService _imageService;
+        private readonly ErrorContextCreator _errCreator;
         public UserController(UserService userService, ImageService imageService)
             {
          
             _userService = userService;
             _imageService = imageService;
+            _errCreator = new ErrorContextCreator(ServiceName.UserController);
             }
         [HttpPatch("UpdateGeneralUserInfo")]
         public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
         {
             var userId = User.GetUserId();
-            var userInfoModel = ToDomainModelMapper.ToUpdateUserGeneralInfoModel(request);
+            var userInfoModel = ToDomainModelMapper.ToUpdateUserModel(request);
             var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
             var response = ToResponseMapper.ToUpdateUserResponse(updatedUser);
             return Ok(response);
@@ -44,12 +46,7 @@ namespace API.Controllers
          .SelectMany(v => v.Errors)
          .Select(e => e.ErrorMessage));
 
-                throw new AppException(new ErrorContext(
-                    ServiceName.UserController,
-                    OperationName.UploadUserAvatar,
-                     HttpStatusCode.BadRequest,
-                    "Вы указали некорректное изображение",
-                    $"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
+                throw new AppException(_errCreator.BadRequest($"UserId: {userId}, Произошли ошибки валидации изображения: \n" + errorMessages));
             }
 
       

@@ -25,12 +25,7 @@ namespace API.Helpers
             var project = await context.Projects.Include(p => p.ProjectUsers)
                 .ThenInclude(pu => pu.User).FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
-                throw new AppException(new ErrorContext(ServiceName.ResponseCreator,
-                    OperationName.CreateSummaryProjectResponseAsync,
-                    HttpStatusCode.InternalServerError,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Ошибка во время маппинга project {projectId} в SummaryProjectResponse"
-                    ));
+                throw new AppException(_errCreator.InternalServerError($"Ошибка во время маппинга project {projectId} в SummaryProjectResponse"));
             var summaryProject = ToResponseMapper.ToSummaryProjectResponse(project);
             return summaryProject;
         }
