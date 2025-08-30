@@ -20,7 +20,7 @@ namespace DataBaseInfo.models
         public Sex Sex { get; set; } = Sex.Unknown;
         public string Avatar {  get; set; } = string.Empty;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
-        public virtual RefreshToken? RefreshToken { get; set; } 
+        public virtual List<RefreshToken?> RefreshToken { get; set; } = new();
     }
     public enum Sex
     {

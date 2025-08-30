@@ -52,16 +52,16 @@ namespace DataBaseInfo.Services
 
                     var passHash = new PasswordHasher<User>().HashPassword(user, password);
 
-                    if (passHash == null)
-                throw new AppException(_errCreator.Conflict("Ошибка во время хэширования пароля"));
+               if (passHash == null)
+                    throw new AppException(_errCreator.Conflict("Ошибка во время хэширования пароля"));
             
 
-                    user.UserPassword = passHash;
+                user.UserPassword = passHash;
                 
-                    context.Users.Add(user);
-                    //Возможны проблемы
-                    await context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
-                    //Возможны проблемы
+                context.Users.Add(user);
+                   
+                await context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
+                 
                 return user.Id;
 
                 }
@@ -89,10 +89,11 @@ namespace DataBaseInfo.Services
 
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail}"));
-            
-            var refreshToken = Guid.NewGuid().ToString();
-             
-            await _JWTService.CreateRefreshTokenAsync(user, refreshToken);
+
+
+
+            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user);
+
             var accessToken = _JWTService.GenerateAccessToken(user);
             return (accessToken, refreshToken);
         }
