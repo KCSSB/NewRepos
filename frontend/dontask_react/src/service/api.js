@@ -61,44 +61,6 @@ export const fetchWithAuth = async (url) => {
   }
 };
 
-// export const fetchWithAuth = async (url) => {
-//   let accessToken = localStorage.getItem("token");
-
-//   if (!accessToken) {
-//     throw new Error("Access Token not found. Please log in.");
-//   }
-
-//   try {
-//     const response = await api.get(url, {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     if (error.response?.status === 401) {
-//       console.log("Token expired. Attempting to refresh...");
-
-//       try {
-//         const newAccessToken = await refreshAccessToken();
-//         localStorage.setItem("token", newAccessToken);
-
-//         const newResponse = await api.get(url, {
-//           headers: {
-//             Authorization: `Bearer ${newAccessToken}`,
-//           },
-//         });
-//         return newResponse.data;
-//       } catch (refreshError) {
-//         throw new Error(
-//           "Unauthorized: Invalid or expired token. Please log in again."
-//         );
-//       }
-//     }
-//     throw error;
-//   }
-// };
-
 // Функция для POST-запросов с токеном и обновления токена
 export const postWithAuth = async (url, data, config = {}) => {
   let accessToken = localStorage.getItem("token");

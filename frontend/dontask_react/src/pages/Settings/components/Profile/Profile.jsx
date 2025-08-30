@@ -71,7 +71,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchSettingsPageData();
-  }, [showToast]);
+  }, []);
 
   const handleLoadClick = () => {
     fileInputRef.current.click();
@@ -120,10 +120,14 @@ export default function Profile() {
 
       await refreshAndSetToken();
       window.dispatchEvent(new Event("tokenUpdated"));
-      await fetchSettingsPageData();
+      const newAvatarUrl = URL.createObjectURL(croppedFile);
+      setUserAvatar(newAvatarUrl);
+      setServerAvatar(newAvatarUrl);
+
       setSelectedFile(null);
       setCroppedFile(null);
       showToast("Аватар успешно загружен!", "success");
+      setLoading(false);
     } catch (err) {
       console.error("Ошибка при загрузке аватара:", err);
       showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
