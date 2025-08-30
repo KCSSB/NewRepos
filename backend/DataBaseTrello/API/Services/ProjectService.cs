@@ -34,11 +34,7 @@ namespace API.Services
 
                 await context.Projects.AddAsync(project);
 
-                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                    OperationName.CreateProjectAsync,
-                    UserExceptionMessages.CreateProjectExceptionMessage,
-                    "Произошла ошибка, в момент добавления проекта в базу данных",
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync("Произошла ошибка, в момент добавления проекта в базу данных");
 
                 return project.Id;
 
@@ -82,11 +78,7 @@ namespace API.Services
                 project.ProjectUsers.Add(projectUser);
                 
 
-                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                    OperationName.AddUserInProjectAsync,
-                    $"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}",
-                    UserExceptionMessages.CreateProjectExceptionMessage,
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
 
                 return projectUser.Id;
            
@@ -106,11 +98,7 @@ namespace API.Services
                     UserExceptionMessages.InternalExceptionMessage,
                     $"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
-            await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                OperationName.UpdateProjectImageAsync,
-                $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
     }

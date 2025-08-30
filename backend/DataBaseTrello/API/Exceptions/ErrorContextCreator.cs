@@ -11,12 +11,19 @@ namespace API.Exceptions
     public class ErrorContextCreator
     {
         public readonly string ServiceName;
+        public readonly string OperationName = null;
         public ErrorContextCreator(string _serviceName)
         {
             ServiceName = _serviceName;
         }
+        public ErrorContextCreator(string _serviceName, string operationName)
+        {
+            ServiceName = _serviceName;
+            OperationName = operationName;
+        }
         public ErrorContext BadRequest(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if(OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.BadRequest,
@@ -25,6 +32,7 @@ namespace API.Exceptions
         }
         public ErrorContext Forbidden(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if (OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Forbidden,
@@ -33,6 +41,7 @@ namespace API.Exceptions
         }
         public ErrorContext NotFound(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if (OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.NotFound,
@@ -41,6 +50,7 @@ namespace API.Exceptions
         }
         public ErrorContext Conflict(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if (OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Conflict,
@@ -49,6 +59,7 @@ namespace API.Exceptions
         }
         public ErrorContext InternalServerError(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if (OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.InternalServerError,
@@ -57,6 +68,7 @@ namespace API.Exceptions
         }
         public ErrorContext Unauthorized(string loggerMessage, [CallerMemberName] string operationName = null)
         {
+            if (OperationName != null) operationName = OperationName;
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Unauthorized,

@@ -34,10 +34,7 @@ namespace API.Services
             };
 
             await context.Boards.AddAsync(board);
-            await context.SaveChangesWithContextAsync(ServiceName.BoardService,
-                OperationName.CreateBoardAsync,"Произошла ошибка при попытке сохранить board в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить board в бд");
 
             return board.Id;
         }
@@ -100,11 +97,7 @@ namespace API.Services
             {
                 await context.MembersOfBoards.AddAsync(member);
             }
-            await context.SaveChangesWithContextAsync(ServiceName.BoardService,
-                OperationName.AddBoardMembersToDbAsync,
-                "Произошла ошибка при попытке сохранить MembersOfBoard в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить MembersOfBoard в бд");
 
         }
         

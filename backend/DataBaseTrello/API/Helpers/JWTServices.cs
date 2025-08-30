@@ -80,11 +80,7 @@ namespace API.Helpers
                 await context.RefreshTokens.AddAsync(hashedToken);
 
               
-                await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
-                    OperationName.CreateRefreshTokenAsync,
-                    "Ошибка при сохранении Hashed Refresh Token",
-                    "Ошибка во время авторизации, повторите попытку позже",
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
                 
             }
           
@@ -109,11 +105,7 @@ namespace API.Helpers
                    "RefreshToken не существует в базе данных или его время истекло"));
 
             storedToken.IsRevoked = true;
-                await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
-                    OperationName.RefreshTokenAsync,
-                    "Ошибка при отзыве старого Refresh token",
-                    UserExceptionMessages.UnauthorizedExceptionMessage,
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync("Ошибка при отзыве старого Refresh token");
            
                 var token = Guid.NewGuid().ToString();
             var newRefreshToken = new RefreshToken
@@ -155,9 +147,7 @@ namespace API.Helpers
                     "В базе не найден refresh token, соответствующий значению из cookie при попытке разлогирования."));
 
             context.RefreshTokens.Remove(token);
-                    await context.SaveChangesWithContextAsync(ServiceName.JWTServices,
-                        OperationName.RevokeRefreshTokenAsync, $"Ошибка при удалении Refresh Token из базы данных refresh token id: {token.Id}",
-                        "Ошибка при попытке выйти из системы", HttpStatusCode.InternalServerError);
+                    await context.SaveChangesWithContextAsync($"Ошибка при удалении Refresh Token из базы данных refresh token id: {token.Id}");
                    
                 
             

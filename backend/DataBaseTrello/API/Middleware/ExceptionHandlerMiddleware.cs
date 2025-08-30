@@ -1,15 +1,9 @@
 ﻿using System.Net;
 using System.Text;
-using System.Text.Json;
 using API.DTO.Responses;
 using API.Exceptions.Context;
-using API.Extensions;
 using API.Middleware;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
+
 
 namespace API.Middleware
 {
@@ -59,8 +53,8 @@ namespace API.Middleware
         }
         private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode, string message)
         {
-            if((int)httpStatusCode/100 == 4)
-            _logger.LogWarning(exMessage);
+            if((int)httpStatusCode/100 == 2 || (int)httpStatusCode / 100 == 3)
+                _logger.LogWarning(exMessage);
             else
             {
                 _logger.LogError(exMessage);

@@ -54,21 +54,14 @@ namespace DataBaseInfo.Services
                     var passHash = new PasswordHasher<User>().HashPassword(user, password);
 
                     if (passHash == null)
-                    throw new AppException(new ErrorContext(ServiceName.UserService,
-                        OperationName.RegisterAsync,
-                        HttpStatusCode.InternalServerError,
-                        UserExceptionMessages.RegistrationExceptionMessage,
-                        "Ошибка во время хэширования пароля"));
+                throw new AppException(_errCreator.Conflict("Ошибка во время хэширования пароля"));
+            
 
                     user.UserPassword = passHash;
                 
                     context.Users.Add(user);
                     //Возможны проблемы
-                    await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                        OperationName.RegisterAsync,
-                        "Ошибка во время сохранения данных о user в базу данных",
-                        UserExceptionMessages.RegistrationExceptionMessage,
-                        HttpStatusCode.InternalServerError);
+                    await context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
                     //Возможны проблемы
                 return user.Id;
 
@@ -136,11 +129,7 @@ namespace DataBaseInfo.Services
                 $"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
 
                 user.Avatar = result.url;
-                await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                    OperationName.UploadUserAvatarAsync,
-                    $"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}",
-                    UserExceptionMessages.UploadFilesExceptionMessage,
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync($"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
 
                 return result.url;
             }
@@ -174,11 +163,7 @@ namespace DataBaseInfo.Services
             if (model.Sex!=null)
                 user.Sex = (Sex)model.Sex;
 
-            await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                    OperationName.UpdateUserAsync,
-                    $"Ошибка при обновлении данных о пользователе: {userId}",
-                    UserExceptionMessages.InternalExceptionMessage,
-                    HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync($"Ошибка при обновлении данных о пользователе: {userId}");
 
             var updatedUser = new UpdateUserModel
             {
@@ -207,11 +192,7 @@ namespace DataBaseInfo.Services
             {
                 var newPassHash = passHasher.HashPassword(user, newPass);
                 user.UserPassword = newPassHash;
-                await context.SaveChangesWithContextAsync(ServiceName.UserService,
-                   OperationName.ChangePasswordAsync,
-                   $"Ошибка при обновлении пароля в базе данных: {userId}",
-                   UserExceptionMessages.InternalExceptionMessage,
-                   HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
                
             }
             else
