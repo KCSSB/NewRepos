@@ -16,11 +16,12 @@ namespace API.Services
     public class ProjectService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ErrorContextCreator errCreator = new ErrorContextCreator(ServiceName.ProjectService);
+        private readonly ErrorContextCreator _errCreator;
 
         public ProjectService(IDbContextFactory<AppDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+            _errCreator = new ErrorContextCreator(ServiceName.ProjectService);
         }
         public async Task<int> CreateProjectAsync(string projectName)
         {

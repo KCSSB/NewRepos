@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using API.Constants;
+using API.Exceptions;
 using API.Exceptions.Context;
 using API.Extensions;
 using DataBaseInfo;
@@ -15,10 +16,12 @@ namespace API.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
            private readonly ILogger<BoardService> _logger;
+        private readonly ErrorContextCreator _errCreator;
         public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<BoardService> logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+            _errCreator = new ErrorContextCreator(ServiceName.BoardService);
         }
         public async Task<int> CreateBoardAsync(string boardName)
         {

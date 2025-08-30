@@ -18,6 +18,38 @@ namespace API.Helpers
                  privateKey: _settings.PrivateKey,
                  urlEndPoint: _settings.UrlEndpoint);
         }
+      
+        public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
+        {
+            var stream = new MemoryStream(fileBytes);
+
+            var formFile = new FormFile(stream, 0, fileBytes.Length, name: "file", fileName: fileName)
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = contentType
+            };
+
+            return formFile;
+        }
+        public async Task<Result?> UploadImageAsync(IFormFile file, string path)
+        {
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+            var fileBytes = ms.ToArray();
+            var base64 = Convert.ToBase64String(fileBytes);
+
+            var request = new FileCreateRequest
+            {
+                file = $"data:{file.ContentType};base64,{base64}",
+                fileName = file.FileName,
+                useUniqueFileName = true,
+                folder = $"{path}"
+            };
+
+            var result = await _imagekitClient.UploadAsync(request);
+
+            return result;
+        }
         //public async Task<IFormFile> PrepareImageAsync(IFormFile file, int height, int width)
         //{
         //    using var ms = new MemoryStream();
@@ -57,36 +89,5 @@ namespace API.Helpers
         //    await image.SaveAsJpegAsync(outPutStream);
         //    return outPutStream.ToArray();
         //}
-        public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
-        {
-            var stream = new MemoryStream(fileBytes);
-
-            var formFile = new FormFile(stream, 0, fileBytes.Length, name: "file", fileName: fileName)
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = contentType
-            };
-
-            return formFile;
-        }
-        public async Task<Result?> UploadImageAsync(IFormFile file, string path)
-        {
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-            var fileBytes = ms.ToArray();
-            var base64 = Convert.ToBase64String(fileBytes);
-
-            var request = new FileCreateRequest
-            {
-                file = $"data:{file.ContentType};base64,{base64}",
-                fileName = file.FileName,
-                useUniqueFileName = true,
-                folder = $"{path}"
-            };
-
-            var result = await _imagekitClient.UploadAsync(request);
-
-            return result;
-        }
     }
 }

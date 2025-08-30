@@ -23,14 +23,14 @@ namespace DataBaseInfo.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-        private readonly ErrorContextCreator _errorContextCreator;
+        private readonly ErrorContextCreator _errCreator;
         private readonly ILogger<UserService> _logger;
         public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
         {
             _contextFactory = contextFactory;
             _JWTService = JWTService;
             _logger = logger;
-            _errorContextCreator = new ErrorContextCreator(ServiceName.UserService);
+            _errCreator = new ErrorContextCreator(ServiceName.UserService);
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
@@ -40,7 +40,7 @@ namespace DataBaseInfo.Services
                     User? em = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
 
             if (em != null)
-                throw new AppException(_errorContextCreator.Conflict($"Конфликт уникальности поля email: {userEmail}"));
+                throw new AppException(_errCreator.Conflict($"Конфликт уникальности поля email: {userEmail}"));
 
 
                 var user = new User

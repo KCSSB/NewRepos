@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using API.Constants;
+using API.Exceptions;
 using API.Exceptions.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +15,8 @@ namespace API.Extensions
             string userMessage,
             HttpStatusCode statusCode)
         {
-
-             try
+            var _errCreator = new ErrorContextCreator(ServiceName.DbContextExtensions);
+            try
              {
                 return await context.SaveChangesAsync();
              }

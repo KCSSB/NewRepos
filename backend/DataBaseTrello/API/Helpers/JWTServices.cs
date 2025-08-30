@@ -11,6 +11,7 @@ using API.Extensions;
 using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
+using API.Exceptions;
 namespace API.Helpers
 {
     public class JWTServices
@@ -19,12 +20,17 @@ namespace API.Helpers
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly HashService _hashService;
         private readonly ILogger<JWTServices> _logger;
-        public JWTServices(IOptions<AuthSettings> options, IDbContextFactory<AppDbContext> contextFactory, HashService hashService, ILogger<JWTServices> logger)
+        private readonly ErrorContextCreator _errCreator;
+        public JWTServices(IOptions<AuthSettings> options,
+            IDbContextFactory<AppDbContext> contextFactory,
+            HashService hashService,
+            ILogger<JWTServices> logger)
         {
             _contextFactory = contextFactory;
             _hashService = hashService;
             _options = options;
             _logger = logger;
+            _errCreator = new ErrorContextCreator(ServiceName.JWTServices);
         }
         public string GenerateAccessToken(User user)
         {
