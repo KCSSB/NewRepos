@@ -17,7 +17,7 @@ namespace API.Extensions
             var _errCreator = new ErrorContextCreator(ServiceName.DbContextExtensions, operationName);
             try
              {
-                throw new DbUpdateException("Ну ебать ошибка и ошибка");
+                
                 return await context.SaveChangesAsync();
              }
             catch (DbUpdateException ex)
