@@ -7,9 +7,8 @@ using API.Helpers;
 using DataBaseInfo.Services;
 using API.DTO.Requests;
 using API.Extensions;
-using API.DTO.Mappers.ToDomainModel;
-using API.DTO.Mappers.ToResponseModel;
 using API.Exceptions;
+using API.DTO.Mappers;
 namespace API.Controllers
 {
     [Authorize]
@@ -31,7 +30,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
         {
             var userId = User.GetUserId();
-            var userInfoModel = ToDomainModelMapper.ToUpdateUserModel(request);
+            var userInfoModel = ToDomainMapper.ToUpdateUserModel(request);
             var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
             var response = ToResponseMapper.ToUpdateUserResponse(updatedUser);
             return Ok(response);
