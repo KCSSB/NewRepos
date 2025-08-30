@@ -9,7 +9,10 @@ import {
   decodeToken,
 } from "../../../../service/api";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import { useAuth } from "../../../../context/AuthContext";
+=======
+>>>>>>> temp-branch
 import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
@@ -19,7 +22,10 @@ import { useToast } from "../../../../components/Toast/ToastContext";
 export default function Profile() {
   const showToast = useToast();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const { updateAvatar } = useAuth();
+=======
+>>>>>>> temp-branch
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userAvatar, setUserAvatar] = useState(default_avatar);
@@ -125,6 +131,7 @@ export default function Profile() {
         },
       });
 
+<<<<<<< HEAD
       // Получаем токен из localStorage
       const token = localStorage.getItem("token");
       if (token) {
@@ -144,6 +151,10 @@ export default function Profile() {
       }
 
       // Очищаем временные состояния
+=======
+      await refreshAndSetToken();
+      window.dispatchEvent(new Event("tokenUpdated"));
+>>>>>>> temp-branch
       setSelectedFile(null);
       setCroppedFile(null);
 

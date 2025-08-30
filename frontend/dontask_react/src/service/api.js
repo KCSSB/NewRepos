@@ -24,7 +24,11 @@ export const fetchWithAuth = async (url) => {
   }
 };
 
+<<<<<<< HEAD
 // Функция для POST-запросов
+=======
+// Функция для POST-запросов с токеном и обновления токена
+>>>>>>> temp-branch
 export const postWithAuth = async (url, data, config = {}) => {
   try {
     const response = await api.post(url, data, config);
