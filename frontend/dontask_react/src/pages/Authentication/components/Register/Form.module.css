@@ -5,11 +5,18 @@
   gap: 20px;
 }
 
-.input {
+.floating-label-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-input {
   background-color: #f1f1f1;
+  width: 100%;
   border: none;
   border-radius: 1.5rem;
-  color: #9c9c9c;
+  color: #000000;
   font-family: Inter;
   font-weight: 700;
   font-style: Bold;
@@ -18,19 +25,40 @@
   letter-spacing: 0%;
   padding: 1rem;
   vertical-align: middle;
-  outline: none;
-  transition: background 0.2s;
 }
 
-.input:focus {
+.profile-input:focus {
+  outline: none;
   background: #e0e0e0;
 }
 
-.input::placeholder {
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: #9c9c9c;
+  font-family: Inter;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 1.25rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
 }
 
-.button {
+.profile-input:focus + .floating-label,
+.profile-input:not(:placeholder-shown) + .floating-label {
+  top: 0;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #000000;
+  background: #f1f1f1;
+  border-radius: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.profile-button {
   width: 35%;
   margin: 1rem auto 0rem auto;
   padding: 0.8rem 1.25rem;
@@ -45,6 +73,6 @@
   transition: background 0.2s;
 }
 
-.button:hover {
+.profile-button:hover {
   background: #333;
 }
