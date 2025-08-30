@@ -6,9 +6,14 @@ import HomePage from "./pages/Home/Home";
 import TaskPage from "./pages/Task/Task";
 import SettingsPage from "./pages/Settings/Settings";
 import { ToastProvider } from "./components/Toast/ToastContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
 
   useEffect(() => {
     const handleStorageChange = (e) => {
@@ -25,13 +30,16 @@ function App() {
 
   return (
     <ToastProvider>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/auth/*" element={<AuthPage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/task" element={<TaskPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-      </Routes>
+      <AuthProvider>
+        {" "}
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth/*" element={<AuthPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/task" element={<TaskPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Routes>
+      </AuthProvider>
     </ToastProvider>
   );
 }
