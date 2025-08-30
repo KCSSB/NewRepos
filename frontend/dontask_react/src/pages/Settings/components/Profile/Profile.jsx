@@ -2,17 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   fetchWithAuth,
   patchWithAuth,
+  refreshAndSetToken,
   autoCropImageToSquare,
   postWithAuth,
   logout,
-  refreshAccessToken,
-  decodeToken,
 } from "../../../../service/api";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import { useAuth } from "../../../../context/AuthContext";
-=======
->>>>>>> temp-branch
 import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
@@ -22,10 +17,6 @@ import { useToast } from "../../../../components/Toast/ToastContext";
 export default function Profile() {
   const showToast = useToast();
   const navigate = useNavigate();
-<<<<<<< HEAD
-  const { updateAvatar } = useAuth();
-=======
->>>>>>> temp-branch
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userAvatar, setUserAvatar] = useState(default_avatar);
@@ -110,17 +101,13 @@ export default function Profile() {
   };
 
   const handleUpload = async () => {
-    // 1. Проверяем, был ли выбран и обрезан файл
     if (!croppedFile) {
       showToast("Пожалуйста, сначала выберите файл.", "error");
       return;
     }
-
-    // 2. Устанавливаем состояние загрузки
     setLoading(true);
     setError(null);
 
-    // 3. Создаем FormData для отправки файла на сервер
     const formData = new FormData();
     formData.append("File", croppedFile, "avatar.jpg");
 
@@ -131,42 +118,15 @@ export default function Profile() {
         },
       });
 
-<<<<<<< HEAD
-      // Получаем токен из localStorage
-      const token = localStorage.getItem("token");
-      if (token) {
-        // Декодируем токен, чтобы получить новый URL аватара
-        const payload = decodeToken(token);
-        if (payload && payload.Avatar) {
-          // Добавляем timestamp к URL для обхода кэширования
-          const newAvatarUrl = `${payload.Avatar}?ts=${new Date().getTime()}`;
-
-          // Обновляем состояние аватара в компоненте Profile
-          setUserAvatar(newAvatarUrl);
-          setServerAvatar(newAvatarUrl);
-
-          // Теперь обновим состояние и в AuthContext, чтобы Navbar тоже обновился
-          updateAvatar(newAvatarUrl);
-        }
-      }
-
-      // Очищаем временные состояния
-=======
       await refreshAndSetToken();
       window.dispatchEvent(new Event("tokenUpdated"));
->>>>>>> temp-branch
       setSelectedFile(null);
       setCroppedFile(null);
-
-      // Показываем уведомление
       showToast("Аватар успешно загружен!", "success");
     } catch (err) {
-      // 8. Обрабатываем ошибки
       console.error("Ошибка при загрузке аватара:", err);
       showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
       setError("Не удалось загрузить аватар. Попробуйте снова.");
-    } finally {
-      // 9. Снимаем состояние загрузки в любом случае
       setLoading(false);
     }
   };
