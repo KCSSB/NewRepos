@@ -7,7 +7,7 @@ export default function Header() {
   const navigate = useNavigate();
   const handleHelpClick = () => {
     localStorage.removeItem("token");
-    navigate("/auth/login");
+    navigate("/auth/register");
   };
   return (
     <div className="header-container">

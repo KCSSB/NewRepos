@@ -1,63 +1,50 @@
-import api from "./axiosInstance.js";
+import apiService from "./apiService.js";
 
-export const refreshAccessToken = async () => {
+// Функция для обновления и установки токена (загрузка аватарки)
+export const refreshAndSetToken = async () => {
   try {
-    const response = await api.post("/Auth/RefreshAccessToken", {});
+    const response = await apiService.post("/Auth/RefreshAccessToken");
     const newAccessToken = response.data.accessToken;
     localStorage.setItem("token", newAccessToken);
-    return true;
+    console.log("RefreshAndSetToken success");
+    return newAccessToken;
   } catch (error) {
-    console.error("Ошибка при обновлении токена:", error);
-    localStorage.removeItem("token");
-    return false;
+    console.error("RefreshAndSetToken failed", error);
+    throw new Error("Failed to refresh token. Please log in again.");
   }
 };
 
-// Функция для GET-запросов с токеном
+// Функция для GET-запросов с токеном и обновления токена
 export const fetchWithAuth = async (url) => {
-  try {
-    const response = await api.get(url);
-    return response.data;
-  } catch (error) {
-    console.error("Ошибка в fetchWithAuth:", error);
-    throw error;
-  }
+  const response = await apiService.get(url);
+  return response.data;
 };
 
 // Функция для POST-запросов с токеном и обновления токена
 export const postWithAuth = async (url, data, config = {}) => {
-  try {
-    const response = await api.post(url, data, config);
-    return response.data ? response.data : response;
-  } catch (error) {
-    console.error("Ошибка в postWithAuth:", error);
-    throw error;
-  }
+  const response = await apiService.post(url, data, config);
+  return response.data;
 };
 
-// Функция для PATCH-запросов
+// Функция для PATCH-запросов (обновление конкретных данных)
 export const patchWithAuth = async (url, data, config = {}) => {
-  try {
-    const response = await api.patch(url, data, config);
-    return response.data ? response.data : response;
-  } catch (error) {
-    console.error("Ошибка в patchWithAuth:", error);
-    throw error;
-  }
+  const response = await apiService.patch(url, data, config);
+  return response.data;
 };
 
-// Функция выхода из аккаунта
+// Функция для DELETE-запросов (выход из аккаунта)
 export const logout = async () => {
   try {
-    await api.delete("/Auth/Logout");
-    localStorage.removeItem("token");
+    await apiService.delete("/Auth/Logout");
     console.log("Успешный выход из аккаунта на сервере.");
   } catch (error) {
     console.error("Ошибка при выходе из системы:", error);
+  } finally {
+    localStorage.removeItem("token");
   }
 };
 
-// Функция для декодирования токена
+// Функция для декодирования аватара из токена
 export const decodeToken = (token) => {
   try {
     const base64Url = token.split(".")[1];
@@ -77,7 +64,7 @@ export const decodeToken = (token) => {
   }
 };
 
-// Функция для кропа изображения
+// Функция для кропа изображения до квадрата
 export const autoCropImageToSquare = (imageFile, callback) => {
   const reader = new FileReader();
   reader.readAsDataURL(imageFile);
