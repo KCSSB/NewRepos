@@ -1,151 +1,63 @@
 import api from "./axiosInstance.js";
 
-// Функция для обновления токена
-const refreshAccessToken = async () => {
+export const refreshAccessToken = async () => {
   try {
-    const response = await api.post("/Auth/RefreshAccessToken");
-    return response.data.accessToken;
-  } catch (error) {
-    throw new Error("Failed to refresh token. Please log in again.");
-  }
-};
-
-// Функция для обновления и установки токена (загрузка аватарки)
-export const refreshAndSetToken = async () => {
-  try {
-    const newAccessToken = await refreshAccessToken();
+    const response = await api.post("/Auth/RefreshAccessToken", {});
+    const newAccessToken = response.data.accessToken;
     localStorage.setItem("token", newAccessToken);
-    console.log("RefreshAndSetToken success");
-    return newAccessToken;
+    return true;
   } catch (error) {
-    console.error("RefreshAndSetToken failed", error);
-    throw error;
+    console.error("Ошибка при обновлении токена:", error);
+    localStorage.removeItem("token");
+    return false;
   }
 };
 
-// Функция для GET-запросов с токеном и обновления токена
+// Функция для GET-запросов с токеном
 export const fetchWithAuth = async (url) => {
-  let accessToken = localStorage.getItem("token");
-
-  if (!accessToken) {
-    window.location.href = "/auth/login";
-    throw new Error("Access Token not found. Please log in.");
-  }
-
   try {
-    const response = await api.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await api.get(url);
     return response.data;
   } catch (error) {
-    if (error.response?.status === 401) {
-      try {
-        const newAccessToken = await refreshAccessToken();
-        localStorage.setItem("token", newAccessToken);
-        const newResponse = await api.get(url, {
-          headers: {
-            Authorization: `Bearer ${newAccessToken}`,
-          },
-        });
-        return newResponse.data;
-      } catch (refreshError) {
-        window.location.href = "/auth/login";
-        throw new Error(
-          "Unauthorized: Invalid or expired token. Please log in again."
-        );
-      }
-    }
+    console.error("Ошибка в fetchWithAuth:", error);
     throw error;
   }
 };
 
 // Функция для POST-запросов с токеном и обновления токена
 export const postWithAuth = async (url, data, config = {}) => {
-  let accessToken = localStorage.getItem("token");
-
-  if (!accessToken) {
-    throw new Error("Access Token not found. Please log in.");
-  }
-
   try {
-    const response = await api.post(url, data, {
-      ...config,
-      headers: {
-        ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await api.post(url, data, config);
     return response.data ? response.data : response;
   } catch (error) {
-    if (error.response?.status === 401) {
-      console.log("Token expired. Attempting to refresh...");
-      try {
-        const newAccessToken = await refreshAccessToken();
-        localStorage.setItem("token", newAccessToken);
-
-        const newResponse = await api.post(url, data, {
-          ...config,
-          headers: {
-            ...config.headers,
-            Authorization: `Bearer ${newAccessToken}`,
-          },
-        });
-        return newResponse.data;
-      } catch (refreshError) {
-        throw new Error(
-          "Unauthorized: Invalid or expired token. Please log in again."
-        );
-      }
-    }
+    console.error("Ошибка в postWithAuth:", error);
     throw error;
   }
 };
 
-// Функция для PATCH-запросов (обновление конкретных данных)
+// Функция для PATCH-запросов
 export const patchWithAuth = async (url, data, config = {}) => {
-  let accessToken = localStorage.getItem("token");
-
-  if (!accessToken) {
-    throw new Error("Access Token not found. Please log in.");
-  }
-
   try {
-    const response = await api.patch(url, data, {
-      ...config,
-      headers: {
-        ...config.headers,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await api.patch(url, data, config);
     return response.data ? response.data : response;
   } catch (error) {
-    if (error.response?.status === 401) {
-      console.log("Token expired. Attempting to refresh...");
-      try {
-        const newAccessToken = await refreshAccessToken();
-        localStorage.setItem("token", newAccessToken);
-
-        const newResponse = await api.patch(url, data, {
-          ...config,
-          headers: {
-            ...config.headers,
-            Authorization: `Bearer ${newAccessToken}`,
-          },
-        });
-        return newResponse.data;
-      } catch (refreshError) {
-        throw new Error(
-          "Unauthorized: Invalid or expired token. Please log in again."
-        );
-      }
-    }
+    console.error("Ошибка в patchWithAuth:", error);
     throw error;
   }
 };
 
-// Функция для декодирования аватара из токена
+// Функция выхода из аккаунта
+export const logout = async () => {
+  try {
+    await api.delete("/Auth/Logout");
+    localStorage.removeItem("token");
+    console.log("Успешный выход из аккаунта на сервере.");
+  } catch (error) {
+    console.error("Ошибка при выходе из системы:", error);
+  }
+};
+
+// Функция для декодирования токена
 export const decodeToken = (token) => {
   try {
     const base64Url = token.split(".")[1];
@@ -165,7 +77,7 @@ export const decodeToken = (token) => {
   }
 };
 
-// Функция для кропа изображения до квадрата
+// Функция для кропа изображения
 export const autoCropImageToSquare = (imageFile, callback) => {
   const reader = new FileReader();
   reader.readAsDataURL(imageFile);
@@ -200,25 +112,4 @@ export const autoCropImageToSquare = (imageFile, callback) => {
       );
     };
   };
-};
-
-// Функция выхода из аккаунта
-export const logout = async () => {
-  let accessToken = localStorage.getItem("token");
-
-  if (!accessToken) {
-    console.warn("Токен не найден. Выход из системы не требуется.");
-    return;
-  }
-
-  try {
-    await api.delete("/Auth/Logout", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    console.log("Успешный выход из аккаунта на сервере.");
-  } catch (error) {
-    console.error("Ошибка при выходе из системы:", error);
-  }
 };
