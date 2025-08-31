@@ -7,7 +7,6 @@ const api = axios.create({
 });
 
 // Отправка токена с каждым запросом
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
@@ -19,7 +18,6 @@ api.interceptors.request.use((config) => {
 });
 
 // Обработка ошибок и обновление токена
-
 api.interceptors.response.use(
   (response) => {
     return response;
