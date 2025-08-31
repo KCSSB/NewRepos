@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Form.module.css";
-import api from "../../../../service/axiosInstance.js";
+import api from "../../../../service/apiService.js";
 import { useNavigate } from "react-router-dom";
 
 const handleLogin = async (login, password, navigate, setError) => {
@@ -22,7 +22,6 @@ const Form = ({ isRegister }) => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {

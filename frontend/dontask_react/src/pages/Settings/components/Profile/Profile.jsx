@@ -7,7 +7,7 @@ import {
   postWithAuth,
   logout,
 } from "../../../../service/api";
-import { useNavigate } from "react-router-dom"; // 👈 Added import
+import { useNavigate } from "react-router-dom";
 import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
@@ -16,7 +16,7 @@ import { useToast } from "../../../../components/Toast/ToastContext";
 
 export default function Profile() {
   const showToast = useToast();
-  const navigate = useNavigate(); // 👈 Initialized hook
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userAvatar, setUserAvatar] = useState(default_avatar);
@@ -71,7 +71,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetchSettingsPageData();
-  }, [showToast]);
+  }, []);
 
   const handleLoadClick = () => {
     fileInputRef.current.click();
@@ -120,10 +120,15 @@ export default function Profile() {
 
       await refreshAndSetToken();
       window.dispatchEvent(new Event("tokenUpdated"));
-      await fetchSettingsPageData();
+
+      const newAvatarUrl = URL.createObjectURL(croppedFile);
+      setUserAvatar(newAvatarUrl);
+      setServerAvatar(newAvatarUrl);
+
       setSelectedFile(null);
       setCroppedFile(null);
       showToast("Аватар успешно загружен!", "success");
+      setLoading(false);
     } catch (err) {
       console.error("Ошибка при загрузке аватара:", err);
       showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
