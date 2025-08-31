@@ -75,15 +75,15 @@ namespace DataBaseInfo.Services
             if (user == null)
                 throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {UserEmail} не существует"));
         
-            var activeToken = await context.RefreshTokens
-            .Include(rt => rt.User)
-            .FirstOrDefaultAsync(rt => 
-                rt.User.UserEmail == UserEmail
-                && !rt.IsRevoked
-                && rt.ExpiresAt > DateTime.UtcNow);
+            //var activeToken = await context.RefreshTokens
+            //.Include(rt => rt.User)
+            //.FirstOrDefaultAsync(rt => 
+            //    rt.User.UserEmail == UserEmail
+            //    && !rt.IsRevoked
+            //    && rt.ExpiresAt > DateTime.UtcNow);
 
-             if (activeToken != null)
-                throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
+            // if (activeToken != null)
+            //    throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
           
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
 
