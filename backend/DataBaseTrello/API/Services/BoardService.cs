@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Net;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions;
+using API.Exceptions.Context;
 using API.Extensions;
 using DataBaseInfo;
 using DataBaseInfo.models;
@@ -15,10 +16,12 @@ namespace API.Services
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
            private readonly ILogger<BoardService> _logger;
+        private readonly ErrorContextCreator _errCreator;
         public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<BoardService> logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+            _errCreator = new ErrorContextCreator(ServiceName.BoardService);
         }
         public async Task<int> CreateBoardAsync(string boardName)
         {
@@ -31,10 +34,7 @@ namespace API.Services
             };
 
             await context.Boards.AddAsync(board);
-            await context.SaveChangesWithContextAsync(ServiceName.BoardService,
-                OperationName.CreateBoardAsync,"Произошла ошибка при попытке сохранить board в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить board в бд");
 
             return board.Id;
         }
@@ -53,11 +53,7 @@ namespace API.Services
            //Ты хотел создать метод для проверки и синхонизации входных ProjectUsers с теми что хранятся в бд
 
             if (existingBoard == null)
-                throw new AppException(new ErrorContext(ServiceName.BoardService,
-                 OperationName.AddProjectUserInBoardAsync,
-                 HttpStatusCode.NotFound,
-                UserExceptionMessages.InternalExceptionMessage,
-                $"Board с Id: {boardId}, не найден"));
+                throw new AppException(_errCreator.NotFound($"Board с Id: {boardId}, не найден"));
 
             //if (!existingIds.Contains(boardLeadId))
                // throw new Exception();
@@ -97,11 +93,7 @@ namespace API.Services
             {
                 await context.MembersOfBoards.AddAsync(member);
             }
-            await context.SaveChangesWithContextAsync(ServiceName.BoardService,
-                OperationName.AddBoardMembersToDbAsync,
-                "Произошла ошибка при попытке сохранить MembersOfBoard в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить MembersOfBoard в бд");
 
         }
         

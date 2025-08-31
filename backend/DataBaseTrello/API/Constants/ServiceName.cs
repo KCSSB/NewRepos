@@ -13,5 +13,15 @@
         public const string UserController = "UserController";
         public const string SexHelper = "SexHelper";
         public const string ResponseCreator = "ResponseCreator";
+        public const string RefreshTokensCleaner = "RefreshTokensCleaner";
+        public const string ClaimsPrincipalExtensions = "ClaimsPrincipalExtensions";
+        public const string DbContextExtensions = "DbContextExtensions";
+        public const string EmailService = "EmailService";
+        public const string GetPagesService = "GetPagesService";
+        
+
+
+
+
     }
 }

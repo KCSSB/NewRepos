@@ -35,10 +35,7 @@ namespace DataBaseInfo
                 entity.Property(u => u.InviteId).IsRequired();
                 entity.Property(u => u.UserEmail).IsRequired().HasMaxLength(50);
                 entity.HasIndex(u => u.UserEmail).IsUnique();
-                entity.HasOne(u => u.RefreshToken)
-                .WithOne(r => r.User)
-                .HasForeignKey<RefreshToken>(r => r.UserId);
-                
+               
             });
 
             modelBuilder.Entity<Project>(entity =>
@@ -137,11 +134,15 @@ namespace DataBaseInfo
             });
             modelBuilder.Entity<RefreshToken>(entity =>
             {
-                entity.Property(r => r.Id).IsRequired();
+                entity.HasKey(r => r.Id);
                 entity.Property(r => r.CreatedAt).IsRequired();
                
              
                 entity.Property(r => r.UserId).IsRequired();
+                entity.HasOne(rt => rt.User)
+               .WithMany(u => u.RefreshToken)
+               .HasForeignKey(r => r.UserId);
+
             });
 
 

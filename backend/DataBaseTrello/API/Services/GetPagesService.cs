@@ -1,12 +1,12 @@
 ﻿using API.DTO.Responses.Pages;
 using API.DTO.Responses;
 using DataBaseInfo;
-using DataBaseInfo.models;
 using Microsoft.EntityFrameworkCore;
 using API.Constants;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
-using API.DTO.Mappers.ToResponseModel;
+using API.Exceptions;
+using API.DTO.Mappers;
 
 namespace API.Services
 {
@@ -14,10 +14,12 @@ namespace API.Services
     {
         private readonly ILogger<GetPagesService> _logger;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
+        private readonly ErrorContextCreator _errCreator;
         public GetPagesService(ILogger<GetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory)
         {
           _logger = logger;  
           _contextFactory = contextFactory;
+            _errCreator = new ErrorContextCreator(ServiceName.GetPagesService);
         }
         public async Task<HomePage> CreateHomePageDTOAsync(int userId)
         {
@@ -26,16 +28,13 @@ namespace API.Services
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user == null)
-                throw new AppException(new ErrorContext(ServiceName.UserService,
-                     OperationName.UploadUserAvatarAsync,
-                     HttpStatusCode.NotFound,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
 
             var projects = await context.Projects
                 .Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
                 .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
                 .ToListAsync();
+
             var summaryProjects = projects.Select(ToResponseMapper.ToSummaryProjectResponse).ToList();
             return new HomePage { SummaryProject = summaryProjects };
         }
@@ -46,12 +45,7 @@ namespace API.Services
             var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
-                throw new AppException(new ErrorContext(ServiceName.UserService,
-                     OperationName.UploadUserAvatarAsync,
-                     HttpStatusCode.NotFound,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
-
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
 
             var page = ToResponseMapper.ToSettingsPageResponse(user);
             return page;

@@ -1,7 +1,7 @@
 ﻿using Imagekit.Sdk;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
+//using SixLabors.ImageSharp;
+//using SixLabors.ImageSharp.PixelFormats;
+//using SixLabors.ImageSharp.Processing;
 using Microsoft.Extensions.Options;
 using API.Configuration;
 namespace API.Helpers
@@ -18,45 +18,7 @@ namespace API.Helpers
                  privateKey: _settings.PrivateKey,
                  urlEndPoint: _settings.UrlEndpoint);
         }
-        public async Task<IFormFile> PrepareImageAsync(IFormFile file, int height, int width)
-        {
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-            ms.Position = 0;
-
-            using var image = await Image.LoadAsync<Rgba32>(ms);
-
-            if (image.Height != height || image.Width != width)
-            {
-                var bytes = await CropAndResizeAsync(image, height,width);
-                var changedFile = ConvertBytesToFormFile(bytes, file.FileName, file.ContentType);
-                return changedFile;
-            }
-
-            return file;
-
-        }
-        private async Task<byte[]> CropAndResizeAsync(Image<Rgba32> image, int height, int width)
-        {
-            using var outPutStream = new MemoryStream();
-            int sizeOfSide = Math.Min(image.Width, image.Height);
-            image.Mutate(x =>
-
-            {
-                x.Crop(new Rectangle((image.Width - sizeOfSide) / 2, (image.Height - sizeOfSide) / 2, height, width));
-                x.Resize(new ResizeOptions
-                {
-                    Size = new Size(height, width),
-                    Mode = ResizeMode.Crop,
-
-                });
-            });
-
-
-
-            await image.SaveAsJpegAsync(outPutStream);
-            return outPutStream.ToArray();
-        }
+      
         public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
         {
             var stream = new MemoryStream(fileBytes);
@@ -88,5 +50,44 @@ namespace API.Helpers
 
             return result;
         }
+        //public async Task<IFormFile> PrepareImageAsync(IFormFile file, int height, int width)
+        //{
+        //    using var ms = new MemoryStream();
+        //    await file.CopyToAsync(ms);
+        //    ms.Position = 0;
+
+        //    using var image = await Image.LoadAsync<Rgba32>(ms);
+
+        //    if (image.Height != height || image.Width != width)
+        //    {
+        //        var bytes = await CropAndResizeAsync(image, height,width);
+        //        var changedFile = ConvertBytesToFormFile(bytes, file.FileName, file.ContentType);
+        //        return changedFile;
+        //    }
+
+        //    return file;
+
+        //}
+        //private async Task<byte[]> CropAndResizeAsync(Image<Rgba32> image, int height, int width)
+        //{
+        //    using var outPutStream = new MemoryStream();
+        //    int sizeOfSide = Math.Min(image.Width, image.Height);
+        //    image.Mutate(x =>
+
+        //    {
+        //        x.Crop(new Rectangle((image.Width - sizeOfSide) / 2, (image.Height - sizeOfSide) / 2, height, width));
+        //        x.Resize(new ResizeOptions
+        //        {
+        //            Size = new Size(height, width),
+        //            Mode = ResizeMode.Crop,
+
+        //        });
+        //    });
+
+
+
+        //    await image.SaveAsJpegAsync(outPutStream);
+        //    return outPutStream.ToArray();
+        //}
     }
 }

@@ -1,11 +1,11 @@
 ﻿using API.DTO.Domain;
 using API.DTO.Requests;
 
-namespace API.DTO.Mappers.ToDomainModel
+namespace API.DTO.Mappers
 {
-    public static class ToDomainModelMapper
+    public static class ToDomainMapper
     {
-        public static UpdateUserModel ToUpdateUserGeneralInfoModel(UpdateUserRequest request)
+        public static UpdateUserModel ToUpdateUserModel(UpdateUserRequest request)
         {
             return new UpdateUserModel
             {

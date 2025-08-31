@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataBaseInfo.models
 {
@@ -20,7 +14,7 @@ namespace DataBaseInfo.models
         public Sex Sex { get; set; } = Sex.Unknown;
         public string Avatar {  get; set; } = string.Empty;
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
-        public virtual RefreshToken? RefreshToken { get; set; } 
+        public virtual List<RefreshToken?> RefreshToken { get; set; } = new();
     }
     public enum Sex
     {

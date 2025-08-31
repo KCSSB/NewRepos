@@ -4,24 +4,24 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http.HttpResults;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using API.Helpers;
-using System.Data.Common;
 using API.Extensions;
-using API.Exceptions.ErrorContext;
+using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using API.Exceptions.Context;
+using API.Exceptions;
 
 namespace API.Services
 {
     public class ProjectService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-       
+        private readonly ErrorContextCreator _errCreator;
 
         public ProjectService(IDbContextFactory<AppDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+            _errCreator = new ErrorContextCreator(ServiceName.ProjectService);
         }
         public async Task<int> CreateProjectAsync(string projectName)
         {
@@ -30,15 +30,11 @@ namespace API.Services
                     ProjectName = projectName
                 };
 
-                using var context = await _contextFactory.CreateDbContextAsync();
+                using var context = _contextFactory.CreateDbContext();
 
                 await context.Projects.AddAsync(project);
 
-                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                    OperationName.CreateProjectAsync,
-                    UserExceptionMessages.CreateProjectExceptionMessage,
-                    "Произошла ошибка, в момент добавления проекта в базу данных",
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync("Произошла ошибка, в момент добавления проекта в базу данных");
 
                 return project.Id;
 
@@ -46,7 +42,7 @@ namespace API.Services
         public async Task<int> AddUserInProjectAsync(int userId, int projectId)
         {
               
-                using var context = _contextFactory.CreateDbContext();
+                await using var context = await _contextFactory.CreateDbContextAsync();
 
                 var user = await context.Users
                     .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
@@ -64,29 +60,17 @@ namespace API.Services
                     ProjectRole = (project.ProjectUsers.Count <=0) ? "ProjectOwner": "ProjectMember"
                 };
                 if (user == null)
-                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                        OperationName.AddUserInProjectAsync,
-                        HttpStatusCode.InternalServerError,
-                        UserExceptionMessages.InternalExceptionMessage,
-                        $"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
+                    throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
 
                 if (project == null)
-                    throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                        OperationName.AddUserInProjectAsync,
-                        HttpStatusCode.InternalServerError,
-                        UserExceptionMessages.InternalExceptionMessage,
-                        $"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
+                    throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Проект id: {projectId}, не найден"));
 
                 user.ProjectUsers.Add(projectUser);
 
                 project.ProjectUsers.Add(projectUser);
                 
 
-                await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                    OperationName.AddUserInProjectAsync,
-                    $"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}",
-                    UserExceptionMessages.CreateProjectExceptionMessage,
-                    HttpStatusCode.InternalServerError);
+                await context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
 
                 return projectUser.Id;
            
@@ -100,17 +84,9 @@ namespace API.Services
             using var context = await _contextFactory.CreateDbContextAsync();
             var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
-                throw new AppException(new ErrorContext(ServiceName.ProjectService,
-                    OperationName.UpdateProjectImageAsync,
-                    HttpStatusCode.InternalServerError,
-                    UserExceptionMessages.InternalExceptionMessage,
-                    $"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
-            await context.SaveChangesWithContextAsync(ServiceName.ProjectService,
-                OperationName.UpdateProjectImageAsync,
-                $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд",
-                UserExceptionMessages.InternalExceptionMessage,
-                HttpStatusCode.InternalServerError);
+            await context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
     }

@@ -8,6 +8,7 @@ namespace API.DTO.Requests
         [Required(ErrorMessage = "Вы не указали название проекта")]
         [MinLength(AllowLengthProp.MinProjectName)]
         [MaxLength(AllowLengthProp.MaxProjectName)]
+
         public required string ProjectName { get; set; }
 
         [MaxFileSize(5 * 1024 * 1024)]

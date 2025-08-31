@@ -1,14 +1,12 @@
 ﻿using System.Net;
 
-namespace API.Exceptions.ErrorContext
+namespace API.Exceptions.Context
 {
     public class ErrorContext
     {
         public string Service { get; set; } = string.Empty;
         public string Operation { get; set; } = string.Empty;
-
         public HttpStatusCode? StatusCode { get; set; }
-        
         public string UserMessage { get; set; } = string.Empty ;
         public string LoggerMessage { get; set; } = string.Empty ;
 

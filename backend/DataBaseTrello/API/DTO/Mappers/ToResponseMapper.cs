@@ -3,7 +3,7 @@ using API.DTO.Responses;
 using API.DTO.Responses.Pages;
 using DataBaseInfo.models;
 
-namespace API.DTO.Mappers.ToResponseModel
+namespace API.DTO.Mappers
 {
     public static class ToResponseMapper
     {

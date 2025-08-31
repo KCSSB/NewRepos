@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Constants;
+using API.Exceptions;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -15,11 +17,13 @@ namespace API.BackGroundServices
     {
         private readonly ILogger<RefreshTokensCleaner> _logger;
         private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+        private readonly ErrorContextCreator _errCreator;
 
         public RefreshTokensCleaner(ILogger<RefreshTokensCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory)
         {
             _logger = logger;
             _dbContextFactory = dbContextFactory;
+            _errCreator = new ErrorContextCreator(ServiceName.RefreshTokensCleaner);
         }
         protected override async Task ExecuteAsync(CancellationToken ct)
         {
