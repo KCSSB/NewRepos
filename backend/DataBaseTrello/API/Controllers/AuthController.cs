@@ -6,7 +6,6 @@ using API.Helpers;
 using API.Configuration;
 using API.DTO.Requests;
 using API.Exceptions.Context;
-using System.Net;
 using API.Constants;
 using API.Exceptions;
 using API.Extensions;

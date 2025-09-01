@@ -15,6 +15,7 @@ using Serilog;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using NuGet.Protocol.Plugins;
+using API.Middleware;
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
@@ -73,7 +74,7 @@ builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ResponseCreator>();
-
+builder.Services.AddScoped<RedisService>();
 builder.Services.AddSwaggerGen(c =>
 {
     // Другие настройки Swagger...
@@ -175,6 +176,7 @@ app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandling();
+app.UseSessionValidation();
 app.MapControllers();
 
 app.Run();
