@@ -1,8 +1,10 @@
 ﻿using API.Configuration;
+using API.Constants;
 using API.DTO.Domain;
 using API.DTO.Mappers;
+using API.Exceptions;
 using Microsoft.Extensions.Options;
-using Org.BouncyCastle.Asn1.Mozilla;
+using API.Exceptions.Context;
 using StackExchange.Redis;
 
 namespace API.Helpers
@@ -21,10 +23,12 @@ namespace API.Helpers
         {
             private IDatabase _db;
             public readonly IOptions<TLLSettings> _options;
+            public readonly ErrorContextCreator _errCreator;
             public ForSession(IConnectionMultiplexer redis, IOptions<TLLSettings> options)
             {
                 _db = redis.GetDatabase(0);
                 _options = options;
+                _errCreator = new ErrorContextCreator(ServiceName.RedisService);
             }
             public async Task SetSessionAsync(int userId, string deviceId)
             {
@@ -37,21 +41,23 @@ namespace API.Helpers
             {
                 string key = $"session:{userId}:{deviceId}";
                 bool sessionExists = await _db.KeyExistsAsync(key);
-                if (sessionExists== true)
-                {
-                   await _db.HashSetAsync(key, "IsRevoked", true);
-                   await _db.KeyExpireAsync(key, _options.Value.SessionIsRevokedExpires);
-                }
+                if (sessionExists == false)
+                    throw new AppException(_errCreator.Unauthorized($"Сессия не существует: userId: {userId} deviceId: {deviceId}"));
+                
+                    var tasks = new Task[]
+                    {
+                   _db.HashSetAsync(key, "IsRevoked", true),
+                   _db.KeyExpireAsync(key, _options.Value.SessionIsRevokedExpires)
+                    };
+                await Task.WhenAll(tasks);
             }
             public async Task<SessionData> GetSessionAsync(int userId, string deviceId)
             {
                 string key = $"session:{userId}:{deviceId}";
                 HashEntry[] hashEntries = await _db.HashGetAllAsync(key);
                 if (hashEntries.Length == 0)
-                    throw new AppException("Сессия не существует");
-
+                    throw new AppException(_errCreator.Unauthorized($"Сессия не существует: userId: {userId} deviceId: {deviceId}"));
                 SessionData session = ToDomainMapper.ToSessionData(hashEntries);
-       
                 return session;
 
             }
