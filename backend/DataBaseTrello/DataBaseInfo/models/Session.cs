@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataBaseInfo.models
 {
-    public class RefreshToken
+    public class Session
     {
         [Key]
         public int Id { get; set; }
         public string Token { get; set; } = string.Empty; //Это хэшируется
+        public Guid DeviceId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
         public bool IsRevoked { get; set; }

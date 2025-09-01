@@ -9,6 +9,7 @@ using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
 using API.Exceptions;
+using API.Extensions;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -55,8 +56,9 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
                 throw new AppException(_errCreator.BadRequest("Данные переданные в экземпляр loginRequest не валидны"));
-          
-            var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword);
+            
+                string? deviceId = User.GetDeviceId();
+            var tokens = await _userService.LoginAsync(loginRequest.UserEmail, loginRequest.UserPassword, deviceId);
        
             Response.Cookies.Append("refreshToken", tokens.RefreshToken, new CookieOptions
             {
@@ -77,16 +79,16 @@ namespace API.Controllers
         {
             //Валидация здесь
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.RefreshAccessToken);
-
+            string? deviceId = User.GetDeviceId();
             var refreshToken = Request.Cookies["refreshToken"]; 
 
             if (refreshToken == null)
                 throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
-              
-            //Валидация здесь
-            //Возможно проблемы
-            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken);
-            //Возможно проблемы
+            if (deviceId == null)
+                throw new AppException(_errCreator.Unauthorized("Произошла ошибка при получении информации об устройстве"));
+            
+            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken, deviceId);
+            
             Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
             {
                 HttpOnly = true,

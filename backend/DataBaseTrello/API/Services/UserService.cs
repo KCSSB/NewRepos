@@ -65,36 +65,34 @@ namespace DataBaseInfo.Services
                 return user.Id;
 
                 }
-        public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string UserEmail, string Password)
+        public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
-
-
             using var context = _contextFactory.CreateDbContext();
-         
-            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
+            
+            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
             if (user == null)
-                throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {UserEmail} не существует"));
-        
-            //var activeToken = await context.RefreshTokens
-            //.Include(rt => rt.User)
-            //.FirstOrDefaultAsync(rt => 
-            //    rt.User.UserEmail == UserEmail
-            //    && !rt.IsRevoked
-            //    && rt.ExpiresAt > DateTime.UtcNow);
+                throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
+            if (deviceId == null)
+                deviceId = Guid.NewGuid().ToString();
+            var activeSession= await context.Sessions
+            .Include(rt => rt.User)
+            .FirstOrDefaultAsync(rt => 
+                rt.User.UserEmail == userEmail
+                && !rt.IsRevoked
+                && rt.ExpiresAt > DateTime.UtcNow
+                && rt.DeviceId.ToString() == deviceId);
 
-            // if (activeToken != null)
-            //    throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
+             if (activeSession != null)
+                throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {userEmail}. Уже был авторизован на данном устройстве"));
           
-            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
+            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
-                throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail}"));
+                throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
+            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);
 
-
-            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user);
-
-            var accessToken = _JWTService.GenerateAccessToken(user);
+            var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
             return (accessToken, refreshToken);
         }
 

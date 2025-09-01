@@ -13,20 +13,23 @@ using API.Exceptions.Context;
 using System.Net;
 using Serilog;
 using Microsoft.OpenApi.Models;
-using API.Exceptions;
-
-
-
+using StackExchange.Redis;
+using NuGet.Protocol.Plugins;
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 // Добавление секции AuthSettings в Сервисы Билдера
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
+builder.Services.Configure<TLLSettings>(builder.Configuration.GetSection("TLLSettings"));
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
 // Регистрация фабрики контекста
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer
+.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379"));
 
 
 

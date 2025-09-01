@@ -31,19 +31,19 @@ namespace API.Helpers
             _logger = logger;
             _errCreator = new ErrorContextCreator(ServiceName.JWTServices);
         }
-        public string GenerateAccessToken(User user)
+        public string GenerateAccessToken(User user, string? deviceId)
         {
-        
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                new Claim("FirstName", user.FirstName),
-                new Claim("SecondName", user.SecondName), 
+                new Claim("SecondName", user.SecondName),
                new Claim("Sex", SexHelper.GetSexDisplay(user.Sex)),
                new Claim("InviteId", user.InviteId.ToString()),
                 new Claim("UserEmail", user.UserEmail),
-                new Claim("Avatar", user.Avatar)
-                
+                new Claim("Avatar", user.Avatar),
+                new Claim("DeviceId", deviceId.ToString()),
             };
             
             var jwtToken = new JwtSecurityToken(
@@ -55,7 +55,7 @@ namespace API.Helpers
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
         
-        public async Task<string> CreateRefreshTokenAsync(User user, AppDbContext? context = null)
+        public async Task<string> CreateRefreshTokenAsync(User user,string? deviceId, AppDbContext? context = null)
         {
             var ownContext = context == null;
             if (ownContext)
@@ -63,17 +63,18 @@ namespace API.Helpers
 
             var token = Guid.NewGuid().ToString();
                 
-            var hashedToken = new RefreshToken
+            var hashedToken = new Session
                   {
                     CreatedAt = DateTime.UtcNow,
                     ExpiresAt = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires),
                     Token = _hashService.HashToken(token),
                     IsRevoked = false,
                     UserId = user.Id,
+                    DeviceId = Guid.Parse(deviceId),
                   };
-                    user.RefreshToken.Add(hashedToken);
+                    user.Sessions.Add(hashedToken);
               
-            await context.RefreshTokens.AddAsync(hashedToken);
+            await context.Sessions.AddAsync(hashedToken);
 
             await context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
             if (ownContext)
@@ -82,28 +83,28 @@ namespace API.Helpers
             }
           
         
-        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken)
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, string? deviceId)
         {
 
             using var context = _contextFactory.CreateDbContext();
             
                 var hashToken = _hashService.HashToken(refreshToken);
 
-            var storedToken = await context.RefreshTokens
+            var storedToken = await context.Sessions
                 .Include(rt => rt.User)
                 .FirstOrDefaultAsync(rt => hashToken == rt.Token);
 
             RefTokenIsValid(storedToken);
             storedToken.IsRevoked = true;
 
-            var token = await CreateRefreshTokenAsync(storedToken.User);
+            var token = await CreateRefreshTokenAsync(storedToken.User, deviceId);
             
-            var newAccessToken = GenerateAccessToken(storedToken.User);
+            var newAccessToken = GenerateAccessToken(storedToken.User, deviceId);
          
             return (newAccessToken, token);
             }
 
-            public void RefTokenIsValid(RefreshToken? token)
+            public void RefTokenIsValid(Session? token)
             {
             if (token == null)
                 throw new AppException(_errCreator.Unauthorized("RefreshToken не существует"));
@@ -121,7 +122,7 @@ namespace API.Helpers
             using var context = await _contextFactory.CreateDbContextAsync();
 
             var hashedRequestToken = _hashService.HashToken(refreshToken);
-            var token = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
+            var token = await context.Sessions.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
             if (token == null)
                 throw new AppException(_errCreator.Unauthorized("В базе не найден refresh token, соответствующий значению из cookie при попытке выйти из аккаунта"));
 

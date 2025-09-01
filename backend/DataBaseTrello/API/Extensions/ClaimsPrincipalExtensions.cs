@@ -24,5 +24,12 @@ namespace API.Extensions
 
             return userId;
         }
+        public static string GetDeviceId(this ClaimsPrincipal user)
+        {
+            string? deviceId = null;
+            if (user!=null)
+                deviceId = user.FindFirstValue("DeviceId");
+            return deviceId;
+        }
     }
 }

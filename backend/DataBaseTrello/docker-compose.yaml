@@ -9,13 +9,25 @@ services:
       depends_on:
         db:
           condition: service_healthy
+        redis:
+            condition: service_healthy
       environment:
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+      - REDIS_CONNECTION=${REDIS_CONNECTION} 
+      - REDIS_INSTANCE_PREFIX=${REDIS_INSTANCE_PREFIX}    
       - ASPNETCORE_ENVIRONMENT=Development
       - PGSSLMODE=Disable 
 
-
-    #Todo
+    redis:
+      image: redis:latest
+      ports:
+         - "6379:6379"
+      healthcheck:
+             test: ["CMD", "redis-cli", "ping"]
+             interval: 5s
+             timeout: 10s
+             retries: 5
+     #Todo
     db:
       image: postgres:17.0
       ports:
@@ -33,4 +45,5 @@ services:
        - db-data:/var/lib/postgresql/data
 volumes:
   db-data:
+     
   
