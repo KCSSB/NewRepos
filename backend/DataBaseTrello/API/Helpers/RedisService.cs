@@ -6,6 +6,7 @@ using API.Exceptions;
 using Microsoft.Extensions.Options;
 using API.Exceptions.Context;
 using StackExchange.Redis;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace API.Helpers
 {
@@ -30,19 +31,25 @@ namespace API.Helpers
                 _options = options;
                 _errCreator = new ErrorContextCreator(ServiceName.RedisService);
             }
-            public async Task SetSessionAsync(int userId, string deviceId)
+            public async Task SetSessionAsync(string refreshToken,int userId, string deviceId)
             {
                 string key = $"session:{userId}:{deviceId}";
-                await _db.HashSetAsync(key, "IsRevoked", false);
+                var entries = new HashEntry[]
+                {
+                new HashEntry("IsRevoked", false),
+                new HashEntry("HashedToken", refreshToken)
+                };
+            await _db.HashSetAsync(key, entries);
 
-                await _db.KeyExpireAsync(key, _options.Value.SessionExpires);
+            await _db.KeyExpireAsync(key, _options.Value.SessionExpires);
+                
             }
-            public async Task RevokeSessionAsync(int userId, string deviceId)
+            public async Task<bool> RevokeSessionAsync(int userId, string deviceId)
             {
                 string key = $"session:{userId}:{deviceId}";
                 bool sessionExists = await _db.KeyExistsAsync(key);
                 if (sessionExists == false)
-                    throw new AppException(_errCreator.Unauthorized($"Сессия не существует: userId: {userId} deviceId: {deviceId}"));
+                    return false;
                 
                     var tasks = new Task[]
                     {
@@ -50,13 +57,14 @@ namespace API.Helpers
                    _db.KeyExpireAsync(key, _options.Value.SessionIsRevokedExpires)
                     };
                 await Task.WhenAll(tasks);
+                return true;
             }
-            public async Task<SessionData> GetSessionAsync(int userId, string deviceId)
+            public async Task<SessionData?> GetSessionAsync(int userId, string deviceId)
             {
                 string key = $"session:{userId}:{deviceId}";
                 HashEntry[] hashEntries = await _db.HashGetAllAsync(key);
                 if (hashEntries.Length == 0)
-                    throw new AppException(_errCreator.Unauthorized($"Сессия не существует: userId: {userId} deviceId: {deviceId}"));
+                    return null;
                 SessionData session = ToDomainMapper.ToSessionData(hashEntries);
                 return session;
 

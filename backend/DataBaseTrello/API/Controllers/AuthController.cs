@@ -78,7 +78,9 @@ namespace API.Controllers
         {
             //Валидация здесь
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.RefreshAccessToken);
+            int userId = User.GetUserId();
             string? deviceId = User.GetDeviceId();
+           
             var refreshToken = Request.Cookies["refreshToken"]; 
 
             if (refreshToken == null)
@@ -86,7 +88,7 @@ namespace API.Controllers
             if (deviceId == null)
                 throw new AppException(_errCreator.Unauthorized("Произошла ошибка при получении информации об устройстве"));
             
-            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken, deviceId);
+            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken, userId, deviceId);
             
             Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
             {
@@ -104,13 +106,14 @@ namespace API.Controllers
             public async Task<IActionResult> Logout()
             {
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Logout);
+            int userId = User.GetUserId();
+            string? deviceId = User.GetDeviceId();
             var refreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(refreshToken))
                 throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
             
             
-            
-            await _jwtServices.RevokeRefreshTokenAsync(refreshToken);
+            await _jwtServices.RevokeRefreshTokenAsync(refreshToken, userId, deviceId);
             
                 Response.Cookies.Delete("refreshToken");
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.RefreshAccessToken);

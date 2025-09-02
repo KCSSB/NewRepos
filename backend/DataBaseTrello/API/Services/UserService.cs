@@ -24,12 +24,14 @@ namespace DataBaseInfo.Services
         private readonly JWTServices _JWTService;
         private readonly ErrorContextCreator _errCreator;
         private readonly ILogger<UserService> _logger;
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
+        private readonly RedisService _redis;
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger, RedisService redis)
         {
             _contextFactory = contextFactory;
             _JWTService = JWTService;
             _logger = logger;
             _errCreator = new ErrorContextCreator(ServiceName.UserService);
+            _redis = redis;
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
@@ -74,6 +76,7 @@ namespace DataBaseInfo.Services
                 throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
             if (deviceId == null)
                 deviceId = Guid.NewGuid().ToString();
+            //Логика для отслеживания количества сессий
             var activeSession= await context.Sessions
             .Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => 
@@ -84,14 +87,13 @@ namespace DataBaseInfo.Services
 
              if (activeSession != null)
                 throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {userEmail}. Уже был авторизован на данном устройстве"));
-          
+          //Вот до сюда логика идёт
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
-            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);
-
+            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
             var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
             return (accessToken, refreshToken);
         }
@@ -149,7 +151,7 @@ namespace DataBaseInfo.Services
                 var newPassHash = passHasher.HashPassword(user, newPass);
                 user.UserPassword = newPassHash;
                 await context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
-               
+                // Добавить логику разлогинивания всех вообще кроме нынешней сессий
             }
             else
             {

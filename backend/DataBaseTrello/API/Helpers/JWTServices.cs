@@ -11,6 +11,7 @@ using API.Extensions;
 using API.Exceptions.Context;
 using API.Constants;
 using API.Exceptions;
+using StackExchange.Redis;
 namespace API.Helpers
 {
     public class JWTServices
@@ -20,16 +21,19 @@ namespace API.Helpers
         private readonly HashService _hashService;
         private readonly ILogger<JWTServices> _logger;
         private readonly ErrorContextCreator _errCreator;
+        private readonly RedisService _redis;
         public JWTServices(IOptions<AuthSettings> options,
             IDbContextFactory<AppDbContext> contextFactory,
             HashService hashService,
-            ILogger<JWTServices> logger)
+            ILogger<JWTServices> logger,
+            RedisService redis)
         {
             _contextFactory = contextFactory;
             _hashService = hashService;
             _options = options;
             _logger = logger;
             _errCreator = new ErrorContextCreator(ServiceName.JWTServices);
+            _redis = redis;
         }
         public string GenerateAccessToken(User user, string? deviceId)
         {
@@ -62,30 +66,31 @@ namespace API.Helpers
                 context = await _contextFactory.CreateDbContextAsync();
 
             var token = Guid.NewGuid().ToString();
-                
-            var hashedToken = new Session
+            var hashedToken = _hashService.HashToken(token);
+            var session = new Session
                   {
                     CreatedAt = DateTime.UtcNow,
                     ExpiresAt = DateTime.UtcNow.Add(_options.Value.RefreshTokenExpires),
-                    Token = _hashService.HashToken(token),
+                    Token = hashedToken,
                     IsRevoked = false,
                     UserId = user.Id,
                     DeviceId = Guid.Parse(deviceId),
                   };
-                    user.Sessions.Add(hashedToken);
+                    user.Sessions.Add(session);
               
-            await context.Sessions.AddAsync(hashedToken);
+            await context.Sessions.AddAsync(session);
 
             await context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
             if (ownContext)
                 await context.DisposeAsync();
+            _redis.Session.SetSessionAsync(hashedToken,user.Id, deviceId);
             return token;
             }
           
         
-        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, string? deviceId)
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, int userId, string deviceId)
         {
-
+            _redis.Session.RevokeSessionAsync(userId, deviceId);
             using var context = _contextFactory.CreateDbContext();
             
                 var hashToken = _hashService.HashToken(refreshToken);
@@ -97,10 +102,9 @@ namespace API.Helpers
             RefTokenIsValid(storedToken);
             storedToken.IsRevoked = true;
 
-            var token = await CreateRefreshTokenAsync(storedToken.User, deviceId);
-            
+            var createToken = CreateRefreshTokenAsync(storedToken.User, deviceId);
             var newAccessToken = GenerateAccessToken(storedToken.User, deviceId);
-         
+            var token = await createToken;
             return (newAccessToken, token);
             }
 
@@ -116,18 +120,23 @@ namespace API.Helpers
             
     
         
-        public async Task RevokeRefreshTokenAsync(string refreshToken) // Где то тут может быть ошибка, поищи
+        public async Task RevokeRefreshTokenAsync(string refreshToken, int userId,string deviceId) // Где то тут может быть ошибка, поищи
         {
-
-            using var context = await _contextFactory.CreateDbContextAsync();
-
+            await _redis.Session.RevokeSessionAsync(userId, deviceId);
+            var contextTask = _contextFactory.CreateDbContextAsync();
+           
             var hashedRequestToken = _hashService.HashToken(refreshToken);
-            var token = await context.Sessions.FirstOrDefaultAsync(t => t.Token == hashedRequestToken);
+            using var context = await contextTask;
+            var token = await context.Sessions.FirstOrDefaultAsync(s => 
+            s.Token == hashedRequestToken
+            && s.UserId == userId
+            && s.DeviceId == Guid.Parse(deviceId));
+            
             if (token == null)
                 throw new AppException(_errCreator.Unauthorized("В базе не найден refresh token, соответствующий значению из cookie при попытке выйти из аккаунта"));
-
             token.IsRevoked = true;
             await context.SaveChangesWithContextAsync($"Ошибка при удалении Refresh Token из базы данных refresh token id: {token.Id}");    
+            
         }
     }
 }
