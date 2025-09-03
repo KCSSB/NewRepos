@@ -37,7 +37,7 @@ namespace API.Controllers
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Register);
 
             if (!ModelState.IsValid)
-                throw new AppException(_errCreator.BadRequest("Данные переданные в экземпляр RegisterUserRequest не валидны"));
+                throw new AppException(_errCreator.BadRequest($"Данные переданные в экземпляр RegisterUserRequest не валидны {request.UserEmail}"));
 
       
             int userId = await _userService.RegisterAsync(request.UserEmail, request.UserPassword);
@@ -108,12 +108,8 @@ namespace API.Controllers
             _logger.LogInformation(InfoMessages.StartOperation + OperationName.Logout);
             int userId = User.GetUserId();
             string? deviceId = User.GetDeviceId();
-            var refreshToken = Request.Cookies["refreshToken"];
-            if (string.IsNullOrEmpty(refreshToken))
-                throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
             
-            
-            await _jwtServices.RevokeRefreshTokenAsync(refreshToken, userId, deviceId);
+            await _jwtServices.RevokeSessionAsync(userId, deviceId);
             
                 Response.Cookies.Delete("refreshToken");
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.RefreshAccessToken);

@@ -27,7 +27,7 @@ namespace API.Middleware
             if (context.User.Identity.IsAuthenticated)
             {
             var scope = _scopeFactory.CreateScope();
-            var errCreator = scope.ServiceProvider.GetService<ErrorContextCreator>();
+                var errCreator = new ErrorContextCreator("SessionValidationMiddleware");
             var refreshToken = context.Request.Cookies["refreshToken"];
                 if (refreshToken == null)
                     throw new AppException(errCreator.Unauthorized("Ошибка при получении refreshToken из Cookie"));
@@ -51,12 +51,12 @@ namespace API.Middleware
         }
         private async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken,IServiceScope scope)
         {
-            
-            var errCreator = scope.ServiceProvider.GetService<ErrorContextCreator>();
+
+            var errCreator = new ErrorContextCreator("SessionValidationMiddleware");
             var redis = scope.ServiceProvider.GetService<RedisService>();
             var hashService = scope.ServiceProvider.GetService<HashService>();
 
-            SessionData? session = await redis.Session.GetSessionAsync(userId, deviceId);
+            SessionData? session = await redis.Session.SafeGetSessionAsync(userId, deviceId);
             if (session != null)
             {
                 if (hashService.VerifyToken(refreshToken,session.HashedToken))

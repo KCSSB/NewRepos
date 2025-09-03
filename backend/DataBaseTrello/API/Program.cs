@@ -8,14 +8,19 @@ using System.Text;
 using API.Helpers;
 using API.BackGroundServices;
 using API.Configuration;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Metrics;
 using API.Services;
 using API.Exceptions.Context;
 using System.Net;
 using Serilog;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
-using NuGet.Protocol.Plugins;
 using API.Middleware;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using API.Exceptions;
+
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
@@ -29,9 +34,8 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer
-.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379"));
-
+builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
+builder.Services.AddSingleton<RedisService>();
 
 
 //Регистрация сервиса для очистки рефреш токенов:
@@ -55,7 +59,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
        
     });
-
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracerProviderBuilder =>
+    {
+        tracerProviderBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("MyService"))
+            .AddAspNetCoreInstrumentation()
+            .AddConsoleExporter();
+    });
 
 
 // Другие сервисы
@@ -74,7 +85,6 @@ builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BoardService>();
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ResponseCreator>();
-builder.Services.AddScoped<RedisService>();
 builder.Services.AddSwaggerGen(c =>
 {
     // Другие настройки Swagger...

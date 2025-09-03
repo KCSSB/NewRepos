@@ -77,24 +77,22 @@ namespace DataBaseInfo.Services
             if (deviceId == null)
                 deviceId = Guid.NewGuid().ToString();
             //Логика для отслеживания количества сессий
-            var activeSession= await context.Sessions
-            .Include(rt => rt.User)
-            .FirstOrDefaultAsync(rt => 
-                rt.User.UserEmail == userEmail
-                && !rt.IsRevoked
-                && rt.ExpiresAt > DateTime.UtcNow
-                && rt.DeviceId.ToString() == deviceId);
 
-             if (activeSession != null)
-                throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {userEmail}. Уже был авторизован на данном устройстве"));
-          //Вот до сюда логика идёт
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
+            var activeSessions= await context.Sessions
+            .Where(s => s.UserId == user.Id
+                && !s.IsRevoked
+                && s.ExpiresAt > DateTime.UtcNow)
+            .OrderByDescending(s => s.CreatedAt).ToListAsync();
+
+                await _JWTService.ClearSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
             var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
             var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
+            await context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");
             return (accessToken, refreshToken);
         }
 
