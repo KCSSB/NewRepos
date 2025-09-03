@@ -110,8 +110,7 @@ namespace API.Controllers
             string? deviceId = User.GetDeviceId();
             
             await _jwtServices.RevokeSessionAsync(userId, deviceId);
-            
-                Response.Cookies.Delete("refreshToken");
+ 
             _logger.LogInformation(InfoMessages.FinishOperation + OperationName.RefreshAccessToken);
             return Ok("User success unauthorized");
 

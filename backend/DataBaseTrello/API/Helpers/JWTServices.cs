@@ -157,23 +157,28 @@ namespace API.Helpers
             await RevokeSessionRangeAsync(forRevoke);
         
         }
-        private async Task<bool> ClearThisDeviceSessionsAsync(List<Session> sessions,List<Session> forRevoke, Guid deviceId, int limit = 3)
+        private bool ClearThisDeviceSessions(List<Session> sessions,List<Session> forRevoke, Guid deviceId, int limit = 3)
         {
             bool hasDeviceId = false;
-            for (int i = 0; i < limit; i++)
-            {
-                if (sessions[i].DeviceId == deviceId)
+            int i = 0;
+            foreach(var session in sessions)
                 {
-                    forRevoke.Add(sessions[i]);
+                if (i > 3)
+                    return hasDeviceId;
+                if (session.DeviceId == deviceId)
+                {
+                    forRevoke.Add(session);
                     hasDeviceId = true;
                 }
+                i++;
             }
+            
             return hasDeviceId;
         }
         public async Task ClearSessionsAsync(List<Session> sessions, Guid deviceId, int limit = 3)
         {
             List<Session> forRevoked = new List<Session>();
-            bool hasDeviceId = await ClearThisDeviceSessionsAsync(sessions, forRevoked, deviceId, limit);
+            bool hasDeviceId = await ClearThisDeviceSessions(sessions, forRevoked, deviceId, limit);
 
             if(sessions.Count>limit)
                 await ClearSessionToTheLimitAsync(sessions, forRevoked, deviceId, hasDeviceId, limit);

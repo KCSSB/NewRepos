@@ -18,8 +18,6 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using API.Middleware;
 using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-using API.Exceptions;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -87,8 +85,7 @@ builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<ResponseCreator>();
 builder.Services.AddSwaggerGen(c =>
 {
-    // Другие настройки Swagger...
-
+    
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
@@ -118,9 +115,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-//builder.Services.AddCors(options => options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin()
-//.AllowAnyHeader()
-//.AllowAnyMethod()));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyPolicy",
@@ -132,6 +126,9 @@ builder.Services.AddCors(options =>
                    .AllowCredentials();
         });
 });
+
+
+
 
 var app = builder.Build();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -178,7 +175,6 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
-
 
 app.UseHttpsRedirection();
 app.UseRouting();
