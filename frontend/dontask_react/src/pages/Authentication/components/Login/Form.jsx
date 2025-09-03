@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import styles from "./Form.module.css";
 import api from "../../../../service/apiService.js";
 import { useNavigate } from "react-router-dom";
+import "../../../../service/errors.css";
 
-const handleLogin = async (login, password, navigate, setError) => {
+const handleLogin = async (
+  login,
+  password,
+  navigate,
+  setError,
+  setPassword
+) => {
   try {
     const response = await api.post("/auth/login", {
       UserEmail: login,
@@ -13,7 +20,18 @@ const handleLogin = async (login, password, navigate, setError) => {
     localStorage.setItem("token", response.data.accessToken);
     navigate("/home");
   } catch (err) {
-    setError(err.response?.data?.message || "Ошибка сервера");
+    setPassword("");
+    const status = err.response?.status;
+    switch (status) {
+      case 400:
+        setError("Некорректные данные. Пожалуйста, проверьте логин и пароль");
+        break;
+      case 500:
+        setError("Внутренняя ошибка сервера. Пожалуйста, попробуйте позже");
+        break;
+      default:
+        setError("Неправильный логин или пароль");
+    }
   }
 };
 
@@ -48,10 +66,29 @@ const Form = ({ isRegister }) => {
         });
         alert("Регистрация завершена!");
       } catch (err) {
-        setError(err.response?.data?.message || "Ошибка сервера");
+        const status = err.response?.status;
+        switch (status) {
+          case 400:
+            setError("Некорректные данные. Проверьте правильность заполнения");
+            break;
+          case 409:
+            setError("Пользователь с таким email уже существует");
+            break;
+          case 500:
+            setError("Внутренняя ошибка сервера. Пожалуйста, попробуйте позже");
+            break;
+          default:
+            setError(
+              "Произошла непредвиденная ошибка. Пожалуйста, попробуйте позже"
+            );
+        }
       }
     } else {
-      handleLogin(login, password, navigate, setError);
+      try {
+        await handleLogin(login, password, navigate, setError, setPassword);
+      } catch (err) {
+        console.error("Ошибка при входе:", err);
+      }
     }
   };
 
@@ -66,7 +103,7 @@ const Form = ({ isRegister }) => {
           placeholder=" "
           required
         />
-        <label className={styles["floating-label"]}>Логин</label>
+        <label className={styles["floating-label"]}>Почта</label>
       </div>
       <div className={styles["floating-label-group"]}>
         <input
@@ -92,9 +129,7 @@ const Form = ({ isRegister }) => {
           <label className={styles["floating-label"]}>Повторите пароль</label>
         </div>
       )}
-      {error && (
-        <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
-      )}
+      {error && <div className="error-message">{error}</div>}
       <button type="submit" className={styles["profile-button"]}>
         {isRegister ? "Создать" : "Войти"}
       </button>
