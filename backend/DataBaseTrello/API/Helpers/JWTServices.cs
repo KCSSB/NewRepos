@@ -178,7 +178,7 @@ namespace API.Helpers
         public async Task ClearSessionsAsync(List<Session> sessions, Guid deviceId, int limit = 3)
         {
             List<Session> forRevoked = new List<Session>();
-            bool hasDeviceId = await ClearThisDeviceSessions(sessions, forRevoked, deviceId, limit);
+            bool hasDeviceId = ClearThisDeviceSessions(sessions, forRevoked, deviceId, limit);
 
             if(sessions.Count>limit)
                 await ClearSessionToTheLimitAsync(sessions, forRevoked, deviceId, hasDeviceId, limit);
