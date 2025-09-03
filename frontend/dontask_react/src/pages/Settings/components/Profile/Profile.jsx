@@ -235,14 +235,6 @@ export default function Profile() {
     }
   };
 
-  if (error) {
-    return (
-      <div className="profile-container">
-        <p style={{ color: "red" }}>Ошибка: {error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="profile-container">
       <div className="profile-header-group">

@@ -6,18 +6,22 @@ import "../Profile/Profile.css";
 import resetPassword_logo from "./resetPassword_logo.png";
 import hide_logo from "./hide_logo.png";
 import show_logo from "./show_logo.png";
+import "../../../../service/errors.css";
 
 export default function Password() {
   const showToast = useToast();
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatNewPassword, setRepeatNewPassword] = useState("");
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showRepeatNewPassword, setShowRepeatNewPassword] = useState(false);
+
+  const [error, setError] = useState("");
 
   const fetchUserEmail = async () => {
     try {
@@ -44,23 +48,26 @@ export default function Password() {
     setOldPassword("");
     setNewPassword("");
     setRepeatNewPassword("");
+    setError("");
   };
 
   const handleChangePassword = async (event) => {
     event.preventDefault();
 
+    setError("");
+
     if (!oldPassword || !newPassword || !repeatNewPassword) {
-      showToast("Все поля обязательны для заполнения.", "error");
+      setError("Все поля обязательны для заполнения");
       return;
     }
 
     if (newPassword !== repeatNewPassword) {
-      showToast("Пароли не совпадают.", "error");
+      setError("Пароли не совпадают.");
       return;
     }
 
     if (newPassword === oldPassword) {
-      showToast("Новый пароль не может совпадать со старым.", "info");
+      setError("Новый пароль не может совпадать со старым");
       return;
     }
 
@@ -75,9 +82,8 @@ export default function Password() {
       handleToggleForm();
     } catch (err) {
       console.error("Ошибка при смене пароля:", err);
-      showToast(
-        "Не удалось изменить пароль. Проверьте текущий пароль и попробуйте снова.",
-        "error"
+      setError(
+        "Не удалось изменить пароль. Проверьте текущий пароль и попробуйте снова"
       );
     } finally {
       setLoading(false);
@@ -176,6 +182,7 @@ export default function Password() {
               />
             </button>
           </div>
+          {error && <div className="error-message">{error}</div>}
 
           <div className="action-buttons-group">
             <button type="submit" className="profile-button" disabled={loading}>
