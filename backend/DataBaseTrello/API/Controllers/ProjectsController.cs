@@ -6,9 +6,10 @@ using API.Constants;
 using API.Extensions;
 using DataBaseInfo;
 using API.Middleware;
-using API.Services.Application.Implementations;
 using API.Exceptions.ContextCreator;
-using API.Services.Helpers.Implementations;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using API.DTO.Mappers;
 
@@ -21,8 +22,8 @@ namespace API.Controllers
     
     public class ProjectsController : ControllerBase
     {
-        private readonly ProjectService _projectService;
-        private readonly ImageService _imageService;
+        private readonly IProjectService _projectService;
+        private readonly IImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
@@ -30,7 +31,7 @@ namespace API.Controllers
 
 
 
-        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IDbContextFactory<AppDbContext> contextFactory )
+        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IDbContextFactory<AppDbContext> contextFactory )
         {
         _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;

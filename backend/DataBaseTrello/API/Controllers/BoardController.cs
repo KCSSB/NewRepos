@@ -1,5 +1,6 @@
 ﻿using API.DTO.Requests;
-using API.Services.Application.Implementations;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +12,8 @@ namespace API.Controllers
     public class BoardController: ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;
-        private readonly BoardService _boardService;
-        public BoardController(ILogger<ProjectsController> logger, BoardService boardService) 
+        private readonly IBoardService _boardService;
+        public BoardController(ILogger<ProjectsController> logger, IBoardService boardService) 
         {
            _logger = logger;
             _boardService = boardService;

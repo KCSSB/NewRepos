@@ -1,6 +1,6 @@
 ﻿namespace API.Services.Helpers.Interfaces.Redis
 {
-    interface IRedisService
+    public interface IRedisService
     {
         IRedisSession Session { get; }
     }

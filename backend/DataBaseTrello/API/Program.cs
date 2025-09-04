@@ -20,6 +20,7 @@ using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
 using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces.Redis;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -37,7 +38,7 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
-builder.Services.AddSingleton<RedisService>();
+builder.Services.AddSingleton<IRedisService,RedisService>();
 
 
 //Регистрация сервиса для очистки рефреш токенов:

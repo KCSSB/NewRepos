@@ -3,6 +3,8 @@ using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Implementations;
+using API.Services.Helpers.Interfaces;
+using API.Services.Helpers.Interfaces.Redis;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +12,13 @@ namespace API.Services.Application.Implementations
 {
     public class SessionService : ISessionService
     {
-        private readonly RedisService _redis;
-        private readonly HashService _hashService;
+        private readonly IRedisService _redis;
+        private readonly IHashService _hashService;
         private readonly IErrorContextCreatorFactory errorContextCreatorFactory;
         private ErrorContextCreator errCreator;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        public SessionService(RedisService redis, 
-            HashService hashService, 
+        public SessionService(IRedisService redis, 
+            IHashService hashService, 
             IErrorContextCreatorFactory _errorCreatorFactory, 
             IDbContextFactory<AppDbContext> contextFactory)
         {
@@ -24,7 +26,7 @@ namespace API.Services.Application.Implementations
             _hashService = hashService;
             _contextFactory = contextFactory;
         }
-        private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(SessionService));
+        private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(ISessionService));
         public async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken)
         {
             SessionData? session = await _redis.Session.SafeGetSessionAsync(userId, deviceId);

@@ -10,20 +10,20 @@ namespace API.Services.Application.Implementations
 {
     public class GetPagesService: IGetPagesService
     {
-        private readonly ILogger<GetPagesService> _logger;
+        private readonly ILogger<IGetPagesService> _logger;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public GetPagesService(ILogger<GetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
+        public GetPagesService(ILogger<IGetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
           _logger = logger;  
           _contextFactory = contextFactory;
         _errCreatorFactory = errCreatorFactory;
             
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(GetPagesService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IGetPagesService));
         public async Task<HomePage> CreateHomePageDTOAsync(int userId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();

@@ -15,23 +15,24 @@ using System.Collections.Generic;
 using API.Middleware;
 using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Interfaces;
+using API.Services.Helpers.Interfaces.Redis;
 namespace API.Services.Helpers.Implementations
 {
     public class JWTService : IJWTService
     {
         private readonly IOptions<AuthSettings> _options;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly HashService _hashService;
-        private readonly RedisService _redis;
+        private readonly IHashService _hashService;
+        private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
         public JWTService(IOptions<AuthSettings> options,
             IDbContextFactory<AppDbContext> contextFactory,
-            HashService hashService,
-            ILogger<JWTService> logger,
-            RedisService redis, IErrorContextCreatorFactory errCreatorFactory)
+            IHashService hashService,
+            ILogger<IJWTService> logger,
+            IRedisService redis, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
@@ -39,7 +40,7 @@ namespace API.Services.Helpers.Implementations
             _options = options;
             _redis = redis;
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(JWTService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IJWTService));
         public string GenerateAccessToken(User user, string? deviceId)
         {
 

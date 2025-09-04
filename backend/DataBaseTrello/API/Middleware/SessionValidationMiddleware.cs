@@ -1,15 +1,8 @@
-﻿using System.Security.Claims;
-using API.DTO.Domain;
+﻿
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Services.Application.Implementations;
-using API.Services.Helpers;
-using DataBaseInfo;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Writers;
-using OpenTelemetry;
-using Org.BouncyCastle.Asn1.Ocsp;
+using API.Services.Application.Interfaces;
 
 namespace API.Middleware
 {
@@ -33,7 +26,7 @@ namespace API.Middleware
             if (context.User.Identity.IsAuthenticated)
             {
                 var scope = _scopeFactory.CreateAsyncScope();
-                var _sessionService = scope.ServiceProvider.GetService<SessionService>();
+                var _sessionService = scope.ServiceProvider.GetService<ISessionService>();
             var refreshToken = context.Request.Cookies["refreshToken"];
                 if (refreshToken == null)
                     throw new AppException(_errCreator.Unauthorized("Ошибка при получении refreshToken из Cookie"));

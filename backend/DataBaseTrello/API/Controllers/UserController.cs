@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Constants;
 using API.Exceptions.Context;
-using System.Net;
 using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers;
-using API.Middleware;
-using API.Services.Application.Implementations;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
 using API.Exceptions.ContextCreator;
-using API.Services.Helpers.Implementations;
+
 namespace API.Controllers
 {
     [Authorize]
@@ -17,13 +16,13 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        private readonly ImageService _imageService;
+        private readonly IUserService _userService;
+        private readonly IImageService _imageService;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public UserController(UserService userService, ImageService imageService, IErrorContextCreatorFactory errCreatorFactory)
+        public UserController(IUserService userService, IImageService imageService, IErrorContextCreatorFactory errCreatorFactory)
             {
          
         _errCreatorFactory = errCreatorFactory;

@@ -10,14 +10,16 @@ using API.Middleware;
 using API.Services.Application.Implementations;
 using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Implementations;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController: ControllerBase
     {
-        private readonly UserService _userService;
-        private readonly JWTService _jwtServices;
+        private readonly IUserService _userService;
+        private readonly IJWTService _jwtServices;
         private readonly IOptions<AuthSettings> _options;
         private readonly ILogger<AuthController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
@@ -25,7 +27,7 @@ namespace API.Controllers
 
 
 
-        public AuthController(UserService userService, JWTService jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger, IErrorContextCreatorFactory errCreatorFactory)
+        public AuthController(IUserService userService, IJWTService jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _userService = userService;

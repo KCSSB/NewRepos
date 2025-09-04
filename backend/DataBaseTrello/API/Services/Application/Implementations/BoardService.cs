@@ -14,18 +14,18 @@ namespace API.Services.Application.Implementations
     public class BoardService: IBoardService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ILogger<BoardService> _logger;
+        private readonly ILogger<IBoardService> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<BoardService> logger, IErrorContextCreatorFactory errCreatorFactory)
+        public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<IBoardService> logger, IErrorContextCreatorFactory errCreatorFactory)
         {
         _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _logger = logger;
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(BoardService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IBoardService));
         public async Task<int> CreateBoardAsync(string boardName)
         {
           

@@ -20,7 +20,7 @@ namespace API.Services.Application.Implementations
             _contextFactory = contextFactory;
           
         }
-private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectService));
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IProjectService));
         public async Task<int> CreateProjectAsync(string projectName)
         {
                 Project project = new Project
