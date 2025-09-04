@@ -18,7 +18,9 @@
         public const string DbContextExtensions = "DbContextExtensions";
         public const string EmailService = "EmailService";
         public const string GetPagesService = "GetPagesService";
+        public const string RedisService = "RedisService";
         
+
 
 
 

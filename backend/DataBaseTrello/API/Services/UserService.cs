@@ -24,12 +24,14 @@ namespace DataBaseInfo.Services
         private readonly JWTServices _JWTService;
         private readonly ErrorContextCreator _errCreator;
         private readonly ILogger<UserService> _logger;
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger)
+        private readonly RedisService _redis;
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger, RedisService redis)
         {
             _contextFactory = contextFactory;
             _JWTService = JWTService;
             _logger = logger;
             _errCreator = new ErrorContextCreator(ServiceName.UserService);
+            _redis = redis;
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
@@ -65,36 +67,32 @@ namespace DataBaseInfo.Services
                 return user.Id;
 
                 }
-        public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string UserEmail, string Password)
+        public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
-
-
             using var context = _contextFactory.CreateDbContext();
-         
-            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == UserEmail);
+            
+            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
             if (user == null)
-                throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {UserEmail} не существует"));
-        
-            //var activeToken = await context.RefreshTokens
-            //.Include(rt => rt.User)
-            //.FirstOrDefaultAsync(rt => 
-            //    rt.User.UserEmail == UserEmail
-            //    && !rt.IsRevoked
-            //    && rt.ExpiresAt > DateTime.UtcNow);
+                throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
+            if (deviceId == null)
+                deviceId = Guid.NewGuid().ToString();
+            //Логика для отслеживания количества сессий
 
-            // if (activeToken != null)
-            //    throw new AppException(_errCreator.Conflict($"Пользователь id: {user.Id}, email: {UserEmail}. Уже был авторизован"));
-          
-            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, Password);
+            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
-                throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{UserEmail}"));
+                throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
+            var activeSessions= await context.Sessions
+            .Where(s => s.UserId == user.Id
+                && !s.IsRevoked
+                && s.ExpiresAt > DateTime.UtcNow)
+            .OrderByDescending(s => s.CreatedAt).ToListAsync();
 
-
-            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user);
-
-            var accessToken = _JWTService.GenerateAccessToken(user);
+                await _JWTService.ClearSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
+            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
+            var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
+            await context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");
             return (accessToken, refreshToken);
         }
 
@@ -151,7 +149,7 @@ namespace DataBaseInfo.Services
                 var newPassHash = passHasher.HashPassword(user, newPass);
                 user.UserPassword = newPassHash;
                 await context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
-               
+                // Добавить логику разлогинивания всех вообще кроме нынешней сессий
             }
             else
             {

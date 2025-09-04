@@ -19,7 +19,7 @@ namespace DataBaseInfo
         public DbSet<Board> Boards { get; set; }
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -132,7 +132,7 @@ namespace DataBaseInfo
                 .HasForeignKey(t => t.CardId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
-            modelBuilder.Entity<RefreshToken>(entity =>
+            modelBuilder.Entity<Session>(entity =>
             {
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.CreatedAt).IsRequired();
@@ -140,7 +140,7 @@ namespace DataBaseInfo
              
                 entity.Property(r => r.UserId).IsRequired();
                 entity.HasOne(rt => rt.User)
-               .WithMany(u => u.RefreshToken)
+               .WithMany(u => u.Sessions)
                .HasForeignKey(r => r.UserId);
 
             });

@@ -33,13 +33,13 @@ namespace API.BackGroundServices
                 {
                     try
                     {
-                        var expiredTokens = await dbContext.RefreshTokens
+                        var expiredTokens = await dbContext.Sessions
                             .Where(t => t.ExpiresAt < DateTime.UtcNow || t.IsRevoked)
                             .ToListAsync(ct);
 
                         if (expiredTokens.Any())
                         {
-                            dbContext.RefreshTokens.RemoveRange(expiredTokens);
+                            dbContext.Sessions.RemoveRange(expiredTokens);
                             await dbContext.SaveChangesAsync(ct);
                         }
                     }
