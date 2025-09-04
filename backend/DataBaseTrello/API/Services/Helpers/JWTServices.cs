@@ -10,32 +10,35 @@ using API.Configuration;
 using API.Extensions;
 using API.Exceptions.Context;
 using API.Constants;
-using API.Exceptions;
 using StackExchange.Redis;
 using System.Collections.Generic;
-namespace API.Helpers
+using API.Middleware;
+using API.Exceptions.ContextCreator;
+namespace API.Services.Helpers
 {
     public class JWTServices
     {
         private readonly IOptions<AuthSettings> _options;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly HashService _hashService;
-        private readonly ILogger<JWTServices> _logger;
-        private readonly ErrorContextCreator _errCreator;
         private readonly RedisService _redis;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
         public JWTServices(IOptions<AuthSettings> options,
             IDbContextFactory<AppDbContext> contextFactory,
             HashService hashService,
             ILogger<JWTServices> logger,
-            RedisService redis)
+            RedisService redis, IErrorContextCreatorFactory errCreatorFactory)
         {
+        _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _hashService = hashService;
             _options = options;
-            _logger = logger;
-            _errCreator = new ErrorContextCreator(ServiceName.JWTServices);
             _redis = redis;
         }
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(JWTServices));
         public string GenerateAccessToken(User user, string? deviceId)
         {
 
@@ -98,15 +101,15 @@ namespace API.Helpers
             
                 var hashToken = _hashService.HashToken(refreshToken);
 
-            var storedToken = await context.Sessions
+            var oldSession = await context.Sessions
                 .Include(rt => rt.User)
                 .FirstOrDefaultAsync(rt => hashToken == rt.Token);
 
-            RefTokenIsValid(storedToken);
-            storedToken.IsRevoked = true;
+            RefTokenIsValid(oldSession);
+            oldSession.IsRevoked = true;
 
-            var createToken = CreateRefreshTokenAsync(storedToken.User, deviceId);
-            var newAccessToken = GenerateAccessToken(storedToken.User, deviceId);
+            var createToken = CreateRefreshTokenAsync(oldSession.User, deviceId);
+            var newAccessToken = GenerateAccessToken(oldSession.User, deviceId);
             var token = await createToken;
             return (newAccessToken, token);
             }
@@ -143,10 +146,14 @@ namespace API.Helpers
             var redisTasks = sessions.Select(s => _redis.Session.SafeRevokeSessionAsync(s.UserId, s.DeviceId.ToString())).ToList();
             foreach (var session in sessions)   
                 session.IsRevoked = true;
-            await Task.WhenAll(redisTasks);
+            try
+            {await Task.WhenAll(redisTasks);}
+            catch(Exception ex)
+            {
+            }
             await context.SaveChangesWithContextAsync($"Ошибка при удалении сессий из бд");
         }
-        private async Task ClearSessionToTheLimitAsync(List<Session> sessions,List<Session> forRevoke, Guid deviceId,bool hasDevice = false, int limit = 3)
+        private async Task RevokeSessionToTheLimitAsync(List<Session> sessions,List<Session> forRevoke, Guid deviceId,bool hasDevice = false, int limit = 3)
         {
             if (sessions.Count < limit)
                 return;
@@ -157,7 +164,7 @@ namespace API.Helpers
             await RevokeSessionRangeAsync(forRevoke);
         
         }
-        private bool ClearThisDeviceSessions(List<Session> sessions,List<Session> forRevoke, Guid deviceId, int limit = 3)
+        private bool RevokeThisDeviceSessions(List<Session> sessions,List<Session> forRevoke, Guid deviceId, int limit = 3)
         {
             bool hasDeviceId = false;
             int i = 0;
@@ -175,13 +182,13 @@ namespace API.Helpers
             
             return hasDeviceId;
         }
-        public async Task ClearSessionsAsync(List<Session> sessions, Guid deviceId, int limit = 3)
+        public async Task RevokeSessionsAsync(List<Session> sessions, Guid deviceId, int limit = 3)
         {
             List<Session> forRevoked = new List<Session>();
-            bool hasDeviceId = ClearThisDeviceSessions(sessions, forRevoked, deviceId, limit);
+            bool hasDeviceId = RevokeThisDeviceSessions(sessions, forRevoked, deviceId, limit);
 
             if(sessions.Count>limit)
-                await ClearSessionToTheLimitAsync(sessions, forRevoked, deviceId, hasDeviceId, limit);
+                await RevokeSessionToTheLimitAsync(sessions, forRevoked, deviceId, hasDeviceId, limit);
         }
     }
 }

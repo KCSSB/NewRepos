@@ -8,7 +8,7 @@ using API.Configuration;
 using Microsoft.Extensions.Options;
 
 
-namespace API.Helpers
+namespace API.Services.Helpers
 {
     public class HashService
     {

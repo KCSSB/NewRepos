@@ -4,27 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Constants;
-using API.Exceptions;
+using API.Exceptions.ContextCreator;
+using API.Middleware;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace API.BackGroundServices
+namespace API.Services.BackGroundServices
 {
     public class RefreshTokensCleaner : BackgroundService
     {
         private readonly ILogger<RefreshTokensCleaner> _logger;
         private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
-        private readonly ErrorContextCreator _errCreator;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
 
-        public RefreshTokensCleaner(ILogger<RefreshTokensCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory)
+
+
+        public RefreshTokensCleaner(ILogger<RefreshTokensCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
+        _errCreatorFactory = errCreatorFactory;
             _logger = logger;
             _dbContextFactory = dbContextFactory;
-            _errCreator = new ErrorContextCreator(ServiceName.RefreshTokensCleaner);
+           
         }
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(RefreshTokensCleaner));
         protected override async Task ExecuteAsync(CancellationToken ct)
         {
             while (!ct.IsCancellationRequested)

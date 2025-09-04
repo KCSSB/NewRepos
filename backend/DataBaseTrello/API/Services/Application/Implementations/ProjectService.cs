@@ -9,20 +9,24 @@ using API.Exceptions.Context;
 using System.Net;
 using API.Constants;
 using API.Exceptions.Context;
-using API.Exceptions;
+using API.Middleware;
+using API.Exceptions.ContextCreator;
 
-namespace API.Services
+namespace API.Services.Application.Implementations
 {
     public class ProjectService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ErrorContextCreator _errCreator;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
 
-        public ProjectService(IDbContextFactory<AppDbContext> contextFactory)
+        public ProjectService(IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
+        _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
-            _errCreator = new ErrorContextCreator(ServiceName.ProjectService);
+          
         }
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectService));
         public async Task<int> CreateProjectAsync(string projectName)
         {
                 Project project = new Project
@@ -52,13 +56,14 @@ namespace API.Services
                     .Include(p => p.ProjectUsers) // Явно загружаем ProjectUsers
                     .FirstOrDefaultAsync(p => p.Id == projectId);
 
-                
-                var projectUser = new ProjectUser()
+          
+            var projectUser = new ProjectUser()
                 {
                     UserId = userId,
                     ProjectId = projectId,
-                    ProjectRole = (project.ProjectUsers.Count <=0) ? "ProjectOwner": "ProjectMember"
+                    ProjectRole = project.ProjectUsers.Count <=0 ? "ProjectOwner": "ProjectMember"
                 };
+                
                 if (user == null)
                     throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
 

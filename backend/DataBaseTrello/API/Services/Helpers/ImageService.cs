@@ -4,7 +4,7 @@
 //using SixLabors.ImageSharp.Processing;
 using Microsoft.Extensions.Options;
 using API.Configuration;
-namespace API.Helpers
+namespace API.Services.Helpers
 {
     public class ImageService
         

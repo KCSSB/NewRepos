@@ -5,22 +5,28 @@ using Microsoft.EntityFrameworkCore;
 using API.Constants;
 using API.Exceptions.Context;
 using System.Net;
-using API.Exceptions;
 using API.DTO.Mappers;
+using API.Middleware;
+using API.Exceptions.ContextCreator;
 
-namespace API.Services
+namespace API.Services.Application.Implementations
 {
     public class GetPagesService
     {
         private readonly ILogger<GetPagesService> _logger;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ErrorContextCreator _errCreator;
-        public GetPagesService(ILogger<GetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory)
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
+        public GetPagesService(ILogger<GetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
           _logger = logger;  
           _contextFactory = contextFactory;
-            _errCreator = new ErrorContextCreator(ServiceName.GetPagesService);
+        _errCreatorFactory = errCreatorFactory;
+            
         }
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(GetPagesService));
         public async Task<HomePage> CreateHomePageDTOAsync(int userId)
         {
             using var context = await _contextFactory.CreateDbContextAsync();

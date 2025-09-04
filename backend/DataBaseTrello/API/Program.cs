@@ -3,14 +3,10 @@ using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using DataBaseInfo.Services;
 using System.Text;
-using API.Helpers;
-using API.BackGroundServices;
 using API.Configuration;
 using OpenTelemetry.Trace;
 using OpenTelemetry.Metrics;
-using API.Services;
 using API.Exceptions.Context;
 using System.Net;
 using Serilog;
@@ -18,9 +14,15 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using API.Middleware;
 using OpenTelemetry.Resources;
+using API.Services.Helpers;
+using API.Services.BackGroundServices;
+using API.Services.Application.Implementations;
+using API.Exceptions.ContextCreator;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<IErrorContextCreatorFactory, ErrorContextCreatorFactory>();
+
 builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 // Добавление секции AuthSettings в Сервисы Билдера
@@ -138,7 +140,6 @@ if (string.IsNullOrEmpty(connectionString))
     throw new AppException(new ErrorContext("Program",
                            "Program",
                            (HttpStatusCode)1001,
-                           "Произошла ошибка в момент запуска приложения",
                            $"Произошла ошибка в момент подключения к базе данных"));
 
 
@@ -160,7 +161,6 @@ using (var scope = app.Services.CreateScope())
             throw new AppException(new ErrorContext("Program",
                                "Program",
                                (HttpStatusCode)1001,
-                               "Произошла ошибка в момент запуска приложения",
                                $"Произошла ошибка при попытке применить миграции"));
 
         }

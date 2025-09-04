@@ -1,28 +1,33 @@
 ﻿using System.Linq;
 using System.Net;
 using API.Constants;
-using API.Exceptions;
 using API.Exceptions.Context;
+using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Middleware;
 using DataBaseInfo;
 using DataBaseInfo.models;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Services
+namespace API.Services.Application.Implementations
 {
     public class BoardService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-           private readonly ILogger<BoardService> _logger;
-        private readonly ErrorContextCreator _errCreator;
-        public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<BoardService> logger)
+        private readonly ILogger<BoardService> _logger;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
+        public BoardService(IDbContextFactory<AppDbContext> contextFactory, ILogger<BoardService> logger, IErrorContextCreatorFactory errCreatorFactory)
         {
+        _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _logger = logger;
-            _errCreator = new ErrorContextCreator(ServiceName.BoardService);
         }
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(BoardService));
         public async Task<int> CreateBoardAsync(string boardName)
         {
           

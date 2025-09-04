@@ -4,47 +4,51 @@ using System.Net;
 using API.Constants;
 using API.DTO.Domain;
 using API.DTO.Mappers;
-using API.Exceptions;
 using API.Exceptions.Context;
+using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Helpers;
+using API.Middleware;
+using API.Services.Helpers;
+using DataBaseInfo;
 using DataBaseInfo.models;
-
 using Microsoft.AspNetCore.Identity;
 
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 
 
-namespace DataBaseInfo.Services
+namespace API.Services.Application.Implementations
 {
     public class UserService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly JWTServices _JWTService;
-        private readonly ErrorContextCreator _errCreator;
         private readonly ILogger<UserService> _logger;
         private readonly RedisService _redis;
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger, RedisService redis)
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger, RedisService redis, IErrorContextCreatorFactory errCreatorFactory)
         {
+            _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _JWTService = JWTService;
             _logger = logger;
-            _errCreator = new ErrorContextCreator(ServiceName.UserService);
             _redis = redis;
         }
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(UserService));
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
             
             using var context = _contextFactory.CreateDbContext();
                 
-                    User? em = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
+            User? user = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
 
-            if (em != null)
-                throw new AppException(_errCreator.Conflict($"Конфликт уникальности поля email: {userEmail}"));
+            if (user != null)
+                throw new AppException(_errCreator.Conflict($"Пользователь с таким email: {userEmail}, уже существует"));
 
-
-                var user = new User
+                var newUser = new User
                     {
                         UserEmail = userEmail,
                         Avatar = DefaultImages.UserAvatar,
@@ -52,20 +56,18 @@ namespace DataBaseInfo.Services
                         Sex = Sex.Unknown
                     };
 
-                    var passHash = new PasswordHasher<User>().HashPassword(user, password);
+                var passHash = new PasswordHasher<User>().HashPassword(newUser, password);
 
                if (passHash == null)
-                    throw new AppException(_errCreator.Conflict("Ошибка во время хэширования пароля"));
+                    throw new AppException(_errCreator.InternalServerError("Ошибка во время хэширования пароля"));
             
-
-                user.UserPassword = passHash;
+                newUser.UserPassword = passHash;
                 
-                context.Users.Add(user);
+                await context.Users.AddAsync(newUser);
                    
                 await context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
                  
-                return user.Id;
-
+                return newUser.Id;
                 }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
@@ -89,7 +91,7 @@ namespace DataBaseInfo.Services
                 && s.ExpiresAt > DateTime.UtcNow)
             .OrderByDescending(s => s.CreatedAt).ToListAsync();
 
-                await _JWTService.ClearSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
+                await _JWTService.RevokeSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
             var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
             var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
             await context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");

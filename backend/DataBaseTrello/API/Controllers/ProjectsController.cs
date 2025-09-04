@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.Helpers;
-using API.Services;
 using API.DTO.Requests;
 using API.Exceptions.Context;
 using API.Constants;
 using API.Extensions;
 using DataBaseInfo;
-using API.Exceptions;
+using API.Middleware;
+using API.Services.Helpers;
+using API.Services.Application.Implementations;
+using API.Exceptions.ContextCreator;
 
 
 namespace API.Controllers
@@ -22,16 +23,21 @@ namespace API.Controllers
         private readonly ImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
         private readonly ResponseCreator _responseCreator;
-        private readonly ErrorContextCreator _errCreator;
-        
-        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, ResponseCreator responseCreator)
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
+
+        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, ResponseCreator responseCreator, IErrorContextCreatorFactory errCreatorFactory)
         {
+        _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
             _responseCreator = responseCreator;
-            _errCreator = new ErrorContextCreator(ServiceName.ProjectsController);
+      
         }
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
 
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromForm] CreateProjectRequest projectRequest)

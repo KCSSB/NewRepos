@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using API.Constants;
 using API.Exceptions;
 using API.Exceptions.Context;
+using API.Exceptions.ContextCreator;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -14,7 +15,7 @@ namespace API.Extensions
             string serviceName,
             [CallerMemberName] string operationName = null)
         {
-            var _errCreator = new ErrorContextCreator(ServiceName.DbContextExtensions, operationName);
+            var _errCreator = new ErrorContextCreator(typeof(DbContextExtensions).Name);
             try
              {
                 return await context.SaveChangesAsync();

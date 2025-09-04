@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using API.Constants;
 using API.Exceptions.Context;
 
-namespace API.Exceptions
+namespace API.Exceptions.ContextCreator
 {
     public class ErrorContextCreator
     {
@@ -24,7 +24,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.BadRequest,
-                UserExceptionMessages.BadRequestExceptionMessage,
                 loggerMessage);
         }
         public ErrorContext Forbidden(string loggerMessage, [CallerMemberName] string operationName = null)
@@ -33,7 +32,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Forbidden,
-                UserExceptionMessages.ForbiddenExceptionMessage,
                 loggerMessage);
         }
         public ErrorContext NotFound(string loggerMessage, [CallerMemberName] string operationName = null)
@@ -42,7 +40,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.NotFound,
-                UserExceptionMessages.InternalExceptionMessage,
                 loggerMessage);
         }
         public ErrorContext Conflict(string loggerMessage, [CallerMemberName] string operationName = null)
@@ -51,7 +48,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Conflict,
-                UserExceptionMessages.ConflictExceptionMessage,
                 loggerMessage);
         }
         public ErrorContext InternalServerError(string loggerMessage, [CallerMemberName] string operationName = null)
@@ -60,7 +56,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.InternalServerError,
-                UserExceptionMessages.InternalExceptionMessage,
                 loggerMessage);
         }
         public ErrorContext Unauthorized(string loggerMessage, [CallerMemberName] string operationName = null)
@@ -69,7 +64,6 @@ namespace API.Exceptions
             return new ErrorContext(ServiceName,
                 operationName,
                 HttpStatusCode.Unauthorized,
-                UserExceptionMessages.UnauthorizedExceptionMessage,
                 loggerMessage);
         }
 
