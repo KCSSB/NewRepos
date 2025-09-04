@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using API.Configuration;
+using API.Services.Helpers.Interfaces;
 using Microsoft.Extensions.Options;
 
 
-namespace API.Services.Helpers
+namespace API.Services.Helpers.Implementations
 {
-    public class HashService
+    public class HashService : IHashService
     {
         private readonly byte[] _secretKey;
 

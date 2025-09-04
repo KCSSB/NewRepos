@@ -1,6 +1,6 @@
 ﻿using DataBaseInfo.models;
 
-namespace API.Services.Helpers
+namespace API.Services.Helpers.Implementations
 {
     static class SexHelper
     {

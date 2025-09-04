@@ -1,17 +1,14 @@
 ﻿using API.DTO.Responses.Pages;
-using API.DTO.Responses;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using API.Constants;
 using API.Exceptions.Context;
-using System.Net;
 using API.DTO.Mappers;
-using API.Middleware;
 using API.Exceptions.ContextCreator;
+using API.Services.Application.Interfaces;
 
 namespace API.Services.Application.Implementations
 {
-    public class GetPagesService
+    public class GetPagesService: IGetPagesService
     {
         private readonly ILogger<GetPagesService> _logger;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;

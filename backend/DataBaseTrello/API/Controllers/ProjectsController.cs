@@ -6,9 +6,11 @@ using API.Constants;
 using API.Extensions;
 using DataBaseInfo;
 using API.Middleware;
-using API.Services.Helpers;
 using API.Services.Application.Implementations;
 using API.Exceptions.ContextCreator;
+using API.Services.Helpers.Implementations;
+using Microsoft.EntityFrameworkCore;
+using API.DTO.Mappers;
 
 
 namespace API.Controllers
@@ -22,19 +24,19 @@ namespace API.Controllers
         private readonly ProjectService _projectService;
         private readonly ImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
-        private readonly ResponseCreator _responseCreator;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
 
-        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, ResponseCreator responseCreator, IErrorContextCreatorFactory errCreatorFactory)
+        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IDbContextFactory<AppDbContext> contextFactory )
         {
         _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
-            _responseCreator = responseCreator;
+            _contextFactory = contextFactory;
       
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
@@ -63,9 +65,15 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                 var result = await _imageService.UploadImageAsync(projectRequest.image, CloudPathes.ProjectImagesPath);
                 url = result.url;
             }
-              
+            var context = await _contextFactory.CreateDbContextAsync();
                 await _projectService.UpdateProjectImageAsync(projectId, url);
-            var response = await _responseCreator.CreateSummaryProjectResponseAsync(projectId);
+    
+            var query = await context.Projects.Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.User).FirstOrDefaultAsync(p => p.Id == projectId);
+            if (query == null)
+                throw new AppException(_errCreator.InternalServerError("Ошибка во время создания проекта"));
+         
+            var response = ToResponseMapper.ToSummaryProjectResponse(query);
             return Ok(response);
         
            

@@ -1,14 +1,12 @@
 ﻿using MimeKit;
-using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using DataBaseInfo;
 using Microsoft.Extensions.Options;
-using API.Constants;
-using API.Middleware;
 using API.Exceptions.ContextCreator;
-namespace API.Services.Helpers
+using API.Services.Helpers.Interfaces;
+namespace API.Services.Helpers.Implementations
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IOptions<EmailService> _settings;
@@ -18,11 +16,11 @@ namespace API.Services.Helpers
 
         public EmailService(IDbContextFactory<AppDbContext> contextFactory, IOptions<EmailService> settings, IErrorContextCreatorFactory errCreatorFactory)
         {
-        _errCreatorFactory = errCreatorFactory;
+            _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _settings = settings;
         }
-private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));
         public async Task<MimeMessage> CreateMessageAsync()
         {
             return new MimeMessage
@@ -39,7 +37,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
             var msg = await CreateMessageAsync();
             //await SendMessageAsync(msg);
         }
-        
+
 
     }
 }

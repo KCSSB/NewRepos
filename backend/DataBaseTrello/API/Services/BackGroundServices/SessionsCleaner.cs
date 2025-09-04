@@ -1,36 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using API.Constants;
-using API.Exceptions.ContextCreator;
-using API.Middleware;
+﻿using API.Exceptions.ContextCreator;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace API.Services.BackGroundServices
 {
-    public class RefreshTokensCleaner : BackgroundService
+    public class SessionsCleaner : BackgroundService
     {
-        private readonly ILogger<RefreshTokensCleaner> _logger;
+        private readonly ILogger<SessionsCleaner> _logger;
         private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
 
-        public RefreshTokensCleaner(ILogger<RefreshTokensCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory, IErrorContextCreatorFactory errCreatorFactory)
+        public SessionsCleaner(ILogger<SessionsCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
-        _errCreatorFactory = errCreatorFactory;
+            _errCreatorFactory = errCreatorFactory;
             _logger = logger;
             _dbContextFactory = dbContextFactory;
            
         }
-private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(RefreshTokensCleaner));
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(SessionsCleaner));
         protected override async Task ExecuteAsync(CancellationToken ct)
         {
             while (!ct.IsCancellationRequested)
@@ -39,13 +29,13 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                 {
                     try
                     {
-                        var expiredTokens = await dbContext.Sessions
+                        var expiredSessions = await dbContext.Sessions
                             .Where(t => t.ExpiresAt < DateTime.UtcNow || t.IsRevoked)
                             .ToListAsync(ct);
 
-                        if (expiredTokens.Any())
+                        if (expiredSessions.Any())
                         {
-                            dbContext.Sessions.RemoveRange(expiredTokens);
+                            dbContext.Sessions.RemoveRange(expiredSessions);
                             await dbContext.SaveChangesAsync(ct);
                         }
                     }

@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Application\Interfaces\" />
+    <Folder Include="Repositories\Queries\" />
   </ItemGroup>
 
 </Project>

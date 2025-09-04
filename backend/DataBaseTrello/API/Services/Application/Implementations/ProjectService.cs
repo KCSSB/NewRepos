@@ -1,20 +1,14 @@
-﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-using DataBaseInfo.models;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using DataBaseInfo.models;
 using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
 using API.Exceptions.Context;
-using System.Net;
-using API.Constants;
-using API.Exceptions.Context;
-using API.Middleware;
 using API.Exceptions.ContextCreator;
+using API.Services.Application.Interfaces;
 
 namespace API.Services.Application.Implementations
 {
-    public class ProjectService
+    public class ProjectService: IProjectService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
@@ -74,7 +68,6 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
 
                 project.ProjectUsers.Add(projectUser);
                 
-
                 await context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
 
                 return projectUser.Id;

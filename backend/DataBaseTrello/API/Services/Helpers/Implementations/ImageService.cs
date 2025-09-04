@@ -4,10 +4,11 @@
 //using SixLabors.ImageSharp.Processing;
 using Microsoft.Extensions.Options;
 using API.Configuration;
-namespace API.Services.Helpers
+using API.Services.Helpers.Interfaces;
+namespace API.Services.Helpers.Implementations
 {
-    public class ImageService
-        
+    public class ImageService : IImageService
+
     {
         private readonly ImagekitClient _imagekitClient;
         private readonly ImageKitSettings _settings;
@@ -18,19 +19,7 @@ namespace API.Services.Helpers
                  privateKey: _settings.PrivateKey,
                  urlEndPoint: _settings.UrlEndpoint);
         }
-      
-        public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
-        {
-            var stream = new MemoryStream(fileBytes);
 
-            var formFile = new FormFile(stream, 0, fileBytes.Length, name: "file", fileName: fileName)
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = contentType
-            };
-
-            return formFile;
-        }
         public async Task<Result?> UploadImageAsync(IFormFile file, string path)
         {
             using var ms = new MemoryStream();
@@ -50,6 +39,18 @@ namespace API.Services.Helpers
 
             return result;
         }
+        //public static IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fileName, string contentType)
+        //{
+        //    var stream = new MemoryStream(fileBytes);
+
+        //    var formFile = new FormFile(stream, 0, fileBytes.Length, name: "file", fileName: fileName)
+        //    {
+        //        Headers = new HeaderDictionary(),
+        //        ContentType = contentType
+        //    };
+
+        //    return formFile;
+        //}
         //public async Task<IFormFile> PrepareImageAsync(IFormFile file, int height, int width)
         //{
         //    using var ms = new MemoryStream();

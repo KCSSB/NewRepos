@@ -4,16 +4,14 @@ using API.Constants;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Middleware;
+using API.Services.Application.Interfaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
-using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services.Application.Implementations
 {
-    public class BoardService
+    public class BoardService: IBoardService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly ILogger<BoardService> _logger;

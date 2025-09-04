@@ -14,10 +14,12 @@ using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 using API.Middleware;
 using OpenTelemetry.Resources;
-using API.Services.Helpers;
 using API.Services.BackGroundServices;
 using API.Services.Application.Implementations;
 using API.Exceptions.ContextCreator;
+using API.Services.Helpers.Implementations;
+using API.Services.Helpers.Interfaces;
+using API.Services.Application.Interfaces;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -39,7 +41,7 @@ builder.Services.AddSingleton<RedisService>();
 
 
 //Регистрация сервиса для очистки рефреш токенов:
-builder.Services.AddHostedService<RefreshTokensCleaner>();
+builder.Services.AddHostedService<SessionsCleaner>();
 //Регистрация сервиса валидации Токенов
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -77,14 +79,14 @@ builder.Services.AddControllers()
         options.SuppressModelStateInvalidFilter = true;
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<HashService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<JWTServices>();
-builder.Services.AddScoped<GetPagesService>();
-builder.Services.AddScoped<ProjectService>();
-builder.Services.AddScoped<BoardService>();
-builder.Services.AddScoped<ImageService>();
-builder.Services.AddScoped<ResponseCreator>();
+builder.Services.AddScoped<IHashService,HashService>();
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IJWTService,JWTService>();
+builder.Services.AddScoped<IGetPagesService,GetPagesService>();
+builder.Services.AddScoped<IProjectService,ProjectService>();
+builder.Services.AddScoped<IBoardService,BoardService>();
+builder.Services.AddScoped<IImageService,ImageService>();
+builder.Services.AddScoped<ISessionService,SessionService>();
 builder.Services.AddSwaggerGen(c =>
 {
     

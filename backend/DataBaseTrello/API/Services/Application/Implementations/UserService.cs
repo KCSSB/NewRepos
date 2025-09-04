@@ -1,35 +1,29 @@
-﻿
-using System.Net;
-
-using API.Constants;
-using API.DTO.Domain;
+﻿using API.DTO.Domain;
 using API.DTO.Mappers;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Middleware;
-using API.Services.Helpers;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Implementations;
 using DataBaseInfo;
 using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
 
 
 namespace API.Services.Application.Implementations
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly JWTServices _JWTService;
+        private readonly JWTService _JWTService;
         private readonly ILogger<UserService> _logger;
         private readonly RedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTServices JWTService, ILogger<UserService> logger, RedisService redis, IErrorContextCreatorFactory errCreatorFactory)
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, JWTService JWTService, ILogger<UserService> logger, RedisService redis, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
