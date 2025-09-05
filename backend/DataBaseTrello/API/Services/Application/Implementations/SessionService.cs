@@ -15,17 +15,17 @@ namespace API.Services.Application.Implementations
         private readonly IRedisService _redis;
         private readonly IHashService _hashService;
         private readonly IErrorContextCreatorFactory errorContextCreatorFactory;
-        private ErrorContextCreator errCreator;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
+        private ErrorContextCreator errCreator;
         public SessionService(IRedisService redis, 
             IHashService hashService, 
             IErrorContextCreatorFactory _errorCreatorFactory, 
             IDbContextFactory<AppDbContext> contextFactory)
-        {
+            {
             _redis = redis;
             _hashService = hashService;
             _contextFactory = contextFactory;
-        }
+            }
         private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(ISessionService));
         public async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken)
         {

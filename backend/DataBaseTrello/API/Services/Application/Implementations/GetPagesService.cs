@@ -10,7 +10,6 @@ namespace API.Services.Application.Implementations
 {
     public class GetPagesService: IGetPagesService
     {
-        private readonly ILogger<IGetPagesService> _logger;
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;

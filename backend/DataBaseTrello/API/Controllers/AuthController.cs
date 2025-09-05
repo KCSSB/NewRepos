@@ -24,9 +24,6 @@ namespace API.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
-
-
-
         public AuthController(IUserService userService, IJWTService jwtServices, IOptions<AuthSettings> options, ILogger<AuthController>  logger, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;

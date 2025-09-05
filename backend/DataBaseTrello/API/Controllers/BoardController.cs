@@ -11,7 +11,6 @@ namespace API.Controllers
     [Authorize]
     public class BoardController: ControllerBase
     {
-        private readonly ILogger<ProjectsController> _logger;
         private readonly IBoardService _boardService;
         public BoardController(ILogger<ProjectsController> logger, IBoardService boardService) 
         {

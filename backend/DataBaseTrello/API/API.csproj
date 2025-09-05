@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Queries\" />
+    <Folder Include="Repositories\Implementations\" />
   </ItemGroup>
 
 </Project>

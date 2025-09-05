@@ -8,7 +8,6 @@ namespace API.Services.Helpers.Implementations
 {
     public class EmailService : IEmailService
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IOptions<EmailService> _settings;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
@@ -17,7 +16,6 @@ namespace API.Services.Helpers.Implementations
         public EmailService(IDbContextFactory<AppDbContext> contextFactory, IOptions<EmailService> settings, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
-            _contextFactory = contextFactory;
             _settings = settings;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));

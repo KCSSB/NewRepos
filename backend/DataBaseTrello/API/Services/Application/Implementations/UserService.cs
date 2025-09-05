@@ -5,7 +5,6 @@ using API.Exceptions.ContextCreator;
 using API.Extensions;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
-using API.Services.Helpers.Interfaces.Redis;
 using DataBaseInfo;
 using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
@@ -18,19 +17,16 @@ namespace API.Services.Application.Implementations
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IJWTService _JWTService;
-        private readonly ILogger<IUserService> _logger;
-        private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, IJWTService IJWTService, ILogger<IUserService> logger, IRedisService redis, IErrorContextCreatorFactory errCreatorFactory)
+        public UserService(IDbContextFactory<AppDbContext> contextFactory, IJWTService IJWTService, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _contextFactory = contextFactory;
             _JWTService = IJWTService;
-            _logger = logger;
-            _redis = redis;
+           
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IUserService));
         public async Task<int> RegisterAsync(string userEmail, string password)

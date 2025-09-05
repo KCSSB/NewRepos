@@ -14,7 +14,6 @@ namespace API.Services.Application.Implementations
     public class BoardService: IBoardService
     {
         private readonly IDbContextFactory<AppDbContext> _contextFactory;
-        private readonly ILogger<IBoardService> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
