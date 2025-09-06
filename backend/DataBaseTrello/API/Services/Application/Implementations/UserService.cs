@@ -1,9 +1,12 @@
-﻿using API.DTO.Domain;
+﻿using System.Security.Authentication.ExtendedProtection;
+using API.DTO.Domain;
 using API.DTO.Mappers;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Repositories;
 using API.Repositories.Interfaces;
+using API.Repositories.Queries.Intefaces;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using DataBaseInfo;
@@ -16,24 +19,28 @@ namespace API.Services.Application.Implementations
 {
     public class UserService : IUserService
     {
+        private readonly string ServiceName = nameof(UserService);
         private readonly IJWTService _JWTService;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly AppDbContext _context;
-        private readonly IUserRepository _userRepos;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ISessionQueries _sessionQueries;
         private ErrorContextCreator? _errorContextCreator;
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(ServiceName);
 
-
-        public UserService(IJWTService IJWTService, IErrorContextCreatorFactory errCreatorFactory, IUserRepository userRepos
+        public UserService(IJWTService IJWTService, 
+            IErrorContextCreatorFactory errCreatorFactory,
+            IUnitOfWork unitOfWork, 
+            ISessionQueries sessionQueries)
         {
             _errCreatorFactory = errCreatorFactory;
             _JWTService = IJWTService;
-            _userRepos = userRepos;
+            _unitOfWork = unitOfWork;
+            _sessionQueries = sessionQueries;
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IUserService));
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
 
-            User? user = await _userRepos.GetDbUserAsync(userEmail);
+            User? user = await _unitOfWork.UserRepository.GetDbUserAsync(userEmail);
 
             if (user != null)
                 throw new AppException(_errCreator.Conflict($"Пользователь с таким email: {userEmail}, уже существует"));
@@ -53,37 +60,36 @@ namespace API.Services.Application.Implementations
             
                 newUser.UserPassword = passHash;
 
-                await _userRepos.AddDbUserAsync(newUser);
-                   
-                await _context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
+                await _unitOfWork.UserRepository.AddDbUserAsync(newUser);
+
+            await _unitOfWork.SaveChangesAsync("Ошибка во время сохранения данных о user в базу данных", ServiceName);
                  
                 return newUser.Id;
                 }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
-            
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
+
+            User? user = await _unitOfWork.UserRepository.GetDbUserAsync(userEmail);
             if (user == null)
                 throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
             if (deviceId == null)
                 deviceId = Guid.NewGuid().ToString();
-            //Логика для отслеживания количества сессий
-
+           
             var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
-            var activeSessions= await _context.Sessions
-            .Where(s => s.UserId == user.Id
-                && !s.IsRevoked
-                && s.ExpiresAt > DateTime.UtcNow)
-            .OrderByDescending(s => s.CreatedAt).ToListAsync();
+            var activeSessions = await _sessionQueries.GetActiveSessions(user.Id);
+            if (activeSessions != null)
+            {
+            var sortedSessions = SortByDateCreateDesc(activeSessions);
+            await _JWTService.RevokeSessionsAsync(sortedSessions, Guid.Parse(deviceId), 2);
+            }
 
-                await _JWTService.RevokeSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
             var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
             var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
-            await _context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");
+            await _unitOfWork.SaveChangesAsync("Ошибка при попытке авторизации", ServiceName);
             return (accessToken, refreshToken);
         }
 
@@ -91,7 +97,7 @@ namespace API.Services.Application.Implementations
         {
             if (result.HttpStatusCode >= 400 && result.HttpStatusCode <= 500)
                 throw new AppException(_errCreator.InternalServerError($"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _unitOfWork()
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
@@ -142,6 +148,11 @@ namespace API.Services.Application.Implementations
                 throw new AppException(_errCreator.BadRequest($"Изменение не удалось, неверный старый пароль userId{userId}"));
             }
 
+        }
+        public List<Session> SortByDateCreateDesc(List<Session> sessions)
+        {
+            var sortedList = sessions.OrderByDescending(s => s.CreatedAt).ToList();
+            return sortedList;
         }
 
     } 

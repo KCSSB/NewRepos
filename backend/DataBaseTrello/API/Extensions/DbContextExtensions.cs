@@ -12,10 +12,9 @@ namespace API.Extensions
     public static class DbContextExtensions
     {
         public static async Task<int> SaveChangesWithContextAsync(this DbContext context,
-            string serviceName,
-            [CallerMemberName] string operationName = null)
+            string logMessage,string serviceName, string? operationName)
         {
-            var _errCreator = new ErrorContextCreator(typeof(DbContextExtensions).Name);
+            var _errCreator = new ErrorContextCreator(serviceName);
             try
              {
                 return await context.SaveChangesAsync();

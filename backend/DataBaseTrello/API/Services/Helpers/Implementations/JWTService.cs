@@ -12,15 +12,17 @@ using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Interfaces;
 using API.Services.Helpers.Interfaces.Redis;
+using API.Repositories;
 namespace API.Services.Helpers.Implementations
 {
     public class JWTService : IJWTService
     {
+        private readonly string ServiceName = nameof(JWTService);
         private readonly IOptions<AuthSettings> _options;
         private readonly IHashService _hashService;
         private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         private ErrorContextCreator? _errorContextCreator;
 
 
@@ -29,13 +31,13 @@ namespace API.Services.Helpers.Implementations
             ILogger<IJWTService> logger,
             IRedisService redis,
             IErrorContextCreatorFactory errCreatorFactory,
-            AppDbContext context)
+            IUnitOfWork unitOfWork)
         {
             _errCreatorFactory = errCreatorFactory;
-            _context = context;
             _hashService = hashService;
             _options = options;
             _redis = redis;
+            _unitOfWork = unitOfWork;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IJWTService));
         public string GenerateAccessToken(User user, string? deviceId)
@@ -77,10 +79,9 @@ namespace API.Services.Helpers.Implementations
             };
             user.Sessions.Add(session);
 
-            await _context.Sessions.AddAsync(session);
+            await _unitOfWork.SessionRepository.AddDbSessionAsync(session);
 
-            await _context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
-            
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при сохранении Hashed Refresh Token");
 
             _ = _redis.Session.SafeSetSessionAsync(hashedToken, user.Id, deviceId);
 
