@@ -26,19 +26,18 @@ namespace API.Controllers
         private readonly IImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
+        private readonly AppDbContext _context;
         private ErrorContextCreator? _errorContextCreator;
 
 
 
-        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IDbContextFactory<AppDbContext> contextFactory )
+        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, AppDbContext context )
         {
-        _errCreatorFactory = errCreatorFactory;
+            _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
-            _contextFactory = contextFactory;
-      
+            _context = context;
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
 
@@ -66,10 +65,10 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                 var result = await _imageService.UploadImageAsync(projectRequest.image, CloudPathes.ProjectImagesPath);
                 url = result.url;
             }
-            var context = await _contextFactory.CreateDbContextAsync();
+           
                 await _projectService.UpdateProjectImageAsync(projectId, url);
     
-            var query = await context.Projects.Include(p => p.ProjectUsers)
+            var query = await _context.Projects.Include(p => p.ProjectUsers)
                 .ThenInclude(pu => pu.User).FirstOrDefaultAsync(p => p.Id == projectId);
             if (query == null)
                 throw new AppException(_errCreator.InternalServerError("Ошибка во время создания проекта"));

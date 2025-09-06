@@ -10,29 +10,26 @@ namespace API.Services.Application.Implementations
 {
     public class GetPagesService: IGetPagesService
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
+        private readonly AppDbContext _context;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private readonly ILogger<IGetPagesService> _logger;
         private ErrorContextCreator? _errorContextCreator;
-
-
-        public GetPagesService(ILogger<IGetPagesService> logger, IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
+        public GetPagesService(ILogger<IGetPagesService> logger, AppDbContext context, IErrorContextCreatorFactory errCreatorFactory)
         {
           _logger = logger;  
-          _contextFactory = contextFactory;
+          _context = context;
         _errCreatorFactory = errCreatorFactory;
             
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IGetPagesService));
         public async Task<HomePage> CreateHomePageDTOAsync(int userId)
         {
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования HomePage, Пользователь id: {userId}, не найден в базе данных"));
 
-            var projects = await context.Projects
+            var projects = await _context.Projects
                 .Where(p => p.ProjectUsers.Any(u => u.UserId == userId))
                 .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
                 .ToListAsync();
@@ -42,9 +39,8 @@ namespace API.Services.Application.Implementations
         }
         public async Task<SettingsPage> CreateSettingsPageDTOAsync(int userId)
         {
-            using var context = await _contextFactory.CreateDbContextAsync();
 
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));

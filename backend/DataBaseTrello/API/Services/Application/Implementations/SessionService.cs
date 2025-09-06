@@ -15,16 +15,15 @@ namespace API.Services.Application.Implementations
         private readonly IRedisService _redis;
         private readonly IHashService _hashService;
         private readonly IErrorContextCreatorFactory errorContextCreatorFactory;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private ErrorContextCreator errCreator;
+        private readonly AppDbContext _context;
         public SessionService(IRedisService redis, 
             IHashService hashService, 
-            IErrorContextCreatorFactory _errorCreatorFactory, 
-            IDbContextFactory<AppDbContext> contextFactory)
+            IErrorContextCreatorFactory _errorCreatorFactory,
+            AppDbContext context)
             {
             _redis = redis;
             _hashService = hashService;
-            _contextFactory = contextFactory;
             }
         private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(ISessionService));
         public async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken)
@@ -37,10 +36,7 @@ namespace API.Services.Application.Implementations
                 else
                     throw new AppException(_errCreator.Unauthorized($"Неверный refresh Token"));
             }
-
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            var dbSessions = await context.Sessions
+            var dbSessions = await _context.Sessions
                 .Where(s => s.UserId == userId && s.DeviceId == Guid.Parse(deviceId))
                 .ToListAsync();
 

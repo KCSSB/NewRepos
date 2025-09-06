@@ -10,17 +10,16 @@ namespace API.Services.Application.Implementations
 {
     public class ProjectService: IProjectService
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
+        private readonly AppDbContext _context;
 
-        public ProjectService(IDbContextFactory<AppDbContext> contextFactory, IErrorContextCreatorFactory errCreatorFactory)
+        public ProjectService(IErrorContextCreatorFactory errCreatorFactory, AppDbContext context)
         {
-        _errCreatorFactory = errCreatorFactory;
-            _contextFactory = contextFactory;
-          
+            _errCreatorFactory = errCreatorFactory;
+            _context = context;
         }
-private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IProjectService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IProjectService));
         public async Task<int> CreateProjectAsync(string projectName)
         {
                 Project project = new Project
@@ -28,11 +27,10 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                     ProjectName = projectName
                 };
 
-                using var context = _contextFactory.CreateDbContext();
 
-                await context.Projects.AddAsync(project);
+                await _context.Projects.AddAsync(project);
 
-                await context.SaveChangesWithContextAsync("Произошла ошибка, в момент добавления проекта в базу данных");
+                await _context.SaveChangesWithContextAsync("Произошла ошибка, в момент добавления проекта в базу данных");
 
                 return project.Id;
 
@@ -40,13 +38,13 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         public async Task<int> AddUserInProjectAsync(int userId, int projectId)
         {
               
-                await using var context = await _contextFactory.CreateDbContextAsync();
+     
 
-                var user = await context.Users
+                var user = await _context.Users
                     .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
                     .FirstOrDefaultAsync(u => u.Id == userId);
 
-                var project = await context.Projects
+                var project = await _context.Projects
                     .Include(p => p.ProjectUsers) // Явно загружаем ProjectUsers
                     .FirstOrDefaultAsync(p => p.Id == projectId);
 
@@ -68,23 +66,20 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
 
                 project.ProjectUsers.Add(projectUser);
                 
-                await context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
+                await _context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
 
                 return projectUser.Id;
            
-            
-
         }
 
         public async Task UpdateProjectImageAsync(int projectId, string imageUrl)
         {
 
-            using var context = await _contextFactory.CreateDbContextAsync();
-            var project = await context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
-            await context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
+            await _context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
     }

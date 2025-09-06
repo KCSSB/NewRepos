@@ -3,6 +3,7 @@ using API.DTO.Mappers;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Repositories.Interfaces;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using DataBaseInfo;
@@ -15,26 +16,24 @@ namespace API.Services.Application.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IJWTService _JWTService;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private readonly AppDbContext _context;
+        private readonly IUserRepository _userRepos;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public UserService(IDbContextFactory<AppDbContext> contextFactory, IJWTService IJWTService, IErrorContextCreatorFactory errCreatorFactory)
+        public UserService(IJWTService IJWTService, IErrorContextCreatorFactory errCreatorFactory, IUserRepository userRepos
         {
             _errCreatorFactory = errCreatorFactory;
-            _contextFactory = contextFactory;
             _JWTService = IJWTService;
-           
+            _userRepos = userRepos;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IUserService));
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
-            
-            using var context = _contextFactory.CreateDbContext();
-                
-            User? user = await context.Users.FirstOrDefaultAsync(em => em.UserEmail == userEmail);
+
+            User? user = await _userRepos.GetDbUserAsync(userEmail);
 
             if (user != null)
                 throw new AppException(_errCreator.Conflict($"Пользователь с таким email: {userEmail}, уже существует"));
@@ -53,18 +52,17 @@ namespace API.Services.Application.Implementations
                     throw new AppException(_errCreator.InternalServerError("Ошибка во время хэширования пароля"));
             
                 newUser.UserPassword = passHash;
-                
-                await context.Users.AddAsync(newUser);
+
+                await _userRepos.AddDbUserAsync(newUser);
                    
-                await context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
+                await _context.SaveChangesWithContextAsync("Ошибка во время сохранения данных о user в базу данных");
                  
                 return newUser.Id;
                 }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
-            using var context = _contextFactory.CreateDbContext();
             
-            User? user = await context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
             if (user == null)
                 throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
             if (deviceId == null)
@@ -76,7 +74,7 @@ namespace API.Services.Application.Implementations
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
-            var activeSessions= await context.Sessions
+            var activeSessions= await _context.Sessions
             .Where(s => s.UserId == user.Id
                 && !s.IsRevoked
                 && s.ExpiresAt > DateTime.UtcNow)
@@ -85,7 +83,7 @@ namespace API.Services.Application.Implementations
                 await _JWTService.RevokeSessionsAsync(activeSessions, Guid.Parse(deviceId), 2);
             var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
             var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
-            await context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");
+            await _context.SaveChangesWithContextAsync("Ошибка при попытке авторизации");
             return (accessToken, refreshToken);
         }
 
@@ -93,31 +91,27 @@ namespace API.Services.Application.Implementations
         {
             if (result.HttpStatusCode >= 400 && result.HttpStatusCode <= 500)
                 throw new AppException(_errCreator.InternalServerError($"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
-
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
 
             user.Avatar = result.url;
-            await context.SaveChangesWithContextAsync($"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
+            await _context.SaveChangesWithContextAsync($"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
 
             return result.url;
           
         }
         public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, int userId)
         {
-            var context = await _contextFactory.CreateDbContextAsync();
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
 
             ToEntityMapper.ApplyToUser(model, user);
 
-            await context.SaveChangesWithContextAsync($"Ошибка при обновлении данных о пользователе: {userId}");
+            await _context.SaveChangesWithContextAsync($"Ошибка при обновлении данных о пользователе: {userId}");
 
             var updatedUser = new UpdateUserModel
             {
@@ -130,9 +124,7 @@ namespace API.Services.Application.Implementations
         }
         public async Task ChangePasswordAsync(string oldPass, string newPass, int userId)
         {
-            var context = await _contextFactory.CreateDbContextAsync();
-
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
             var passHasher = new PasswordHasher<User>();
@@ -141,7 +133,7 @@ namespace API.Services.Application.Implementations
             {
                 var newPassHash = passHasher.HashPassword(user, newPass);
                 user.UserPassword = newPassHash;
-                await context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
+                await _context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
                 // Добавить логику разлогинивания всех вообще кроме нынешней сессий
             }
             else

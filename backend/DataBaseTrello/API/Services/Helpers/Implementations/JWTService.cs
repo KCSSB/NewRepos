@@ -17,21 +17,22 @@ namespace API.Services.Helpers.Implementations
     public class JWTService : IJWTService
     {
         private readonly IOptions<AuthSettings> _options;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
         private readonly IHashService _hashService;
         private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private readonly AppDbContext _context;
         private ErrorContextCreator? _errorContextCreator;
 
 
         public JWTService(IOptions<AuthSettings> options,
-            IDbContextFactory<AppDbContext> contextFactory,
             IHashService hashService,
             ILogger<IJWTService> logger,
-            IRedisService redis, IErrorContextCreatorFactory errCreatorFactory)
+            IRedisService redis,
+            IErrorContextCreatorFactory errCreatorFactory,
+            AppDbContext context)
         {
             _errCreatorFactory = errCreatorFactory;
-            _contextFactory = contextFactory;
+            _context = context;
             _hashService = hashService;
             _options = options;
             _redis = redis;
@@ -61,12 +62,8 @@ namespace API.Services.Helpers.Implementations
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        public async Task<string> CreateRefreshTokenAsync(User user, string? deviceId, AppDbContext? context = null)
+        public async Task<string> CreateRefreshTokenAsync(User user, string? deviceId)
         {
-            var ownContext = context == null;
-            if (ownContext)
-                context = await _contextFactory.CreateDbContextAsync();
-
             var token = Guid.NewGuid().ToString();
             var hashedToken = _hashService.HashToken(token);
             var session = new Session
@@ -80,11 +77,10 @@ namespace API.Services.Helpers.Implementations
             };
             user.Sessions.Add(session);
 
-            await context.Sessions.AddAsync(session);
+            await _context.Sessions.AddAsync(session);
 
-            await context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
-            if (ownContext)
-                await context.DisposeAsync();
+            await _context.SaveChangesWithContextAsync("Ошибка при сохранении Hashed Refresh Token");
+            
 
             _ = _redis.Session.SafeSetSessionAsync(hashedToken, user.Id, deviceId);
 
@@ -95,11 +91,10 @@ namespace API.Services.Helpers.Implementations
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, int userId, string deviceId)
         {
             _ = _redis.Session.SafeRevokeSessionAsync(userId, deviceId);
-            using var context = _contextFactory.CreateDbContext();
 
             var hashToken = _hashService.HashToken(refreshToken);
 
-            var curSession = await context.Sessions
+            var curSession = await _context.Sessions
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(s => hashToken == s.Token);
 
@@ -124,23 +119,20 @@ namespace API.Services.Helpers.Implementations
         public async Task RevokeSessionAsync(int userId, string deviceId)
         {
             _ = _redis.Session.SafeRevokeSessionAsync(userId, deviceId);
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            var session = await context.Sessions.FirstOrDefaultAsync(s =>
+            var session = await _context.Sessions.FirstOrDefaultAsync(s =>
             s.UserId == userId
             && s.DeviceId == Guid.Parse(deviceId));
 
             if (session == null)
                 throw new AppException(_errCreator.Unauthorized("В базе не найдена сессия соответствующий значению из cookie при попытке выйти из аккаунта"));
             session.IsRevoked = true;
-            await context.SaveChangesWithContextAsync($"Ошибка при удалении сессии из базы данных session id: {session.Id}");
+            await _context.SaveChangesWithContextAsync($"Ошибка при удалении сессии из базы данных session id: {session.Id}");
 
         }
         private async Task RevokeSessionRangeAsync(List<Session> sessions)
         {
             if (sessions.Count == 0)
                 return;
-            using var context = await _contextFactory.CreateDbContextAsync();
             var redisTasks = sessions.Select(s => _redis.Session.SafeRevokeSessionAsync(s.UserId, s.DeviceId.ToString())).ToList();
             foreach (var session in sessions)
                 session.IsRevoked = true;
@@ -149,7 +141,7 @@ namespace API.Services.Helpers.Implementations
             catch (Exception ex)
             {
             }
-            await context.SaveChangesWithContextAsync($"Ошибка при удалении сессий из бд");
+            await _context.SaveChangesWithContextAsync($"Ошибка при удалении сессий из бд");
         }
         private async Task RevokeSessionToTheLimitAsync(List<Session> sessions, List<Session> forRevoke, Guid deviceId, bool hasDevice = false, int limit = 3)
         {

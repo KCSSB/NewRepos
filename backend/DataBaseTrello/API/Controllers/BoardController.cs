@@ -14,7 +14,6 @@ namespace API.Controllers
         private readonly IBoardService _boardService;
         public BoardController(ILogger<ProjectsController> logger, IBoardService boardService) 
         {
-           _logger = logger;
             _boardService = boardService;
         }
         [HttpPost("CreateBoard")]

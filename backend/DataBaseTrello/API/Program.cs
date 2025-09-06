@@ -33,10 +33,7 @@ builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthS
 builder.Services.Configure<TLLSettings>(builder.Configuration.GetSection("TLLSettings"));
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
 // Регистрация фабрики контекста
-builder.Services.AddDbContextFactory<AppDbContext>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
 builder.Services.AddSingleton<IRedisService,RedisService>();
 
@@ -88,6 +85,7 @@ builder.Services.AddScoped<IProjectService,ProjectService>();
 builder.Services.AddScoped<IBoardService,BoardService>();
 builder.Services.AddScoped<IImageService,ImageService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
+builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddSwaggerGen(c =>
 {
     
@@ -179,12 +177,12 @@ if (app.Environment.IsDevelopment())
     app.UseMigrationsEndPoint();
 }
 
+app.UseExceptionHandling();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseExceptionHandling();
 app.UseSessionValidation();
 app.MapControllers();
 

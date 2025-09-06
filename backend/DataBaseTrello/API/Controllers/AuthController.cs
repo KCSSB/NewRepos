@@ -31,7 +31,6 @@ namespace API.Controllers
             _jwtServices = jwtServices;
             _options = options;
             _logger = logger;
-           
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(AuthController));
 
