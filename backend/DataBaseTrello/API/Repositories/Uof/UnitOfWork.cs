@@ -3,7 +3,7 @@ using API.Extensions;
 using API.Repositories.Interfaces;
 using DataBaseInfo;
 
-namespace API.Repositories
+namespace API.Repositories.Uof
 {
     public class UnitOfWork : IUnitOfWork
     {

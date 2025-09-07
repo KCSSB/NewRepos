@@ -4,8 +4,7 @@ namespace API.Repositories.Interfaces
 {
     public interface IProjectRepository
     {
-        public Task AddDbProject(Project project);
-        public Task<ProjectUser> ConnectWithProjectUser(ProjectUser projectUser);
-        public Task<Project> GetProject(int projectId);
+        public Task AddAsync(Project project);
+        public Task<Project> GetProjectAsync(int projectId);
     }
 }

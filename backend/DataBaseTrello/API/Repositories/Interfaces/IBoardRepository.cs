@@ -4,6 +4,6 @@ namespace API.Repositories.Interfaces
 {
     public interface IBoardRepository
     {
-        public Task AddDbBoard(Board board);
+        public Task AddAsync(Board board);
     }
 }

@@ -109,10 +109,11 @@ namespace API.Controllers
             public async Task<IActionResult> Logout()
             {
             _logger.LogInformation(InfoMessages.StartOperation + "Logaut");
+            string token = Request.Cookies["refreshToken"];
             int userId = User.GetUserId();
             string? deviceId = User.GetDeviceId();
             
-            await _jwtServices.RevokeSessionAsync(userId, deviceId);
+            await _jwtServices.RevokeSessionAsync(userId, deviceId, token);
  
             _logger.LogInformation(InfoMessages.FinishOperation + "RefreshAccessToken");
             return Ok("User success unauthorized");

@@ -21,6 +21,8 @@ using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces.Redis;
+using API.Repositories.Uof;
+using API.Repositories.Queries;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +34,9 @@ builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration
 builder.Services.Configure<AuthSettings>(builder.Configuration.GetSection("AuthSettings"));
 builder.Services.Configure<TLLSettings>(builder.Configuration.GetSection("TLLSettings"));
 builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("ImageKitSettings"));
-// Регистрация фабрики контекста
-builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
 builder.Services.AddSingleton<IRedisService,RedisService>();
 
@@ -85,7 +88,8 @@ builder.Services.AddScoped<IProjectService,ProjectService>();
 builder.Services.AddScoped<IBoardService,BoardService>();
 builder.Services.AddScoped<IImageService,ImageService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
-builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IQueries,Queries>();
 builder.Services.AddSwaggerGen(c =>
 {
     
@@ -142,31 +146,6 @@ if (string.IsNullOrEmpty(connectionString))
                            "Program",
                            (HttpStatusCode)1001,
                            $"Произошла ошибка в момент подключения к базе данных"));
-
-
-using (var scope = app.Services.CreateScope())
-{
-    var service = scope.ServiceProvider;
-    var dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
-    using(var dbContext = dbFactory.CreateDbContext())
-    {
-        var logger = service.GetService<ILogger<Program>>();
-        try
-    {
-        dbContext.Database.Migrate();
-            
-            logger.LogInformation("Миграции были успешно применены");
-    }
-    catch (Exception ex)
-    {
-            throw new AppException(new ErrorContext("Program",
-                               "Program",
-                               (HttpStatusCode)1001,
-                               $"Произошла ошибка при попытке применить миграции"));
-
-        }
-    }
-}
    
 
 if (app.Environment.IsDevelopment())

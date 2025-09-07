@@ -1,6 +1,11 @@
 ﻿using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Repositories.Interfaces;
+using API.Repositories.Queries;
+using API.Repositories.Queries.Intefaces;
+using API.Repositories.Queries.Interfaces;
+using API.Repositories.Uof;
 using API.Services.Application.Interfaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
@@ -10,45 +15,46 @@ namespace API.Services.Application.Implementations
 {
     public class BoardService: IBoardService
     {
+        private readonly string ServiceName = nameof(BoardService);
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly ILogger<IBoardService> _logger;
         private ErrorContextCreator? _errorContextCreator;
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IQueries _query;
+        private readonly IMembersOfBoardRepository _membersOfBoardRepository;
 
 
-        public BoardService(ILogger<IBoardService> logger, IErrorContextCreatorFactory errCreatorFactory, AppDbContext context)
+        public BoardService(ILogger<IBoardService> logger, 
+            IErrorContextCreatorFactory errCreatorFactory, 
+            IUnitOfWork unitOfWork,
+            IQueries query)
         {
             _errCreatorFactory = errCreatorFactory;
             _logger = logger;
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _query = query;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IBoardService));
         public async Task<int> CreateBoardAsync(string boardName)
         {
           
-           
-
             Board board = new Board
             {
                 Name = boardName,
             };
 
-            await _context.Boards.AddAsync(board);
-            await _context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить board в бд");
+            await _unitOfWork.BoardRepository.AddAsync(board);
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Произошла ошибка при попытке сохранить board в бд");
 
             return board.Id;
         }
         public async Task<List<int>> AddProjectUsersInBoardAsync(int boardId, int boardLeadId,List<int> projectUserIds)
         {
-    
 
-            var existingBoard = await _context.Boards.Include(b => b.MemberOfBoards)
-                .FirstOrDefaultAsync(b => b.Id == boardId);
+
+            var existingBoard = await _query.BoardQueries.GetBoardWithMembersAsync(boardId);
             
-            var existingProjectUsers = await _context.ProjectUsers
-                .Where(pu => projectUserIds.Contains(pu.Id))
-                .Include(pu => pu.MembersOfBoards)
-                .ToListAsync();
+            var existingProjectUsers = await _query.ProjectUserQueries.GetProjectUsersWithMembersByIdsAsync(projectUserIds);
 
            //Ты хотел создать метод для проверки и синхонизации входных ProjectUsers с теми что хранятся в бд
 
@@ -88,13 +94,9 @@ namespace API.Services.Application.Implementations
         
         private async Task AddBoardMembersToDbAsync(List<MemberOfBoard> members)
         {
-        
-            foreach (var member in members)
-            {
-                await _context.MembersOfBoards.AddAsync(member);
-            }
-            await _context.SaveChangesWithContextAsync("Произошла ошибка при попытке сохранить MembersOfBoard в бд");
+            await _membersOfBoardRepository.AddMemberRangeAsync(members);
 
+            await _unitOfWork.SaveChangesAsync(ServiceName,"Произошла ошибка при попытке сохранить MembersOfBoard в бд");
         }
         
     }

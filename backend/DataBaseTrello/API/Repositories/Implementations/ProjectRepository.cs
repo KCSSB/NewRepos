@@ -1,6 +1,7 @@
 ﻿using API.Repositories.Interfaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.Implementations
 {
@@ -11,17 +12,13 @@ namespace API.Repositories.Implementations
         {
             _context = context;
         }
-        public Task AddDbProject(Project project)
+        public async Task AddAsync(Project project)
         {
-
+            await _context.Projects.AddAsync(project);
         }
-        public Task<ProjectUser> ConnectWithProjectUser(ProjectUser projectUser)
+        public async Task<Project> GetProjectAsync(int projectId)
         {
-
-        }
-        public Task<Project> GetProject(int projectId)
-        {
-
+            return await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
         }
     }
 }

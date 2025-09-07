@@ -5,21 +5,29 @@ using API.Extensions;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Services.Application.Interfaces;
+using API.Repositories.Queries.Intefaces;
+using API.Repositories.Uof;
+using API.Repositories.Queries;
 
 namespace API.Services.Application.Implementations
 {
     public class ProjectService: IProjectService
     {
+        private readonly string ServiceName = nameof(ProjectService);
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IQueries _query;
 
-        public ProjectService(IErrorContextCreatorFactory errCreatorFactory, AppDbContext context)
+        public ProjectService(IErrorContextCreatorFactory errCreatorFactory,
+            IUnitOfWork unitOfWork,
+            IQueries query)
         {
             _errCreatorFactory = errCreatorFactory;
-            _context = context;
+            _unitOfWork = unitOfWork;
+            _query = query;
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IProjectService));
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(ServiceName);
         public async Task<int> CreateProjectAsync(string projectName)
         {
                 Project project = new Project
@@ -28,25 +36,19 @@ namespace API.Services.Application.Implementations
                 };
 
 
-                await _context.Projects.AddAsync(project);
+                await _unitOfWork.ProjectRepository.AddAsync(project);
 
-                await _context.SaveChangesWithContextAsync("Произошла ошибка, в момент добавления проекта в базу данных");
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Произошла ошибка, в момент добавления проекта в базу данных");
 
                 return project.Id;
 
         }
         public async Task<int> AddUserInProjectAsync(int userId, int projectId)
         {
-              
-     
 
-                var user = await _context.Users
-                    .Include(u => u.ProjectUsers) // Явно загружаем ProjectUsers
-                    .FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _query.UserQueries.GetUserWithProjectUsersAsync(userId);
 
-                var project = await _context.Projects
-                    .Include(p => p.ProjectUsers) // Явно загружаем ProjectUsers
-                    .FirstOrDefaultAsync(p => p.Id == projectId);
+            var project = await _query.ProjectQueries.GetProjectWithProjectUsersAsync(projectId);
 
           
             var projectUser = new ProjectUser()
@@ -65,21 +67,20 @@ namespace API.Services.Application.Implementations
                 user.ProjectUsers.Add(projectUser);
 
                 project.ProjectUsers.Add(projectUser);
-                
-                await _context.SaveChangesWithContextAsync($"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
 
-                return projectUser.Id;
-           
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка в момент добавления пользователя Id: {userId} в проект Id: {projectId}");
+
+                return projectUser.Id;  
         }
 
         public async Task UpdateProjectImageAsync(int projectId, string imageUrl)
         {
 
-            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
             if (project == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка при обновлении изображения проекта, проект: {projectId}, не найден"));
             project.Avatar = imageUrl;
-            await _context.SaveChangesWithContextAsync($"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
     }

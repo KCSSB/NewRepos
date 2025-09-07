@@ -1,6 +1,7 @@
 ﻿using API.Repositories.Interfaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.Implementations
 {
@@ -11,18 +12,27 @@ namespace API.Repositories.Implementations
         {
             _context = context;
         }
-        }
-        public Task<List<Session>> GetDbSessionsAsync(int userId, string deviceId)
+        
+        public async Task<List<Session?>?> GetRangeSessionsAsync(int userId, string deviceId, string token)
         {
-
+            return await _context.Sessions
+                .Where(s => s.UserId == userId 
+                && s.DeviceId == Guid.Parse(deviceId))
+                .ToListAsync();
         }
-        public Task AddDbSessionAsync(Session session)
+        public async Task<Session?> GetDbSessionAsync(int userId, string deviceId, string token)
         {
-
+            return await _context.Sessions.FirstOrDefaultAsync(s => token == s.Token
+            && s.UserId == userId
+            && s.DeviceId == Guid.Parse(deviceId));
         }
-        public Task RemoveRangeSessionsAsync(List<Session> session)
+        public async Task AddDbSessionAsync(Session session)
         {
-
+            await _context.Sessions.AddAsync(session);
+        }
+        public void RemoveRangeSessionsAsync(List<Session> sessions)
+        {
+            _context.Sessions.RemoveRange(sessions);
         }
     }
 }

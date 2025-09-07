@@ -12,7 +12,11 @@ using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Interfaces;
 using API.Services.Helpers.Interfaces.Redis;
-using API.Repositories;
+using Microsoft.AspNetCore.Session;
+using API.Repositories.Queries.Intefaces;
+using StackExchange.Redis;
+using API.Repositories.Uof;
+using API.Repositories.Queries;
 namespace API.Services.Helpers.Implementations
 {
     public class JWTService : IJWTService
@@ -23,6 +27,7 @@ namespace API.Services.Helpers.Implementations
         private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IQueries _query;
         private ErrorContextCreator? _errorContextCreator;
 
 
@@ -31,13 +36,15 @@ namespace API.Services.Helpers.Implementations
             ILogger<IJWTService> logger,
             IRedisService redis,
             IErrorContextCreatorFactory errCreatorFactory,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IQueries query)
         {
             _errCreatorFactory = errCreatorFactory;
             _hashService = hashService;
             _options = options;
             _redis = redis;
             _unitOfWork = unitOfWork;
+            _query = query;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IJWTService));
         public string GenerateAccessToken(User user, string? deviceId)
@@ -95,9 +102,7 @@ namespace API.Services.Helpers.Implementations
 
             var hashToken = _hashService.HashToken(refreshToken);
 
-            var curSession = await _context.Sessions
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(s => hashToken == s.Token);
+            var curSession = await _query.SessionQueries.GetCurSessionWithUser(hashToken);
 
             RefTokenIsValid(curSession);
             curSession.IsRevoked = true;
@@ -117,17 +122,16 @@ namespace API.Services.Helpers.Implementations
             else if (token.ExpiresAt < DateTime.UtcNow)
                 throw new AppException(_errCreator.Unauthorized("RefreshToken истёк"));
         }
-        public async Task RevokeSessionAsync(int userId, string deviceId)
+        public async Task RevokeSessionAsync(int userId, string deviceId, string token)
         {
             _ = _redis.Session.SafeRevokeSessionAsync(userId, deviceId);
-            var session = await _context.Sessions.FirstOrDefaultAsync(s =>
-            s.UserId == userId
-            && s.DeviceId == Guid.Parse(deviceId));
+
+            var session = await _unitOfWork.SessionRepository.GetDbSessionAsync(userId, deviceId, token);
 
             if (session == null)
                 throw new AppException(_errCreator.Unauthorized("В базе не найдена сессия соответствующий значению из cookie при попытке выйти из аккаунта"));
             session.IsRevoked = true;
-            await _context.SaveChangesWithContextAsync($"Ошибка при удалении сессии из базы данных session id: {session.Id}");
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при отзыве сессии из базы данных session id: {session.Id}");
 
         }
         private async Task RevokeSessionRangeAsync(List<Session> sessions)
@@ -142,7 +146,7 @@ namespace API.Services.Helpers.Implementations
             catch (Exception ex)
             {
             }
-            await _context.SaveChangesWithContextAsync($"Ошибка при удалении сессий из бд");
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при удалении сессий из бд");
         }
         private async Task RevokeSessionToTheLimitAsync(List<Session> sessions, List<Session> forRevoke, Guid deviceId, bool hasDevice = false, int limit = 3)
         {

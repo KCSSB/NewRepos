@@ -12,7 +12,7 @@ namespace API.Repositories.Queries.Implementations
         {
             _context = context;
         }
-        public async Task<List<Session>?>? GetActiveSessions(int userId)
+        public async Task<List<Session?>?> GetActiveSessions(int userId)
         {
             return await _context.Sessions
                 .Where(s => s.UserId == userId
@@ -20,5 +20,13 @@ namespace API.Repositories.Queries.Implementations
                 && s.ExpiresAt > DateTime.UtcNow)
                 .ToListAsync();
         }
+        public async Task<Session?> GetCurSessionWithUser(string token)
+        {
+            return await _context.Sessions
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s =>token == s.Token);
+        }
+     
+
     }
 }

@@ -4,9 +4,10 @@ using API.DTO.Mappers;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Repositories;
 using API.Repositories.Interfaces;
+using API.Repositories.Queries;
 using API.Repositories.Queries.Intefaces;
+using API.Repositories.Uof;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using DataBaseInfo;
@@ -23,19 +24,19 @@ namespace API.Services.Application.Implementations
         private readonly IJWTService _JWTService;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ISessionQueries _sessionQueries;
+        private readonly IQueries _query;
         private ErrorContextCreator? _errorContextCreator;
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(ServiceName);
 
         public UserService(IJWTService IJWTService, 
             IErrorContextCreatorFactory errCreatorFactory,
             IUnitOfWork unitOfWork, 
-            ISessionQueries sessionQueries)
+            IQueries query)
         {
             _errCreatorFactory = errCreatorFactory;
             _JWTService = IJWTService;
             _unitOfWork = unitOfWork;
-            _sessionQueries = sessionQueries;
+            _query = query;
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
@@ -80,7 +81,7 @@ namespace API.Services.Application.Implementations
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
 
-            var activeSessions = await _sessionQueries.GetActiveSessions(user.Id);
+            var activeSessions = await _query.SessionQueries.GetActiveSessions(user.Id);
             if (activeSessions != null)
             {
             var sortedSessions = SortByDateCreateDesc(activeSessions);
@@ -97,27 +98,27 @@ namespace API.Services.Application.Implementations
         {
             if (result.HttpStatusCode >= 400 && result.HttpStatusCode <= 500)
                 throw new AppException(_errCreator.InternalServerError($"Ошибка при загрузке изображения в ImageKit. Код: {result.HttpStatusCode}"));
-            var user = await _unitOfWork()
+            var user = await _unitOfWork.UserRepository.GetDbUserAsync(userId);
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент смены аватара пользователя, Пользователь id: {userId}, не найден"));
 
             user.Avatar = result.url;
-            await _context.SaveChangesWithContextAsync($"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка в момент смены аватара пользователя, не удалось сохранить url: {result.url}");
 
             return result.url;
           
         }
         public async Task<UpdateUserModel> UpdateUserAsync(UpdateUserModel model, int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _unitOfWork.UserRepository.GetDbUserAsync(userId);
 
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
 
             ToEntityMapper.ApplyToUser(model, user);
 
-            await _context.SaveChangesWithContextAsync($"Ошибка при обновлении данных о пользователе: {userId}");
+            await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при обновлении данных о пользователе: {userId}");
 
             var updatedUser = new UpdateUserModel
             {
@@ -130,7 +131,7 @@ namespace API.Services.Application.Implementations
         }
         public async Task ChangePasswordAsync(string oldPass, string newPass, int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _unitOfWork.UserRepository.GetDbUserAsync(userId);
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Ошибка при получении данных, user {userId} не найден"));
             var passHasher = new PasswordHasher<User>();
@@ -139,7 +140,7 @@ namespace API.Services.Application.Implementations
             {
                 var newPassHash = passHasher.HashPassword(user, newPass);
                 user.UserPassword = newPassHash;
-                await _context.SaveChangesWithContextAsync($"Ошибка при обновлении пароля в базе данных: {userId}");
+                await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при обновлении пароля в базе данных: {userId}");
                 // Добавить логику разлогинивания всех вообще кроме нынешней сессий
             }
             else

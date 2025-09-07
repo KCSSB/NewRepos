@@ -1,6 +1,7 @@
 ﻿using API.DTO.Domain;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
+using API.Repositories.Uof;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
@@ -16,14 +17,15 @@ namespace API.Services.Application.Implementations
         private readonly IHashService _hashService;
         private readonly IErrorContextCreatorFactory errorContextCreatorFactory;
         private ErrorContextCreator errCreator;
-        private readonly AppDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
         public SessionService(IRedisService redis, 
             IHashService hashService, 
             IErrorContextCreatorFactory _errorCreatorFactory,
-            AppDbContext context)
+            IUnitOfWork unitOfWork)
             {
             _redis = redis;
             _hashService = hashService;
+            _unitOfWork = unitOfWork;
             }
         private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(ISessionService));
         public async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken)
@@ -36,9 +38,7 @@ namespace API.Services.Application.Implementations
                 else
                     throw new AppException(_errCreator.Unauthorized($"Неверный refresh Token"));
             }
-            var dbSessions = await _context.Sessions
-                .Where(s => s.UserId == userId && s.DeviceId == Guid.Parse(deviceId))
-                .ToListAsync();
+            var dbSessions = await _unitOfWork.SessionRepository.GetRangeSessionsAsync(userId, deviceId, refreshToken);
 
             var dbSession = dbSessions.FirstOrDefault(s => _hashService.VerifyToken(refreshToken, s.Token));
 

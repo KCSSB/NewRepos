@@ -11,9 +11,10 @@ namespace API.Repositories.Implementations
         {
             _context = context;
         }
-        public Task AddMemberRange(List<MemberOfBoard> members)
+        public async Task AddMemberRangeAsync(List<MemberOfBoard> members)
         {
-
+            foreach (var member in members)
+                await _context.AddAsync(member);
         }
     }
 }

@@ -7,17 +7,17 @@ namespace API.Services.BackGroundServices
     public class SessionsCleaner : BackgroundService
     {
         private readonly ILogger<SessionsCleaner> _logger;
-        private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+        private readonly  IServiceProvider _serviceProvider;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
 
-        public SessionsCleaner(ILogger<SessionsCleaner> logger, IDbContextFactory<AppDbContext> dbContextFactory, IErrorContextCreatorFactory errCreatorFactory)
+        public SessionsCleaner(ILogger<SessionsCleaner> logger, IServiceProvider serviceProvider, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _logger = logger;
-            _dbContextFactory = dbContextFactory;
+            _serviceProvider = serviceProvider;
            
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(SessionsCleaner));
@@ -25,18 +25,20 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         {
             while (!ct.IsCancellationRequested)
             {
-                await using (var dbContext = await _dbContextFactory.CreateDbContextAsync(ct))
-                {
+                
+                
                     try
                     {
-                        var expiredSessions = await dbContext.Sessions
+                    using var scope = _serviceProvider.CreateScope();
+                    var _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    var expiredSessions = await _context.Sessions
                             .Where(t => t.ExpiresAt < DateTime.UtcNow || t.IsRevoked)
                             .ToListAsync(ct);
 
                         if (expiredSessions.Any())
                         {
-                            dbContext.Sessions.RemoveRange(expiredSessions);
-                            await dbContext.SaveChangesAsync(ct);
+                            _context.Sessions.RemoveRange(expiredSessions);
+                            await _context.SaveChangesAsync(ct);
                         }
                     }
                     catch (Exception ex)
@@ -44,7 +46,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                         _logger.LogError(ex, "Ошибка при очистке токенов");
                     }
 
-                }
+                
                 await Task.Delay(TimeSpan.FromHours(24), ct);
             }
 

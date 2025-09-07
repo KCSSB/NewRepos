@@ -11,9 +11,9 @@ namespace API.Repositories.Implementations
         {
             _context = context;
         }
-        public Task AddDbBoard(Board board)
+        public async Task AddAsync(Board board)
         {
-
+            await _context.Boards.AddAsync(board);
         }
     }
 }

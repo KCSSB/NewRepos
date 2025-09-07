@@ -1,6 +1,7 @@
 ﻿using API.Repositories.Queries.Intefaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.Queries.Implementations
 {
@@ -11,9 +12,10 @@ namespace API.Repositories.Queries.Implementations
         {
             _context = context;
         }
-        public Task<List<Board>> GetBoardWithMembers(int boardId)
+        public async Task<Board?> GetBoardWithMembersAsync(int boardId)
         {
-
+            return await _context.Boards.Include(b => b.MemberOfBoards)
+                .FirstOrDefaultAsync(b => b.Id == boardId);
         }
     }
 }

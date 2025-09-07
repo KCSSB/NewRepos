@@ -10,15 +10,13 @@ namespace API.Services.Helpers.Implementations
     {
         private readonly IOptions<EmailService> _settings;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly AppDbContext _context;
         private ErrorContextCreator? _errorContextCreator;
 
 
-        public EmailService(AppDbContext context, IOptions<EmailService> settings, IErrorContextCreatorFactory errCreatorFactory)
+        public EmailService(IOptions<EmailService> settings, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _settings = settings;
-            _context = context;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));
         public async Task<MimeMessage> CreateMessageAsync()

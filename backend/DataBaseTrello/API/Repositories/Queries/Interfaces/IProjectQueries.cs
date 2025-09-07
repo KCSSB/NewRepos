@@ -5,8 +5,9 @@ namespace API.Repositories.Queries.Intefaces
 {
     public interface IProjectQueries
     {
-        public Task<List<Project?>?> GetAllProjectsWhereUser(int userId);
-        public Task<Project?> GetProjectWithUsers(int projectId);
-        public Task<Project?> GetProjectWithProjectUsers(int projectId);
+        public Task<List<Project?>?> GetAllProjectsWhereUserAsync(int userId);
+        public Task<Project?> GetProjectWithUsersAsync(int projectId);
+        public Task<Project?> GetProjectWithProjectUsersAsync(int projectId);
+
     }
 }

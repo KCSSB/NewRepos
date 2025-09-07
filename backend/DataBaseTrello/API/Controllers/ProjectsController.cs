@@ -12,6 +12,8 @@ using API.Services.Helpers.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 using API.DTO.Mappers;
+using API.Repositories.Queries.Intefaces;
+using API.Repositories.Queries;
 
 
 namespace API.Controllers
@@ -26,18 +28,15 @@ namespace API.Controllers
         private readonly IImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly AppDbContext _context;
+        private readonly IQueries _query;
         private ErrorContextCreator? _errorContextCreator;
-
-
-
-        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, AppDbContext context )
+        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IQueries query)
         {
             _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
-            _context = context;
+            _query = query;
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
 
@@ -67,11 +66,10 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
             }
            
                 await _projectService.UpdateProjectImageAsync(projectId, url);
-    
-            var query = await _context.Projects.Include(p => p.ProjectUsers)
-                .ThenInclude(pu => pu.User).FirstOrDefaultAsync(p => p.Id == projectId);
+
+            var query = await _query.ProjectQueries.GetProjectWithUsersAsync(projectId);
             if (query == null)
-                throw new AppException(_errCreator.InternalServerError("Ошибка во время создания проекта"));
+                throw new AppException(_errCreator.InternalServerError("Не удалось получить проект из базы данных"));
          
             var response = ToResponseMapper.ToSummaryProjectResponse(query);
             return Ok(response);
