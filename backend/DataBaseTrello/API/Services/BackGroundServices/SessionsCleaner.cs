@@ -7,17 +7,17 @@ namespace API.Services.BackGroundServices
     public class SessionsCleaner : BackgroundService
     {
         private readonly ILogger<SessionsCleaner> _logger;
-        private readonly  IServiceProvider _serviceProvider;
+        private readonly  IServiceScopeFactory _scopeFactory;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
 
 
 
-        public SessionsCleaner(ILogger<SessionsCleaner> logger, IServiceProvider serviceProvider, IErrorContextCreatorFactory errCreatorFactory)
+        public SessionsCleaner(ILogger<SessionsCleaner> logger, IServiceScopeFactory scopeFactory, IErrorContextCreatorFactory errCreatorFactory)
         {
             _errCreatorFactory = errCreatorFactory;
             _logger = logger;
-            _serviceProvider = serviceProvider;
+            _scopeFactory = scopeFactory;
            
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(SessionsCleaner));
@@ -29,16 +29,16 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
                 
                     try
                     {
-                    using var scope = _serviceProvider.CreateScope();
-                    var _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                    var expiredSessions = await _context.Sessions
+                    using var scope = _scopeFactory.CreateScope();
+                    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    var expiredSessions = await context.Sessions
                             .Where(t => t.ExpiresAt < DateTime.UtcNow || t.IsRevoked)
                             .ToListAsync(ct);
 
                         if (expiredSessions.Any())
                         {
-                            _context.Sessions.RemoveRange(expiredSessions);
-                            await _context.SaveChangesAsync(ct);
+                            context.Sessions.RemoveRange(expiredSessions);
+                            await context.SaveChangesAsync(ct);
                         }
                     }
                     catch (Exception ex)
