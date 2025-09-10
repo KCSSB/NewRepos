@@ -2,6 +2,6 @@
 {
     public interface IRedisService
     {
-        IRedisSession Session { get; }
+        //IRedisSession Session { get; }
     }
 }

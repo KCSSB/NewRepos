@@ -23,6 +23,11 @@ using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces.Redis;
 using API.Repositories.Uof;
 using API.Repositories.Queries;
+using API.Repositories.Implementations;
+using API.Repositories.Interfaces;
+using API.Repositories.Queries.Implementations;
+using API.Repositories.Queries.Intefaces;
+using API.Repositories.Queries.Interfaces;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -37,8 +42,8 @@ builder.Services.Configure<ImageKitSettings>(builder.Configuration.GetSection("I
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
-builder.Services.AddSingleton<IRedisService,RedisService>();
+//builder.Services.AddSingleton(new Lazy<IConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_CONNECTION") ?? "localhost:6379")));
+//builder.Services.AddSingleton<IRedisService,RedisService>();
 
 
 //Регистрация сервиса для очистки рефреш токенов:
@@ -80,6 +85,7 @@ builder.Services.AddControllers()
         options.SuppressModelStateInvalidFilter = true;
     });
 builder.Services.AddEndpointsApiExplorer();
+//serv
 builder.Services.AddScoped<IHashService,HashService>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IJWTService,JWTService>();
@@ -88,8 +94,24 @@ builder.Services.AddScoped<IProjectService,ProjectService>();
 builder.Services.AddScoped<IBoardService,BoardService>();
 builder.Services.AddScoped<IImageService,ImageService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
+//repos
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<IMembersOfBoardRepository, MembersOfBoardRepository>();
+builder.Services.AddScoped<IBoardRepository, BoardRepository>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//Queries
+builder.Services.AddScoped<IBoardQueries, BoardQueries>();
+builder.Services.AddScoped<IUserQueries, UserQueries>();
+builder.Services.AddScoped<IProjectQueries, ProjectQueries>();
+builder.Services.AddScoped<IProjectUserQueries, ProjectUserQueries>();
+builder.Services.AddScoped<ISessionQueries, SessionQueries>();
+
 builder.Services.AddScoped<IQueries,Queries>();
+//swagger
 builder.Services.AddSwaggerGen(c =>
 {
     

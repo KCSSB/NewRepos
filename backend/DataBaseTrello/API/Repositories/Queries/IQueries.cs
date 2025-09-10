@@ -10,6 +10,5 @@ namespace API.Repositories.Queries
         public IProjectQueries ProjectQueries { get; set; }
         public IProjectUserQueries ProjectUserQueries { get; set; }
         public ISessionQueries SessionQueries { get; set; }
-        public IBoardQueries BardQueries { get; set; }
     }
 }

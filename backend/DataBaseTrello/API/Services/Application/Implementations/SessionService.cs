@@ -13,37 +13,25 @@ namespace API.Services.Application.Implementations
 {
     public class SessionService : ISessionService
     {
-        private readonly IRedisService _redis;
         private readonly IHashService _hashService;
         private readonly IErrorContextCreatorFactory errorContextCreatorFactory;
         private ErrorContextCreator errCreator;
         private readonly IUnitOfWork _unitOfWork;
-        public SessionService(IRedisService redis, 
-            IHashService hashService, 
+        public SessionService(IHashService hashService, 
             IErrorContextCreatorFactory _errorCreatorFactory,
             IUnitOfWork unitOfWork)
             {
-            _redis = redis;
             _hashService = hashService;
             _unitOfWork = unitOfWork;
             }
         private ErrorContextCreator _errCreator => errCreator ??= errorContextCreatorFactory.Create(nameof(ISessionService));
         public async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken)
         {
-            SessionData? session = await _redis.Session.SafeGetSessionAsync(userId, deviceId);
-            if (session != null)
-            {
-                if (_hashService.VerifyToken(refreshToken, session.HashedToken))
-                    return session.IsRevoked;
-                else
-                    throw new AppException(_errCreator.Unauthorized($"Неверный refresh Token"));
-            }
             var dbSessions = await _unitOfWork.SessionRepository.GetRangeSessionsAsync(userId, deviceId, refreshToken);
 
             var dbSession = dbSessions.FirstOrDefault(s => _hashService.VerifyToken(refreshToken, s.Token));
 
-            if (dbSession != null)
-                return dbSession.IsRevoked;
+            if (dbSession != null) return dbSession.IsRevoked;
             return null;
         }
     }

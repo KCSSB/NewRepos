@@ -24,7 +24,6 @@ namespace API.Services.Helpers.Implementations
         private readonly string ServiceName = nameof(JWTService);
         private readonly IOptions<AuthSettings> _options;
         private readonly IHashService _hashService;
-        private readonly IRedisService _redis;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IQueries _query;
@@ -34,7 +33,6 @@ namespace API.Services.Helpers.Implementations
         public JWTService(IOptions<AuthSettings> options,
             IHashService hashService,
             ILogger<IJWTService> logger,
-            IRedisService redis,
             IErrorContextCreatorFactory errCreatorFactory,
             IUnitOfWork unitOfWork,
             IQueries query)
@@ -42,7 +40,6 @@ namespace API.Services.Helpers.Implementations
             _errCreatorFactory = errCreatorFactory;
             _hashService = hashService;
             _options = options;
-            _redis = redis;
             _unitOfWork = unitOfWork;
             _query = query;
         }
@@ -90,7 +87,7 @@ namespace API.Services.Helpers.Implementations
 
             await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при сохранении Hashed Refresh Token");
 
-            _ = _redis.Session.SafeSetSessionAsync(hashedToken, user.Id, deviceId);
+            //_ = _redis.Session.SafeSetSessionAsync(hashedToken, user.Id, deviceId);
 
             return token;
         }
@@ -98,7 +95,7 @@ namespace API.Services.Helpers.Implementations
 
         public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, int userId, string deviceId)
         {
-            _ = _redis.Session.SafeRevokeSessionAsync(userId, deviceId);
+          
 
             var hashToken = _hashService.HashToken(refreshToken);
 
@@ -124,7 +121,7 @@ namespace API.Services.Helpers.Implementations
         }
         public async Task RevokeSessionAsync(int userId, string deviceId, string token)
         {
-            _ = _redis.Session.SafeRevokeSessionAsync(userId, deviceId);
+         
 
             var session = await _unitOfWork.SessionRepository.GetDbSessionAsync(userId, deviceId, token);
 
@@ -138,14 +135,8 @@ namespace API.Services.Helpers.Implementations
         {
             if (sessions.Count == 0)
                 return;
-            var redisTasks = sessions.Select(s => _redis.Session.SafeRevokeSessionAsync(s.UserId, s.DeviceId.ToString())).ToList();
             foreach (var session in sessions)
                 session.IsRevoked = true;
-            try
-            { await Task.WhenAll(redisTasks); }
-            catch (Exception ex)
-            {
-            }
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при удалении сессий из бд");
         }
         private async Task RevokeSessionToTheLimitAsync(List<Session> sessions, List<Session> forRevoke, Guid deviceId, bool hasDevice = false, int limit = 3)

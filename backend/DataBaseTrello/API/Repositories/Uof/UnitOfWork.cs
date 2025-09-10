@@ -8,16 +8,26 @@ namespace API.Repositories.Uof
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        public UnitOfWork(AppDbContext context)
-        {
-            _context = context;
-        }
         public IUserRepository UserRepository { get; set; }
         public IProjectRepository ProjectRepository { get; set; }
         public ISessionRepository SessionRepository { get; set; }
         public IMembersOfBoardRepository MembersOfBoardRepository { get; set; }
         public IBoardRepository BoardRepository { get; set; }
 
+        public UnitOfWork(AppDbContext context,
+            IUserRepository userRepository,
+            IProjectRepository projectRepository,
+            ISessionRepository sessionRepository,
+            IMembersOfBoardRepository membersOfBoardRepository,
+            IBoardRepository boardRepository)
+        {
+            _context = context;
+            UserRepository = userRepository;
+            ProjectRepository = projectRepository;
+            SessionRepository = sessionRepository;
+            MembersOfBoardRepository = membersOfBoardRepository;
+            BoardRepository = boardRepository;
+        }
         public async Task SaveChangesAsync(string loggerMessage,string serviceName, [CallerMemberName] string? operationName = null)
         {
             await _context.SaveChangesWithContextAsync(loggerMessage,serviceName, operationName);
