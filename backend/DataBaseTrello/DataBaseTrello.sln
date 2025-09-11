@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API tests", "API tests\API tests.csproj", "{D1A26EF3-6CED-4194-ACB0-D99233B329AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.tests", "API tests\API.tests.csproj", "{D1A26EF3-6CED-4194-ACB0-D99233B329AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
