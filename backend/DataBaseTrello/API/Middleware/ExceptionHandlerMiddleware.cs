@@ -40,7 +40,7 @@ namespace API.Middleware
             {
                 await HandleExceptionAsync(context,
                           "Произошла непредвиденная ошибка",
-                          HttpStatusCode.BadRequest);
+                          HttpStatusCode.InternalServerError);
             }
         }
         private async Task HandleExceptionAsync(HttpContext context,string exMessage, HttpStatusCode httpStatusCode)

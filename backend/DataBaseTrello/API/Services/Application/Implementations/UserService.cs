@@ -40,39 +40,30 @@ namespace API.Services.Application.Implementations
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
-
             User? user = await _unitOfWork.UserRepository.GetDbUserAsync(userEmail);
-
             if (user != null)
                 throw new AppException(_errCreator.Conflict($"Пользователь с таким email: {userEmail}, уже существует"));
-
-                var newUser = new User
-                    {
-                        UserEmail = userEmail,
-                        Avatar = DefaultImages.UserAvatar,
-                        InviteId = Guid.NewGuid(),
-                        Sex = Sex.Unknown
-                    };
-
-                var passHash = new PasswordHasher<User>().HashPassword(newUser, password);
-
-               if (passHash == null)
-                    throw new AppException(_errCreator.InternalServerError("Ошибка во время хэширования пароля"));
-            
-                newUser.UserPassword = passHash;
-
-                await _unitOfWork.UserRepository.AddDbUserAsync(newUser);
-
+             var newUser = new User
+             {
+                UserEmail = userEmail,
+                Avatar = DefaultImages.UserAvatar,
+                InviteId = Guid.NewGuid(),
+                Sex = Sex.Unknown
+             };
+            var passHash = new PasswordHasher<User>().HashPassword(newUser, password);
+            if (passHash == null)
+                throw new AppException(_errCreator.InternalServerError("Ошибка во время хэширования пароля"));
+            newUser.UserPassword = passHash;
+            await _unitOfWork.UserRepository.AddDbUserAsync(newUser);
             await _unitOfWork.SaveChangesAsync("Ошибка во время сохранения данных о user в базу данных", ServiceName);
-                 
-                return newUser.Id;
-                }
+            return newUser.Id;
+        }
         public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string userEmail, string password, string? deviceId)
         {
 
             User? user = await _unitOfWork.UserRepository.GetDbUserAsync(userEmail);
             if (user == null)
-                throw new AppException(_errCreator.Unauthorized($"Учётной записи с Email: {userEmail} не существует"));
+                throw new AppException(_errCreator.NotFound($"Учётной записи с Email: {userEmail} не существует"));
             if (deviceId == null)
                 deviceId = Guid.NewGuid().ToString();
            

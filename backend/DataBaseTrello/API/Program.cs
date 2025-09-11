@@ -111,6 +111,8 @@ builder.Services.AddScoped<IProjectUserQueries, ProjectUserQueries>();
 builder.Services.AddScoped<ISessionQueries, SessionQueries>();
 
 builder.Services.AddScoped<IQueries,Queries>();
+
+
 //swagger
 builder.Services.AddSwaggerGen(c =>
 {
@@ -168,7 +170,12 @@ if (string.IsNullOrEmpty(connectionString))
                            "Program",
                            (HttpStatusCode)1001,
                            $"Произошла ошибка в момент подключения к базе данных"));
-   
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
