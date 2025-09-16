@@ -11,7 +11,6 @@ using API.Exceptions.Context;
 using System.Net;
 using Serilog;
 using Microsoft.OpenApi.Models;
-using StackExchange.Redis;
 using API.Middleware;
 using OpenTelemetry.Resources;
 using API.Services.BackGroundServices;
@@ -20,7 +19,6 @@ using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
 using API.Services.Application.Interfaces;
-using API.Services.Helpers.Interfaces.Redis;
 using API.Repositories.Uof;
 using API.Repositories.Queries;
 using API.Repositories.Implementations;
@@ -28,6 +26,8 @@ using API.Repositories.Interfaces;
 using API.Repositories.Queries.Implementations;
 using API.Repositories.Queries.Intefaces;
 using API.Repositories.Queries.Interfaces;
+using DataBaseInfo.models;
+using Microsoft.AspNetCore.Identity;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -86,6 +86,7 @@ builder.Services.AddControllers()
     });
 builder.Services.AddEndpointsApiExplorer();
 //serv
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IHashService,HashService>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IJWTService,JWTService>();

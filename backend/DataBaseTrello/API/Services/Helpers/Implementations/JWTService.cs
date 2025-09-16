@@ -4,17 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
-using DataBaseInfo;
 using API.Configuration;
-using API.Extensions;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Services.Helpers.Interfaces;
-using API.Services.Helpers.Interfaces.Redis;
-using Microsoft.AspNetCore.Session;
-using API.Repositories.Queries.Intefaces;
-using StackExchange.Redis;
 using API.Repositories.Uof;
 using API.Repositories.Queries;
 namespace API.Services.Helpers.Implementations

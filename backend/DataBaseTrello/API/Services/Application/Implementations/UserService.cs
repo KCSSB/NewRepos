@@ -25,18 +25,21 @@ namespace API.Services.Application.Implementations
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IQueries _query;
+        private readonly IPasswordHasher<User> _passHasher;
         private ErrorContextCreator? _errorContextCreator;
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(ServiceName);
 
         public UserService(IJWTService IJWTService, 
             IErrorContextCreatorFactory errCreatorFactory,
             IUnitOfWork unitOfWork, 
-            IQueries query)
+            IQueries query
+            , IPasswordHasher<User> passHasher)
         {
             _errCreatorFactory = errCreatorFactory;
             _JWTService = IJWTService;
             _unitOfWork = unitOfWork;
             _query = query;
+            _passHasher = passHasher;
         }
         public async Task<int> RegisterAsync(string userEmail, string password)
         {
@@ -50,7 +53,7 @@ namespace API.Services.Application.Implementations
                 InviteId = Guid.NewGuid(),
                 Sex = Sex.Unknown
              };
-            var passHash = new PasswordHasher<User>().HashPassword(newUser, password);
+            var passHash = _passHasher.HashPassword(newUser, password);
             if (passHash == null)
                 throw new AppException(_errCreator.InternalServerError("Ошибка во время хэширования пароля"));
             newUser.UserPassword = passHash;
@@ -67,7 +70,7 @@ namespace API.Services.Application.Implementations
             if (deviceId == null)
                 deviceId = Guid.NewGuid().ToString();
            
-            var result = new PasswordHasher<User?>().VerifyHashedPassword(user, user.UserPassword, password);
+            var result = _passHasher.VerifyHashedPassword(user, user.UserPassword, password);
 
             if (result != PasswordVerificationResult.Success)
                 throw new AppException(_errCreator.Unauthorized($"Неверно введён пароль к аккаунту id: {user.Id}, email:{userEmail}"));
@@ -136,12 +139,11 @@ namespace API.Services.Application.Implementations
             }
             else
             {
-
                 throw new AppException(_errCreator.BadRequest($"Изменение не удалось, неверный старый пароль userId{userId}"));
             }
 
         }
-        public List<Session> SortByDateCreateDesc(List<Session> sessions)
+        private List<Session> SortByDateCreateDesc(List<Session> sessions)
         {
             var sortedList = sessions.OrderByDescending(s => s.CreatedAt).ToList();
             return sortedList;
