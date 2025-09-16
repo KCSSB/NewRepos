@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Constants;
 using API.Exceptions.Context;
-using System.Net;
-using API.Helpers;
-using DataBaseInfo.Services;
 using API.DTO.Requests;
 using API.Extensions;
-using API.Exceptions;
 using API.DTO.Mappers;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
+using API.Exceptions.ContextCreator;
+
 namespace API.Controllers
 {
     [Authorize]
@@ -16,16 +16,21 @@ namespace API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        private readonly ImageService _imageService;
-        private readonly ErrorContextCreator _errCreator;
-        public UserController(UserService userService, ImageService imageService)
+        private readonly IUserService _userService;
+        private readonly IImageService _imageService;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private ErrorContextCreator? _errorContextCreator;
+
+
+        public UserController(IUserService userService, IImageService imageService, IErrorContextCreatorFactory errCreatorFactory)
             {
          
+        _errCreatorFactory = errCreatorFactory;
             _userService = userService;
             _imageService = imageService;
-            _errCreator = new ErrorContextCreator(ServiceName.UserController);
+        
             }
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(UserController));
         [HttpPatch("UpdateGeneralUserInfo")]
         public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
         {

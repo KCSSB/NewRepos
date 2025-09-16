@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
-using API.Services;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +11,8 @@ namespace API.Controllers
     [Authorize]
     public class GetPagesController : ControllerBase
     {
-        private readonly GetPagesService _getPagesService;
-        public GetPagesController(GetPagesService getPagesService)
+        private readonly IGetPagesService _getPagesService;
+        public GetPagesController(IGetPagesService getPagesService)
         {
             _getPagesService = getPagesService;
         }

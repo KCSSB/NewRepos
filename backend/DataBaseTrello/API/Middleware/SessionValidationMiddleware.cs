@@ -1,82 +1,54 @@
-﻿using System.Security.Claims;
-using API.DTO.Domain;
-using API.Exceptions;
+﻿
 using API.Exceptions.Context;
+using API.Exceptions.ContextCreator;
 using API.Extensions;
-using API.Helpers;
-using DataBaseInfo;
-using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Ocsp;
+using API.Services.Application.Interfaces;
 
 namespace API.Middleware
 {
     public class SessionValidationMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IDbContextFactory<AppDbContext> _contextFactory;
-
-        public SessionValidationMiddleware(RequestDelegate next, IServiceScopeFactory scopeFactory, IDbContextFactory<AppDbContext> contextFactory)
+        private ErrorContextCreator? _errorContextCreator;
+        public SessionValidationMiddleware(RequestDelegate next,
+            IServiceScopeFactory scopeFactory, 
+            IErrorContextCreatorFactory errCreatorFactory)
         {
             _next = next;
+            _errCreatorFactory = errCreatorFactory;
             _scopeFactory = scopeFactory;
-            _contextFactory = contextFactory;
         }
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(SessionValidationMiddleware));
         public async Task InvokeAsync(HttpContext context)
         {
             if (context.User.Identity.IsAuthenticated)
             {
-            var scope = _scopeFactory.CreateScope();
-                var errCreator = new ErrorContextCreator("SessionValidationMiddleware");
+                var scope = _scopeFactory.CreateAsyncScope();
+                var _sessionService = scope.ServiceProvider.GetService<ISessionService>();
             var refreshToken = context.Request.Cookies["refreshToken"];
                 if (refreshToken == null)
-                    throw new AppException(errCreator.Unauthorized("Ошибка при получении refreshToken из Cookie"));
+                    throw new AppException(_errCreator.Unauthorized("Ошибка при получении refreshToken из Cookie"));
  
             int userId = context.User.GetUserId();
             string deviceId = context.User.GetDeviceId();
 
-            bool? sessionIsRevoked = await SessionIsRevokedAsync(userId, deviceId, refreshToken, scope);
+            bool? sessionIsRevoked = await _sessionService.SessionIsRevokedAsync(userId, deviceId, refreshToken);
                 if (sessionIsRevoked == null)
-                    throw new AppException(errCreator.Unauthorized("Сессия не существует"));
+                    throw new AppException(_errCreator.Unauthorized("Сессия не существует"));
                 var sessionExist = !sessionIsRevoked.Value;
                 if (sessionExist)
                     await _next(context);
                 else
-                    throw new AppException(errCreator.Unauthorized($"Попытка входа в сессию токен которой был отозван userId: {userId} deviceId:{deviceId}"));
+                    throw new AppException(_errCreator.Unauthorized($"Попытка входа в сессию токен которой был отозван userId: {userId} deviceId:{deviceId}"));
             }
             else
             {
                 await _next(context);
             }
         }
-        private async Task<bool?> SessionIsRevokedAsync(int userId, string deviceId, string refreshToken,IServiceScope scope)
-        {
-
-            var errCreator = new ErrorContextCreator("SessionValidationMiddleware");
-            var redis = scope.ServiceProvider.GetService<RedisService>();
-            var hashService = scope.ServiceProvider.GetService<HashService>();
-
-            SessionData? session = await redis.Session.SafeGetSessionAsync(userId, deviceId);
-            if (session != null)
-            {
-                if (hashService.VerifyToken(refreshToken,session.HashedToken))
-                    return session.IsRevoked;
-                else
-                    throw new AppException(errCreator.Unauthorized($"Неверный refresh Token"));
-            }
-
-            using var context = await _contextFactory.CreateDbContextAsync();
-
-            var dbSessions = await context.Sessions
-                .Where(s => s.UserId == userId && s.DeviceId == Guid.Parse(deviceId))
-                .ToListAsync();
-
-            var dbSession = dbSessions.FirstOrDefault(s => hashService.VerifyToken(refreshToken, s.Token));
-
-            if (dbSession != null)
-                return dbSession.IsRevoked;
-            return null;
-        }
+        
     }
     public static class SessionValidationMiddlewareExtension
     {

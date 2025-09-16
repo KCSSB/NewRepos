@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.Helpers;
-using API.Services;
 using API.DTO.Requests;
 using API.Exceptions.Context;
 using API.Constants;
 using API.Extensions;
 using DataBaseInfo;
-using API.Exceptions;
+using API.Middleware;
+using API.Exceptions.ContextCreator;
+using API.Services.Application.Interfaces;
+using API.Services.Helpers.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+using API.DTO.Mappers;
+using API.Repositories.Queries.Intefaces;
+using API.Repositories.Queries;
 
 
 namespace API.Controllers
@@ -18,20 +24,21 @@ namespace API.Controllers
     
     public class ProjectsController : ControllerBase
     {
-        private readonly ProjectService _projectService;
-        private readonly ImageService _imageService;
+        private readonly IProjectService _projectService;
+        private readonly IImageService _imageService;
         private readonly ILogger<ProjectsController> _logger;
-        private readonly ResponseCreator _responseCreator;
-        private readonly ErrorContextCreator _errCreator;
-        
-        public ProjectsController(ProjectService projectService, ImageService imageService, ILogger<ProjectsController> logger, ResponseCreator responseCreator)
+        private readonly IErrorContextCreatorFactory _errCreatorFactory;
+        private readonly IQueries _query;
+        private ErrorContextCreator? _errorContextCreator;
+        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IQueries query)
         {
+            _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
-            _responseCreator = responseCreator;
-            _errCreator = new ErrorContextCreator(ServiceName.ProjectsController);
+            _query = query;
         }
+private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
 
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromForm] CreateProjectRequest projectRequest)
@@ -57,9 +64,14 @@ namespace API.Controllers
                 var result = await _imageService.UploadImageAsync(projectRequest.image, CloudPathes.ProjectImagesPath);
                 url = result.url;
             }
-              
+           
                 await _projectService.UpdateProjectImageAsync(projectId, url);
-            var response = await _responseCreator.CreateSummaryProjectResponseAsync(projectId);
+
+            var query = await _query.ProjectQueries.GetProjectWithUsersAsync(projectId);
+            if (query == null)
+                throw new AppException(_errCreator.InternalServerError("Не удалось получить проект из базы данных"));
+         
+            var response = ToResponseMapper.ToSummaryProjectResponse(query);
             return Ok(response);
         
            
