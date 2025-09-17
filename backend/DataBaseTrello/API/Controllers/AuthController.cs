@@ -81,17 +81,13 @@ namespace API.Controllers
         {
             //Валидация здесь
             _logger.LogInformation(InfoMessages.StartOperation + "RefreshAccessToken");
-            int userId = User.GetUserId();
             string? deviceId = User.GetDeviceId();
            
             var refreshToken = Request.Cookies["refreshToken"]; 
 
             if (refreshToken == null)
                 throw new AppException(_errCreator.Unauthorized("Произошла ошибка во время получения RefreshToken из Cookies"));
-            if (deviceId == null)
-                throw new AppException(_errCreator.Unauthorized("Произошла ошибка при получении информации об устройстве"));
-            
-            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken, userId, deviceId);
+            var tokens = await _jwtServices.RefreshTokenAsync(refreshToken, deviceId);
             
             Response.Cookies.Append("refreshToken", (tokens.refreshToken), new CookieOptions
             {

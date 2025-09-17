@@ -61,9 +61,11 @@ namespace API.Services.Helpers.Implementations
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        public async Task<string> CreateRefreshTokenAsync(User user, string? deviceId)
+        public async Task<(string token, string deviceId)> CreateRefreshTokenAsync(User user, string? deviceId)
         {
             var token = Guid.NewGuid().ToString();
+            if (deviceId == null)
+                deviceId = Guid.NewGuid().ToString();
             var hashedToken = _hashService.HashToken(token);
             var session = new Session
             {
@@ -80,13 +82,11 @@ namespace API.Services.Helpers.Implementations
 
             await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при сохранении Hashed Refresh Token");
 
-            //_ = _redis.Session.SafeSetSessionAsync(hashedToken, user.Id, deviceId);
-
-            return token;
+            return (token,deviceId);
         }
 
 
-        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, int userId, string deviceId)
+        public async Task<(string accessToken, string refreshToken)> RefreshTokenAsync(string refreshToken, string deviceId)
         {
           
 
@@ -97,9 +97,10 @@ namespace API.Services.Helpers.Implementations
             RefTokenIsValid(curSession);
             curSession.IsRevoked = true;
 
-            var createToken = CreateRefreshTokenAsync(curSession.User, deviceId);
-            var newAccessToken = GenerateAccessToken(curSession.User, deviceId);
-            var token = await createToken;
+            var res = await CreateRefreshTokenAsync(curSession.User, deviceId);
+            var newAccessToken = GenerateAccessToken(curSession.User, res.deviceId);
+
+            var token = res.token;
             return (newAccessToken, token);
         }
 
@@ -132,7 +133,7 @@ namespace API.Services.Helpers.Implementations
                 session.IsRevoked = true;
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Ошибка при удалении сессий из бд");
         }
-        private async Task RevokeSessionToTheLimitAsync(List<Session> sessions, List<Session> forRevoke, Guid deviceId, bool hasDevice = false, int limit = 3)
+        private async Task RevokeSessionToTheLimitAsync(List<Session> sessions, List<Session> forRevoke, bool hasDevice = false, int limit = 3)
         {
             if (sessions.Count < limit)
                 return;
@@ -143,9 +144,10 @@ namespace API.Services.Helpers.Implementations
             await RevokeSessionRangeAsync(forRevoke);
 
         }
-        private bool RevokeThisDeviceSessions(List<Session> sessions, List<Session> forRevoke, Guid deviceId, int limit = 3)
+        private bool RevokeThisDeviceSessions(List<Session> sessions, List<Session> forRevoke, Guid? deviceId, int limit = 3)
         {
             bool hasDeviceId = false;
+            if (deviceId == null) return hasDeviceId;
             int i = 0;
             foreach (var session in sessions)
             {
@@ -161,13 +163,17 @@ namespace API.Services.Helpers.Implementations
 
             return hasDeviceId;
         }
-        public async Task RevokeSessionsAsync(List<Session> sessions, Guid deviceId, int limit = 3)
+        public async Task RevokeSessionsAsync(List<Session> sessions, string? deviceId, int limit = 3)
         {
+            Guid? deviceIdG = null;
+            if (deviceId != null)
+                deviceIdG = Guid.Parse(deviceId);
             List<Session> forRevoked = new List<Session>();
-            bool hasDeviceId = RevokeThisDeviceSessions(sessions, forRevoked, deviceId, limit);
+         
+                bool hasDeviceId = RevokeThisDeviceSessions(sessions, forRevoked, deviceIdG, limit);
 
             if (sessions.Count > limit)
-                await RevokeSessionToTheLimitAsync(sessions, forRevoked, deviceId, hasDeviceId, limit);
+                await RevokeSessionToTheLimitAsync(sessions, forRevoked, hasDeviceId, limit);
         }
     }
 }

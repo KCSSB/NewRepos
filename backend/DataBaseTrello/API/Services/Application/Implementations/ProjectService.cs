@@ -36,7 +36,7 @@ namespace API.Services.Application.Implementations
                 };
 
 
-                await _unitOfWork.ProjectRepository.AddAsync(project);
+            await _unitOfWork.ProjectRepository.AddAsync(project);
 
             await _unitOfWork.SaveChangesAsync(ServiceName, "Произошла ошибка, в момент добавления проекта в базу данных");
 
