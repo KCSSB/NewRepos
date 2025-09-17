@@ -6,10 +6,7 @@ using API.DTO.Requests;
 using API.Exceptions.Context;
 using API.Constants;
 using API.Extensions;
-using API.Middleware;
-using API.Services.Application.Implementations;
 using API.Exceptions.ContextCreator;
-using API.Services.Helpers.Implementations;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 namespace API.Controllers
@@ -115,8 +112,6 @@ namespace API.Controllers
             return Ok("User success unauthorized");
 
             }
-        
 
-   
     }
 }
