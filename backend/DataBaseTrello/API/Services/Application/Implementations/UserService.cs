@@ -67,8 +67,6 @@ namespace API.Services.Application.Implementations
             User? user = await _unitOfWork.UserRepository.GetDbUserAsync(userEmail);
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Учётной записи с Email: {userEmail} не существует"));
-            if (deviceId == null)
-                deviceId = Guid.NewGuid().ToString();
            
             var result = _passHasher.VerifyHashedPassword(user, user.UserPassword, password);
 
@@ -79,13 +77,15 @@ namespace API.Services.Application.Implementations
             if (activeSessions != null)
             {
             var sortedSessions = SortByDateCreateDesc(activeSessions);
-            await _JWTService.RevokeSessionsAsync(sortedSessions, Guid.Parse(deviceId), 2);
+            await _JWTService.RevokeSessionsAsync(sortedSessions, deviceId, 2);
             }
 
-            var refreshToken = await _JWTService.CreateRefreshTokenAsync(user,deviceId);       
-            var accessToken = _JWTService.GenerateAccessToken(user, deviceId);
+            var res = await _JWTService.CreateRefreshTokenAsync(user,deviceId);  
+            
+            var accessToken = _JWTService.GenerateAccessToken(user, res.deviceId);
+
             await _unitOfWork.SaveChangesAsync("Ошибка при попытке авторизации", ServiceName);
-            return (accessToken, refreshToken);
+            return (accessToken, res.token);
         }
 
         public async Task<string> UpdateUserAvatarAsync(Result? result, int userId)
