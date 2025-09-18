@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataBaseInfo
 {
-
+    using DataBaseInfo.Entities;
     using models;
     public class AppDbContext : DbContext
     {
@@ -20,6 +20,8 @@ namespace DataBaseInfo
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
         public DbSet<Session> Sessions { get; set; }
+
+        public DbSet<SubTask> SubTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -131,6 +133,16 @@ namespace DataBaseInfo
                 .WithMany(c => c.Tasks)
                 .HasForeignKey(t => t.CardId)
                 .OnDelete(DeleteBehavior.Cascade);
+            });
+            modelBuilder.Entity<SubTask>(entity =>
+            {
+                entity.HasKey(st => st.Id);
+                entity.Property(st => st.Name).IsRequired();
+                entity.Property(st => st.IsCompleted).IsRequired();
+
+                entity.HasOne(st => st.Task)
+                .WithMany(t => t.SubTasks)
+                .HasForeignKey(st => st.TaskId);
             });
             modelBuilder.Entity<Session>(entity =>
             {

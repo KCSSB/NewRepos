@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataBaseInfo.Entities;
 
 
 namespace DataBaseInfo.models
@@ -15,6 +16,7 @@ namespace DataBaseInfo.models
         public bool Complete { get; set; } = false;
         [MaxLength(1000)]
         public string? Description { get; set; } = string.Empty;
+        public List<SubTask> SubTasks { get; set; }
         // Внешний ключ на Card (задача принадлежит карточке)
         public int CardId { get; set; }
         public virtual Card? Card { get; set; }
