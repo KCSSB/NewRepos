@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
-import { decodeToken } from "../../../../service/api";
+import { getAvatarFromToken } from "../../../../service/api";
 import dontask_logo from "./dontask_logo.png";
 import home_logo from "./home_logo.png";
 import home_logo_active from "./home_logo_active.png";
-import tasks_logo from "./tasks_logo.png";
-import tasks_logo_active from "./tasks_logo_active.png";
+import workspace_logo from "./workspace_logo.png";
+import workspace_logo_active from "./workspace_logo_active.png";
 import settings_logo from "./settings_logo.png";
 import settings_logo_active from "./settings_logo_active.png";
+import hall_logo from "./hall_logo.png";
+import hall_logo_active from "./hall_logo_active.png";
 import default_avatar from "./avatar.png";
 
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
-  const isActiveTasks = location.pathname === "/task";
+  const isActiveHall = location.pathname === "/hall";
+  const isActiveWorkspace = location.pathname === "/workspace";
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
 
   const updateAvatarFromToken = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      const payload = decodeToken(token);
+      const payload = getAvatarFromToken(token);
       console.log("Содержимое токена:", payload);
       if (payload && payload.Avatar) {
         setUserAvatar(payload.Avatar);
@@ -37,7 +40,6 @@ export default function Navbar() {
     updateAvatarFromToken();
 
     const handleTokenChange = () => {
-      console.log("Событие 'tokenUpdated' получено. Обновляем аватар.");
       updateAvatarFromToken();
     };
 
@@ -50,8 +52,10 @@ export default function Navbar() {
 
   return (
     <div className="navbar-container">
-      <div className="navbar-top-buttons">
+      <div className="navbar-top">
         <img src={dontask_logo} alt="DONTASK" />
+      </div>
+      <div className="navbar-center-buttons">
         <Link to="/home">
           <div className="navbar-container-item">
             <button
@@ -66,22 +70,34 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
-        <Link to="/task">
+        <Link to="/hall">
           <div className="navbar-container-item">
             <button
               className={
-                isActiveTasks ? "navbar-button active" : "navbar-button"
+                isActiveHall ? "navbar-button active" : "navbar-button"
               }
             >
               <img
-                src={isActiveTasks ? tasks_logo_active : tasks_logo}
-                alt="TASK"
+                src={isActiveHall ? hall_logo_active : hall_logo}
+                alt="HALL"
               />
             </button>
           </div>
         </Link>
-      </div>
-      <div className="navbar-bottom-buttons">
+        <Link to="/workspace">
+          <div className="navbar-container-item">
+            <button
+              className={
+                isActiveWorkspace ? "navbar-button active" : "navbar-button"
+              }
+            >
+              <img
+                src={isActiveWorkspace ? workspace_logo_active : workspace_logo}
+                alt="WORKSPACE"
+              />
+            </button>
+          </div>
+        </Link>
         <Link to="/settings">
           <div className="navbar-container-item">
             <button
@@ -96,6 +112,8 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
+      </div>
+      <div className="navbar-bottom">
         <div className="navbar-container-item profile">
           <img src={userAvatar} alt="AVATAR" className="avatar-image" />
         </div>

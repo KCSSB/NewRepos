@@ -2,9 +2,9 @@ FROM node:18
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
-RUN npm install esbuild@0.25.4 && npm ci
+RUN npm ci --prefer-offline --no-audit
 
 COPY . .
 
