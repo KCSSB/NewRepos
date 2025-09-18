@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --prefer-offline --no-audit
+RUN npm install esbuild@0.25.4 && npm ci
 
 COPY . .
 

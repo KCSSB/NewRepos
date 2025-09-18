@@ -115,9 +115,8 @@ namespace API.Services.Helpers.Implementations
         }
         public async Task RevokeSessionAsync(int userId, string deviceId, string token)
         {
-         
-
-            var session = await _unitOfWork.SessionRepository.GetDbSessionAsync(userId, deviceId, token);
+            string hashToken = _hashService.HashToken(token);
+            var session = await _unitOfWork.SessionRepository.GetDbSessionAsync(userId, deviceId, hashToken);
 
             if (session == null)
                 throw new AppException(_errCreator.Unauthorized("В базе не найдена сессия соответствующий значению из cookie при попытке выйти из аккаунта"));

@@ -22,8 +22,8 @@ namespace API.Repositories.Implementations
         }
         public async Task<Session?> GetDbSessionAsync(int userId, string deviceId, string token)
         {
-            return await _context.Sessions.FirstOrDefaultAsync(s => token == s.Token
-            && s.UserId == userId
+            return await _context.Sessions.FirstOrDefaultAsync(s =>
+            s.UserId == userId
             && s.DeviceId == Guid.Parse(deviceId));
         }
         public async Task AddDbSessionAsync(Session session)
