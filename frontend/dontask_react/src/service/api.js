@@ -1,6 +1,6 @@
 import apiService from "./apiService.js";
 
-// Функция для обновления и установки токена (загрузка аватарки)
+// Функция для принудительного обновления и установки токена
 export const refreshAndSetToken = async () => {
   try {
     const response = await apiService.post("/Auth/RefreshAccessToken");
@@ -30,7 +30,6 @@ export const postWithAuth = async (url, data, config = {}) => {
 export const patchWithAuth = async (url, data, config = {}) => {
   const response = await apiService.patch(url, data, config);
   return response.data;
-  console.log(response.data);
 };
 
 // Функция для DELETE-запросов (выход из аккаунта)

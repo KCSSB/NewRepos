@@ -199,15 +199,17 @@ export default function Project_list() {
               />
             </div>
             <div className="card-bottom">
-              <input
-                type="text"
-                placeholder="Название проекта"
-                className="project-name-input"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                required
-                disabled={isSubmitting}
-              />
+              <div className="input-group floating-label-group">
+                <input
+                  type="text"
+                  className="project-name-input"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  required
+                  disabled={isSubmitting}
+                />
+                <label className="floating-label">Название проекта</label>
+              </div>
             </div>
           </form>
         ) : (

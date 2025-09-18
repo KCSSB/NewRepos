@@ -40,7 +40,6 @@ export default function Navbar() {
     updateAvatarFromToken();
 
     const handleTokenChange = () => {
-      console.log("Событие 'tokenUpdated' получено. Обновляем аватар.");
       updateAvatarFromToken();
     };
 

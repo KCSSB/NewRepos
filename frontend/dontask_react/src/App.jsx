@@ -5,7 +5,7 @@ import AuthPage from "./pages/Authentication/Auth";
 import HomePage from "./pages/Home/Home";
 import BoardPage from "./pages/Board/Board";
 import SettingsPage from "./pages/Settings/Settings";
-import ProjectPage from "./pages/Board/Board";
+import ProjectPage from "./pages/Project/Project";
 import { ToastProvider } from "./components/Toast/ToastContext";
 
 function App() {

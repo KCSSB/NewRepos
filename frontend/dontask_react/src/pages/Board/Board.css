@@ -9,7 +9,7 @@ html {
   display: flex;
   width: 100vw;
   min-height: 100vh;
-  background-color: #f1f1f1;
+  background-color: white;
   box-sizing: border-box;
 }
 
@@ -19,4 +19,5 @@ html {
   flex-grow: 1;
   min-width: 0;
   box-sizing: border-box;
+  overflow-y: auto;
 }

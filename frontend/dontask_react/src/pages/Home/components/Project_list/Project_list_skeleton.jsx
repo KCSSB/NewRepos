@@ -1,11 +1,12 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import "./Project_list.css";
 
 const ProjectSkeleton = () => {
   return (
-    <div className="project-card">
-      <Skeleton height={150} />
+    <div className="project-card" style={{ marginTop: "1rem" }}>
+      <Skeleton height={250} />
       <div className="card-bottom">
         <div className="creator-info">
           <Skeleton circle={true} height={40} width={40} />

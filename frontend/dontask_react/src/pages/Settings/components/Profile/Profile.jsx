@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   fetchWithAuth,
   patchWithAuth,
@@ -7,12 +8,12 @@ import {
   postWithAuth,
   logout,
 } from "../../../../service/api";
-import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../../components/Toast/ToastContext";
+import ProfileSkeleton from "./Profile_skeleton";
 import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
 import copy_inviteId_logo from "./copy_inviteId_logo.png";
-import { useToast } from "../../../../components/Toast/ToastContext";
 
 export default function Profile() {
   const showToast = useToast();
@@ -128,11 +129,11 @@ export default function Profile() {
       setSelectedFile(null);
       setCroppedFile(null);
       showToast("Аватар успешно загружен!", "success");
-      setLoading(false);
     } catch (err) {
       console.error("Ошибка при загрузке аватара:", err);
       showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
       setError("Не удалось загрузить аватар. Попробуйте снова.");
+    } finally {
       setLoading(false);
     }
   };
@@ -187,6 +188,9 @@ export default function Profile() {
       }));
       showToast("Изменения успешно сохранены!", "success");
       console.log("Данные профиля отправлены:", payload);
+
+      await refreshAndSetToken();
+      window.dispatchEvent(new Event("tokenUpdated"));
     } catch (err) {
       console.error("Ошибка при сохранении изменений:", err);
       showToast("Не удалось сохранить изменения. Попробуйте снова.", "error");
@@ -235,6 +239,10 @@ export default function Profile() {
       navigate("/auth/login");
     }
   };
+
+  if (loading) {
+    return <ProfileSkeleton />;
+  }
 
   return (
     <div className="profile-container">
