@@ -35,7 +35,7 @@ export default function Profile() {
     try {
       setLoading(true);
       const data = await fetchWithAuth("/GetPages/GetSettingsPage");
-      console.log("Данные настроек получены:", data);
+      console.log("Данные профиля получены:", data);
 
       const avatarUrl = data.userAvatarUrl || default_avatar;
       setUserAvatar(avatarUrl);
@@ -186,6 +186,7 @@ export default function Profile() {
         sex: sexValue,
       }));
       showToast("Изменения успешно сохранены!", "success");
+      console.log("Данные профиля отправлены:", payload);
     } catch (err) {
       console.error("Ошибка при сохранении изменений:", err);
       showToast("Не удалось сохранить изменения. Попробуйте снова.", "error");

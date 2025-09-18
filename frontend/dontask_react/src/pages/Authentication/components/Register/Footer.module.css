@@ -4,18 +4,12 @@
   color: #181818;
 }
 
-p {
-  margin: 1rem auto 0 auto;
+.footerLabel {
+  margin: 0 auto 0 auto;
   font-family: Inter;
   font-weight: 500;
   font-size: 1.2rem;
-}
-
-h1 {
-  margin: 1rem auto 0 auto;
-  font-family: Inter;
-  font-weight: 500;
-  font-size: 1.2rem;
+  color: black;
 }
 
 .createLink {

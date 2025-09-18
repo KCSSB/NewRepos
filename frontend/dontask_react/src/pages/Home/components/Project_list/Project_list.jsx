@@ -4,7 +4,7 @@ import ProjectSkeleton from "./Project_list_skeleton";
 import {
   fetchWithAuth,
   postWithAuth,
-  decodeToken,
+  getAvatarFromToken,
 } from "../../../../service/api";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import people_logo from "./people_logo.png";
@@ -29,7 +29,7 @@ export default function Project_list() {
       try {
         const token = localStorage.getItem("token");
         if (token) {
-          const payload = decodeToken(token);
+          const payload = getAvatarFromToken(token);
           if (payload && payload.Avatar) {
             setLeaderAvatar(payload.Avatar);
           }
@@ -129,6 +129,7 @@ export default function Project_list() {
 
   return (
     <div className="project-list-container">
+      <h5 className="project-title">Ваши проекты</h5>
       <div className="project-list-wrapper">
         {projects.map((project) => (
           <button key={project.projectId} className="project-card">

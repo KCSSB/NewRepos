@@ -3,8 +3,9 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/Landing/Landing";
 import AuthPage from "./pages/Authentication/Auth";
 import HomePage from "./pages/Home/Home";
-import TaskPage from "./pages/Task/Task";
+import BoardPage from "./pages/Board/Board";
 import SettingsPage from "./pages/Settings/Settings";
+import ProjectPage from "./pages/Board/Board";
 import { ToastProvider } from "./components/Toast/ToastContext";
 
 function App() {
@@ -29,8 +30,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth/*" element={<AuthPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/task" element={<TaskPage />} />
+        <Route path="/board" element={<BoardPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/project" element={<ProjectPage />} />
       </Routes>
     </ToastProvider>
   );

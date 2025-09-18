@@ -30,6 +30,7 @@ export const postWithAuth = async (url, data, config = {}) => {
 export const patchWithAuth = async (url, data, config = {}) => {
   const response = await apiService.patch(url, data, config);
   return response.data;
+  console.log(response.data);
 };
 
 // Функция для DELETE-запросов (выход из аккаунта)
@@ -45,7 +46,7 @@ export const logout = async () => {
 };
 
 // Функция для декодирования аватара из токена
-export const decodeToken = (token) => {
+export const getAvatarFromToken = (token) => {
   try {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -62,6 +63,21 @@ export const decodeToken = (token) => {
     console.error("Failed to decode token", e);
     return null;
   }
+};
+
+// Функция для декодирования имени из токена
+export const getFirstNameFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = getAvatarFromToken(token);
+      return decoded ? decoded.FirstName : null;
+    } catch (e) {
+      console.error("Failed to get first name from token", e);
+      return null;
+    }
+  }
+  return null;
 };
 
 // Функция для кропа изображения до квадрата
