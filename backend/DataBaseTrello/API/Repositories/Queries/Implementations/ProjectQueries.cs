@@ -22,7 +22,6 @@ namespace API.Repositories.Queries.Implementations
         return await _context.Projects
                     .Include(p => p.ProjectUsers) 
                     .FirstOrDefaultAsync(p => p.Id == projectId);
-
         }
         public async Task<List<Project?>?> GetAllProjectsWhereUserAsync(int userId)
         {

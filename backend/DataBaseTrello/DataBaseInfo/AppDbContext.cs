@@ -20,7 +20,6 @@ namespace DataBaseInfo
         public DbSet<Card> Cards { get; set; }
         public DbSet<_Task> Tasks { get; set; }
         public DbSet<Session> Sessions { get; set; }
-
         public DbSet<SubTask> SubTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
