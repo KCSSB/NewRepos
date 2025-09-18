@@ -52,6 +52,6 @@ services:
     volumes:
       - ../../frontend/dontask_react:/app
       - /app/node_modules
-
+      
 volumes:
   db-data:

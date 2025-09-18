@@ -4,7 +4,7 @@ import styles from "./Footer.module.css";
 
 const Footer = () => (
   <div className={styles.footer}>
-    <p>
+    <p className={styles.footerLabel}>
       Есть аккаунт?{" "}
       <Link to="/auth/login" className={styles.createLink}>
         Войти

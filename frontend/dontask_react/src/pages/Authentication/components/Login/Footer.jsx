@@ -4,7 +4,7 @@ import styles from "./Footer.module.css";
 
 const Footer = () => (
   <div className={styles.footer}>
-    <p>
+    <p className={styles.footerLabel}>
       Нет аккаунта?{" "}
       <Link to="/auth/register" className={styles.createLink}>
         Создать

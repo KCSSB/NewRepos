@@ -1,6 +1,6 @@
 import apiService from "./apiService.js";
 
-// Функция для обновления и установки токена (загрузка аватарки)
+// Функция для принудительного обновления и установки токена
 export const refreshAndSetToken = async () => {
   try {
     const response = await apiService.post("/Auth/RefreshAccessToken");
@@ -45,7 +45,7 @@ export const logout = async () => {
 };
 
 // Функция для декодирования аватара из токена
-export const decodeToken = (token) => {
+export const getAvatarFromToken = (token) => {
   try {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -62,6 +62,21 @@ export const decodeToken = (token) => {
     console.error("Failed to decode token", e);
     return null;
   }
+};
+
+// Функция для декодирования имени из токена
+export const getFirstNameFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = getAvatarFromToken(token);
+      return decoded ? decoded.FirstName : null;
+    } catch (e) {
+      console.error("Failed to get first name from token", e);
+      return null;
+    }
+  }
+  return null;
 };
 
 // Функция для кропа изображения до квадрата

@@ -5,18 +5,19 @@ html {
   height: 100%;
 }
 
-.task-container {
+.workspace-container {
   display: flex;
   width: 100vw;
   min-height: 100vh;
-  background-color: #f1f1f1;
+  background-color: white;
   box-sizing: border-box;
 }
 
-.task-main-content {
+.workspace-main-content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   min-width: 0;
   box-sizing: border-box;
+  overflow-y: auto;
 }

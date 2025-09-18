@@ -1,7 +1,4 @@
 .mode-container {
-  /* position: absolute;
-  bottom: 1rem;
-  left: 1rem; */
   margin: 1rem;
   display: inline-flex;
   align-items: flex-start;
