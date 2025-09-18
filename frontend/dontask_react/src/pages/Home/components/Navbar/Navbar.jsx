@@ -5,19 +5,19 @@ import { getAvatarFromToken } from "../../../../service/api";
 import dontask_logo from "./dontask_logo.png";
 import home_logo from "./home_logo.png";
 import home_logo_active from "./home_logo_active.png";
-import board_logo from "./board_logo.png";
-import board_logo_active from "./board_logo_active.png";
+import workspace_logo from "./workspace_logo.png";
+import workspace_logo_active from "./workspace_logo_active.png";
 import settings_logo from "./settings_logo.png";
 import settings_logo_active from "./settings_logo_active.png";
-import project_logo from "./project_logo.png";
-import project_logo_active from "./project_logo_active.png";
+import hall_logo from "./hall_logo.png";
+import hall_logo_active from "./hall_logo_active.png";
 import default_avatar from "./avatar.png";
 
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
-  const isActiveProject = location.pathname === "/project";
-  const isActiveBoard = location.pathname === "/board";
+  const isActiveHall = location.pathname === "/hall";
+  const isActiveWorkspace = location.pathname === "/workspace";
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
 
@@ -70,30 +70,30 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
-        <Link to="/project">
+        <Link to="/hall">
           <div className="navbar-container-item">
             <button
               className={
-                isActiveProject ? "navbar-button active" : "navbar-button"
+                isActiveHall ? "navbar-button active" : "navbar-button"
               }
             >
               <img
-                src={isActiveProject ? project_logo_active : project_logo}
-                alt="PROJECT"
+                src={isActiveHall ? hall_logo_active : hall_logo}
+                alt="HALL"
               />
             </button>
           </div>
         </Link>
-        <Link to="/board">
+        <Link to="/workspace">
           <div className="navbar-container-item">
             <button
               className={
-                isActiveBoard ? "navbar-button active" : "navbar-button"
+                isActiveWorkspace ? "navbar-button active" : "navbar-button"
               }
             >
               <img
-                src={isActiveBoard ? board_logo_active : board_logo}
-                alt="BOARD"
+                src={isActiveWorkspace ? workspace_logo_active : workspace_logo}
+                alt="WORKSPACE"
               />
             </button>
           </div>

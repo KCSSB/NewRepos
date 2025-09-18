@@ -5,7 +5,7 @@ html {
   height: 100%;
 }
 
-.board-container {
+.hall-container {
   display: flex;
   width: 100vw;
   min-height: 100vh;
@@ -13,7 +13,7 @@ html {
   box-sizing: border-box;
 }
 
-.board-main-content {
+.hall-main-content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
