@@ -12,9 +12,6 @@ namespace DataBaseInfo.models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        [Range(0,100)]
-        public int Progress { get; set; } = 0;
-
         // Внешний ключ на Board (карточка принадлежит доске)
         public int BoardId { get; set; }
         public virtual Board? Board { get; set; } = null!;

@@ -12,8 +12,7 @@ namespace DataBaseInfo.models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-
-       public int LeadOfBoardId { get; set; }
+        public int LeadOfBoardId { get; set; }
         public List<MemberOfBoard> MemberOfBoards { get; set; } = new();
         public virtual List<Card> Cards { get; set; } = new();
     }
