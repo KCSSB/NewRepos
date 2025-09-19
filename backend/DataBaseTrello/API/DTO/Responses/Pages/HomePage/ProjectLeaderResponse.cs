@@ -1,4 +1,4 @@
-﻿namespace API.DTO.Responses
+﻿namespace API.DTO.Responses.Pages.HomePage
 {
     public record ProjectLeaderResponse
     {

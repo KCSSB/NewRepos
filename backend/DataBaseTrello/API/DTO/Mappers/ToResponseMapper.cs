@@ -1,6 +1,6 @@
 ﻿using API.DTO.Domain;
-using API.DTO.Responses;
-using API.DTO.Responses.Pages;
+using API.DTO.Responses.Pages.HomePage;
+using API.DTO.Responses.Pages.SettingsPage;
 using DataBaseInfo.models;
 
 namespace API.DTO.Mappers

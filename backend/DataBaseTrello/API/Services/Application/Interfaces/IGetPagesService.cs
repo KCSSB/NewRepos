@@ -1,6 +1,7 @@
-﻿using API.DTO.Responses.Pages;
-using API.DTO.Responses;
+﻿using API.DTO.Responses;
 using DataBaseInfo;
+using API.DTO.Responses.Pages.HomePage;
+using API.DTO.Responses.Pages.SettingsPage;
 namespace API.Services.Application.Interfaces
 {
 

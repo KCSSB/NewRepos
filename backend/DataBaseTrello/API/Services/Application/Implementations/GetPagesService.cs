@@ -1,5 +1,4 @@
-﻿using API.DTO.Responses.Pages;
-using DataBaseInfo;
+﻿using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using API.Exceptions.Context;
 using API.DTO.Mappers;
@@ -7,6 +6,8 @@ using API.Exceptions.ContextCreator;
 using API.Services.Application.Interfaces;
 using API.Repositories.Queries;
 using API.Repositories.Uof;
+using API.DTO.Responses.Pages.HomePage;
+using API.DTO.Responses.Pages.SettingsPage;
 
 namespace API.Services.Application.Implementations
 {
