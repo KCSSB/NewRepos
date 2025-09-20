@@ -8,6 +8,7 @@ using API.Services.Application.Interfaces;
 using API.Repositories.Queries.Intefaces;
 using API.Repositories.Uof;
 using API.Repositories.Queries;
+using API.Constants.Roles;
 
 namespace API.Services.Application.Implementations
 {
@@ -50,13 +51,13 @@ namespace API.Services.Application.Implementations
 
             var project = await _query.ProjectQueries.GetProjectWithProjectUsersAsync(projectId);
 
-          
+
             var projectUser = new ProjectUser()
-                {
-                    UserId = userId,
-                    ProjectId = projectId,
-                    ProjectRole = project.ProjectUsers.Count <=0 ? "ProjectOwner": "ProjectMember"
-                };
+            {
+                UserId = userId,
+                ProjectId = projectId,
+                ProjectRole = project.ProjectUsers.Count <= 0 ? ProjectRoles.Owner : ProjectRoles.Member
+            };
                 
                 if (user == null)
                     throw new AppException(_errCreator.NotFound($"Произошла ошибка в момент добавления пользователя в проект, Пользователь id: {userId}, не найден"));
@@ -82,6 +83,12 @@ namespace API.Services.Application.Implementations
             project.Avatar = imageUrl;
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
+        }
+        public async Task IsProjectOwner(int userId, int projectId)
+        {
+            var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(userId, projectId);
+            if (projectUser==null || projectUser.ProjectRole != ProjectRoles.Owner)
+                throw new AppException(_errCreator.Forbidden($"Пользователь {userId}, не является основателем проекта {projectId}"));
         }
     }
 }

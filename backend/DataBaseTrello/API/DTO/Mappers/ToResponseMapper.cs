@@ -1,4 +1,5 @@
-﻿using API.DTO.Domain;
+﻿using API.Constants.Roles;
+using API.DTO.Domain;
 using API.DTO.Responses.Pages.HallPage;
 using API.DTO.Responses.Pages.HomePage;
 using API.DTO.Responses.Pages.SettingsPage;
@@ -18,7 +19,7 @@ namespace API.DTO.Mappers
                 CountProjectUsers = project.ProjectUsers.Count(),
                 ProjectImageUrl = project.Avatar,
                 ProjectLeader = project.ProjectUsers
-                    .Where(pu => pu.ProjectRole == "ProjectOwner")
+                    .Where(pu => pu.ProjectRole == ProjectRoles.Owner)
                     .Select(pl => ToHomeProjectLeader(pl))
                     .FirstOrDefault()
 
@@ -98,6 +99,19 @@ namespace API.DTO.Mappers
                 ProjectUserId = projectUser.Id,
                 FirstName = projectUser.User.FirstName,
                 LastName = projectUser.User.SecondName
+            };
+        }
+        public static HallBoard ToHallBoard(Board board)
+        {
+            return new HallBoard
+            {
+                BoardId = board.Id,
+                BoardName = board.Name,
+                BoardLeadId= board.LeadOfBoardId,
+                DateOfStartWork = board.DateStartOfWork,
+                DateOfDeadline= board.DateOfDeadline,
+                MembersCount = board.MemberOfBoards.Count,
+                ProgressBar= board.ProgressBar,
             };
         }
     }

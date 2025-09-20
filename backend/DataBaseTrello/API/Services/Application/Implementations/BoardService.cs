@@ -1,4 +1,5 @@
-﻿using API.Exceptions.Context;
+﻿using API.Constants.Roles;
+using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
 using API.Repositories.Interfaces;
@@ -65,7 +66,7 @@ namespace API.Services.Application.Implementations
             //return existingIds;
             return null;
         }
-        public async Task AddLeadToBoardAsync(int boardId, int userId, int projectId)
+        public async Task<Board?> AddLeadToBoardAsync(int boardId, int userId, int projectId)
         {
             var lead = await _unitOfWork.ProjectUserRepository.GetProjectUser(userId,projectId);
 
@@ -74,7 +75,7 @@ namespace API.Services.Application.Implementations
             board.LeadOfBoardId = lead.Id;
             board.MemberOfBoards.Add(leadOfBoard);
             await _unitOfWork.SaveChangesAsync("Ошибка во время добавления лидера доски", ServiceName);
-
+            return board;
         }
         private MemberOfBoard CreateBoardLeader(int boardId, ProjectUser projectUser)
         {
@@ -82,7 +83,7 @@ namespace API.Services.Application.Implementations
             {
                 BoardId = boardId,
                 ProjectUserId = projectUser.Id,
-                BoardRole = "Leader"
+                BoardRole = BoardRoles.Leader,
             };
         }
         private List<MemberOfBoard> CreateBoardMembers(List<ProjectUser> projectUsers, int boardId)
