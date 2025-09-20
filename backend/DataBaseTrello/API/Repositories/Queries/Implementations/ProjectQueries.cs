@@ -33,7 +33,7 @@ namespace API.Repositories.Queries.Implementations
                 .Include(p => p.ProjectUsers).ThenInclude(pu => pu.User)
                 .ToListAsync();
         }
-        public async Task<HallPage?> GetProjectForHall(int userId, int projectId)
+        public async Task<Project?> GetProjectForHallAsync(int userId,int projectId)
         {
             var project = await _context.Projects
                 .Where(p => p.Id == projectId)
@@ -51,69 +51,7 @@ namespace API.Repositories.Queries.Implementations
             if (project == null)
                 return null;
 
-            // Формируем DTO
-            var hallPage = new HallPage
-            {
-                ProjectId = project.Id,
-                ProjectName = project.ProjectName,
-                Description = project.Description,
-
-                ProjectRole = project.ProjectUsers
-                    .FirstOrDefault(pu => pu.UserId == userId)?.ProjectRole,
-
-                ProjectUsers = project.ProjectUsers.Select(pu => new HallProjectUser
-                {
-                    ProjectUserId = pu.Id,
-                    FirstName = pu.User?.FirstName ?? string.Empty,
-                    LastName = pu.User?.SecondName ?? string.Empty,
-                    ProjectRole = pu.ProjectRole
-                }).ToList(),
-
-                Boards = project.ProjectUsers
-                    .SelectMany(pu => pu.MembersOfBoards.Select(mob => mob.Board))
-                    .Distinct()
-                    .Select(b => new HallBoard
-                    {
-                        BoardId = b.Id,
-                        BoardName = b.Name,
-                        MembersCount = b.MemberOfBoards.Count,
-
-                        ProgressBar = b.Cards
-                            .SelectMany(c => c.Tasks)
-                            .SelectMany(t => t.SubTasks)
-                            .DefaultIfEmpty()
-                            .Count() > 0
-                                ? (int)(
-                                    (double)b.Cards
-                                        .SelectMany(c => c.Tasks)
-                                        .SelectMany(t => t.SubTasks)
-                                        .Count(st => st.IsCompleted)
-                                    / b.Cards
-                                        .SelectMany(c => c.Tasks)
-                                        .SelectMany(t => t.SubTasks)
-                                        .Count() * 100
-                                  )
-                                : 0,
-
-                        BoardLeadId = b.LeadOfBoardId,
-
-                        DateOfStartWork = b.Cards
-                            .SelectMany(c => c.Tasks)
-                            .Where(t => t.DateOfStartWork != null)
-                            .Select(t => t.DateOfStartWork!.Value)
-                            .DefaultIfEmpty(DateOnly.MinValue)
-                            .Min(),
-
-                        DateOfDeadline = b.Cards
-                            .SelectMany(c => c.Tasks)
-                            .Where(t => t.DateOfDeadline != null)
-                            .Select(t => t.DateOfDeadline!.Value)
-                            .DefaultIfEmpty(DateOnly.MinValue)
-                            .Max()
-                    }).ToList()
-            };
-
-            return hallPage;
+            return project;
         }
     }
 }

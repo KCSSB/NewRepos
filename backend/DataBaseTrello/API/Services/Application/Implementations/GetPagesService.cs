@@ -57,9 +57,12 @@ namespace API.Services.Application.Implementations
         public async Task<HallPage?> CreateHallPageDTOAsync(int userId,int projectId)
         {
             bool isMemberOfProject = await IsMember(userId,projectId);
+
             if (!isMemberOfProject)
                 throw new AppException(_errCreator.Forbidden($"User {userId}, не является участником project {projectId}"));
-            var page = await _query.ProjectQueries.GetProjectForHall(userId,projectId);
+
+            var project = await _query.ProjectQueries.GetProjectForHallAsync(userId,projectId);
+            var page = ToResponseMapper.ToHallPage(project, userId);
             return page;
         }
         private async Task<bool> IsMember(int userId, int projectId)

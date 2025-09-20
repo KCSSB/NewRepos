@@ -3,6 +3,7 @@ using API.DTO.Responses.Pages.HallPage;
 using API.DTO.Responses.Pages.HomePage;
 using API.DTO.Responses.Pages.SettingsPage;
 using DataBaseInfo.models;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
 namespace API.DTO.Mappers
 {
@@ -51,6 +52,43 @@ namespace API.DTO.Mappers
                 FirstUserName = updateUser.FirstUserName,
                 LastUserName = updateUser.LastUserName,
                 Sex = updateUser.Sex
+            };
+        }
+        public static HallPage ToHallPage(Project project, int userId)
+        {
+            return new HallPage
+            {
+                ProjectId = project.Id,
+                ProjectName = project.ProjectName,
+                Description = project.Description,
+
+                ProjectRole = project.ProjectUsers
+                   .FirstOrDefault(pu => pu.UserId == userId)?.ProjectRole,
+
+                ProjectUsers = project.ProjectUsers.Select(pu => new HallProjectUser
+                {
+                    ProjectUserId = pu.Id,
+                    FirstName = pu.User?.FirstName ?? string.Empty,
+                    LastName = pu.User?.SecondName ?? string.Empty,
+                    ProjectRole = pu.ProjectRole
+                }).ToList(),
+
+                Boards = project.ProjectUsers
+                   .SelectMany(pu => pu.MembersOfBoards.Select(mob => mob.Board))
+                   .Distinct()
+                   .Select(b => new HallBoard
+                   {
+                       BoardId = b.Id,
+                       BoardName = b.Name,
+                       MembersCount = b.MemberOfBoards.Count,
+                       ProgressBar = b.ProgressBar,
+
+                       BoardLeadId = b.LeadOfBoardId,
+
+                       DateOfStartWork = b.DateStartOfWork,
+
+                       DateOfDeadline = b.DateOfDeadline
+                   }).ToList()
             };
         }
         public static HallProjectUser ToHallProjectUser(ProjectUser projectUser)
