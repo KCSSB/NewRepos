@@ -16,5 +16,9 @@ namespace API.Repositories.Implementations
             foreach (var member in members)
                 await _context.AddAsync(member);
         }
+        public async Task AddMemberAsync(MemberOfBoard member)
+        {
+            await _context.AddAsync(member);
+        }
     }
 }

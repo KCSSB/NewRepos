@@ -1,4 +1,5 @@
 ﻿using API.DTO.Domain;
+using API.DTO.Responses.Pages.HallPage;
 using API.DTO.Responses.Pages.HomePage;
 using API.DTO.Responses.Pages.SettingsPage;
 using DataBaseInfo.models;
@@ -7,9 +8,9 @@ namespace API.DTO.Mappers
 {
     public static class ToResponseMapper
     {
-        public static SummaryProjectResponse ToSummaryProjectResponse(Project project)
+        public static HomeProject ToHomeProject(Project project)
         {
-            return new SummaryProjectResponse
+            return new HomeProject
             {
                 ProjectId = project.Id,
                 ProjectName = project.ProjectName,
@@ -17,21 +18,21 @@ namespace API.DTO.Mappers
                 ProjectImageUrl = project.Avatar,
                 ProjectLeader = project.ProjectUsers
                     .Where(pu => pu.ProjectRole == "ProjectOwner")
-                    .Select(pl => ToProjectLeaderResponse(pl))
+                    .Select(pl => ToHomeProjectLeader(pl))
                     .FirstOrDefault()
 
             };
         }
-        public static ProjectLeaderResponse ToProjectLeaderResponse(ProjectUser projectLead)
+        public static HomeProjectLeader ToHomeProjectLeader(ProjectUser projectLead)
         {
-            return new ProjectLeaderResponse
+            return new HomeProjectLeader
             {
                 ProjectLeaderId = projectLead.Id,
                 ProjectLeaderName = projectLead.User.FirstName + " " + projectLead.User.SecondName,
                 ProjectLeaderImageUrl = projectLead.User.Avatar
             };
         }
-        public static SettingsPage ToSettingsPageResponse(User user)
+        public static SettingsPage ToSettingsPage(User user)
         {
             return new SettingsPage
             {
@@ -43,13 +44,22 @@ namespace API.DTO.Mappers
                 UserAvatarUrl = user.Avatar,
             };
         }
-        public static UpdateUserResponse ToUpdateUserResponse(UpdateUserModel updateUser)
+        public static SettingsUserInfo ToUpdateUserModel(UpdateUserModel updateUser)
         {
-            return new UpdateUserResponse
+            return new SettingsUserInfo
             {
                 FirstUserName = updateUser.FirstUserName,
                 LastUserName = updateUser.LastUserName,
                 Sex = updateUser.Sex
+            };
+        }
+        public static HallProjectUser ToHallProjectUser(ProjectUser projectUser)
+        {
+            return new HallProjectUser
+            {
+                ProjectUserId = projectUser.Id,
+                FirstName = projectUser.User.FirstName,
+                LastName = projectUser.User.SecondName
             };
         }
     }

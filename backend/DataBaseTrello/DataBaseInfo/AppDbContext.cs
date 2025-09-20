@@ -111,7 +111,6 @@ namespace DataBaseInfo
                 entity.Property(c => c.Name).IsRequired().HasMaxLength(20);
                 entity.Property(c => c.BoardId).IsRequired();
              
-                entity.Property(c => c.Progress).IsRequired();
                 //Настройка связи между полями(Нэту)
                 entity.HasOne(c => c.Board)
                 .WithMany(b => b.Cards)
@@ -125,7 +124,6 @@ namespace DataBaseInfo
                 //Настройка полей
                 entity.Property(t => t.Name).IsRequired().HasMaxLength(20);
                 entity.Property(t => t.CardId).IsRequired();
-                entity.Property(t => t.Complete).IsRequired();
                 entity.Property(t => t.Priority).IsRequired();
                 //Настройка связи между полями(Нэту)
                 entity.HasOne(t => t.Card)

@@ -71,7 +71,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
             if (query == null)
                 throw new AppException(_errCreator.InternalServerError("Не удалось получить проект из базы данных"));
          
-            var response = ToResponseMapper.ToSummaryProjectResponse(query);
+            var response = ToResponseMapper.ToHomeProject(query);
             return Ok(response);
         
            

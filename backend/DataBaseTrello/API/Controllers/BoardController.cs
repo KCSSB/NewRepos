@@ -1,6 +1,9 @@
-﻿using API.DTO.Requests;
+﻿using System.Net.WebSockets;
+using API.DTO.Requests;
+using API.Extensions;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
+using DataBaseInfo.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,15 +22,13 @@ namespace API.Controllers
         [HttpPost("CreateBoard")]
         public async Task<IActionResult> CreateBoard([FromBody] CreateBoardRequest createBoardRequest)
         {
+            var userId = User.GetUserId();
+            var projectId = createBoardRequest.ProjectId;
             int boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
-
-            List<int> membersOfBoardId = await _boardService.AddProjectUsersInBoardAsync(boardId, createBoardRequest.BoardLeadId, createBoardRequest.BoardMembers);
-
-           return Ok(new
+                await _boardService.AddLeadToBoardAsync(boardId, userId,projectId);
+            return Ok(new
             {
                 BoardId = boardId,
-                MembersOfBoardId = membersOfBoardId,
-                BoardLeadId = createBoardRequest.BoardLeadId
             });
            
         }

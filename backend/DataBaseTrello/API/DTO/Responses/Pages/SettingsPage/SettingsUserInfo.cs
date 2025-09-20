@@ -2,7 +2,7 @@
 
 namespace API.DTO.Responses.Pages.SettingsPage
 {
-    public record class UpdateUserResponse
+    public record class SettingsUserInfo
     {
         public string? FirstUserName { get; set; }
         public string? LastUserName { get; set; }

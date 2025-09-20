@@ -101,7 +101,7 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IMembersOfBoardRepository, MembersOfBoardRepository>();
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
-
+builder.Services.AddScoped<IProjectUserRepository, ProjectUserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //Queries

@@ -37,7 +37,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
             var userId = User.GetUserId();
             var userInfoModel = ToDomainMapper.ToUpdateUserModel(request);
             var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
-            var response = ToResponseMapper.ToUpdateUserResponse(updatedUser);
+            var response = ToResponseMapper.ToUpdateUserModel(updatedUser);
             return Ok(response);
         } 
         [HttpPost("UploadUserAvatar")]

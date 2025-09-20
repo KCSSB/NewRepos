@@ -14,6 +14,7 @@ namespace DataBaseInfo.models
         public int Id { get; set; }
         public string ProjectName { get; set; } = string.Empty;
         public string Avatar { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public DateOnly DateStartWork { get; set; }
         public DateOnly? DateOfDeadline { get; set; }
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();

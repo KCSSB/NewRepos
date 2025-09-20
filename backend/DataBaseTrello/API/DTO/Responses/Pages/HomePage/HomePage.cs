@@ -2,6 +2,6 @@
 {
     public record HomePage
     {
-        public List<SummaryProjectResponse> SummaryProject { get; set; }
+        public List<HomeProject> SummaryProject { get; set; }
     }
 }

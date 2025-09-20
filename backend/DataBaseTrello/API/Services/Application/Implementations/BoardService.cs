@@ -21,7 +21,6 @@ namespace API.Services.Application.Implementations
         private ErrorContextCreator? _errorContextCreator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IQueries _query;
-        private readonly IMembersOfBoardRepository _membersOfBoardRepository;
 
 
         public BoardService(ILogger<IBoardService> logger, 
@@ -37,20 +36,16 @@ namespace API.Services.Application.Implementations
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IBoardService));
         public async Task<int> CreateBoardAsync(string boardName)
         {
-          
             Board board = new Board
             {
                 Name = boardName,
             };
-
             await _unitOfWork.BoardRepository.AddAsync(board);
             await _unitOfWork.SaveChangesAsync(ServiceName, "Произошла ошибка при попытке сохранить board в бд");
-
             return board.Id;
         }
-        public async Task<List<int>> AddProjectUsersInBoardAsync(int boardId, int boardLeadId,List<int> projectUserIds)
+        public async Task<List<int>> AddProjectUsersInBoardAsync(int boardId,List<int> projectUserIds = null)
         {
-
 
             var existingBoard = await _query.BoardQueries.GetBoardWithMembersAsync(boardId);
             
@@ -66,15 +61,30 @@ namespace API.Services.Application.Implementations
 
             var members = CreateBoardMembers(existingProjectUsers, boardId);
             await AddBoardMembersToDbAsync(members);
-
+          
             //return existingIds;
             return null;
         }
-        private async Task VerifyProjectUsersAsync(List<MemberOfBoard> members)
+        public async Task AddLeadToBoardAsync(int boardId, int userId, int projectId)
         {
+            var lead = await _unitOfWork.ProjectUserRepository.GetProjectUser(userId,projectId);
+
+            var leadOfBoard = CreateBoardLeader(boardId, lead);
+            var board = await _query.BoardQueries.GetBoardWithMembersAsync(boardId);
+            board.LeadOfBoardId = lead.Id;
+            board.MemberOfBoards.Add(leadOfBoard);
+            await _unitOfWork.SaveChangesAsync("Ошибка во время добавления лидера доски", ServiceName);
 
         }
-
+        private MemberOfBoard CreateBoardLeader(int boardId, ProjectUser projectUser)
+        {
+            return new MemberOfBoard
+            {
+                BoardId = boardId,
+                ProjectUserId = projectUser.Id,
+                BoardRole = "Leader"
+            };
+        }
         private List<MemberOfBoard> CreateBoardMembers(List<ProjectUser> projectUsers, int boardId)
         {
            var boardMembers = new List<MemberOfBoard>();
@@ -85,7 +95,7 @@ namespace API.Services.Application.Implementations
                 {
                     BoardId = boardId,
                     ProjectUserId = user.Id,
-                    BoardRole = "BoardMember"
+                    BoardRole = "Member"
                 };
                 boardMembers.Add(member);
             }
@@ -94,7 +104,7 @@ namespace API.Services.Application.Implementations
         
         private async Task AddBoardMembersToDbAsync(List<MemberOfBoard> members)
         {
-            await _membersOfBoardRepository.AddMemberRangeAsync(members);
+            await _unitOfWork.MembersOfBoardRepository.AddMemberRangeAsync(members);
 
             await _unitOfWork.SaveChangesAsync(ServiceName,"Произошла ошибка при попытке сохранить MembersOfBoard в бд");
         }

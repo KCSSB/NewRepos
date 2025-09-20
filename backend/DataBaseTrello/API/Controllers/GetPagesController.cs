@@ -1,4 +1,5 @@
-﻿using API.Extensions;
+﻿using API.DTO.Responses.Pages.HallPage;
+using API.Extensions;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,14 @@ namespace API.Controllers
             int userId = User.GetUserId();
             var page = await _getPagesService.CreateSettingsPageDTOAsync(userId);
             return Ok(page);
+        }
+        [HttpGet("GetHallPage/{id}")]
+        public async Task<IActionResult> GetHallPage(int id)
+        {
+            var userId = User.GetUserId();
+            
+            HallPage? hallPage = await _getPagesService.CreateHallPageDTOAsync(userId, id);
+            return Ok(hallPage);
         }
     }
 }
