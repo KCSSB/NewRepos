@@ -10,6 +10,7 @@ namespace API.Repositories.Uof
         private readonly AppDbContext _context;
         public IUserRepository UserRepository { get; set; }
         public IProjectRepository ProjectRepository { get; set; }
+        public IProjectUserRepository ProjectUserRepository { get; set; }
         public ISessionRepository SessionRepository { get; set; }
         public IMembersOfBoardRepository MembersOfBoardRepository { get; set; }
         public IBoardRepository BoardRepository { get; set; }
@@ -19,7 +20,8 @@ namespace API.Repositories.Uof
             IProjectRepository projectRepository,
             ISessionRepository sessionRepository,
             IMembersOfBoardRepository membersOfBoardRepository,
-            IBoardRepository boardRepository)
+            IBoardRepository boardRepository,
+            IProjectUserRepository projectUserRepository)
         {
             _context = context;
             UserRepository = userRepository;
@@ -27,7 +29,9 @@ namespace API.Repositories.Uof
             SessionRepository = sessionRepository;
             MembersOfBoardRepository = membersOfBoardRepository;
             BoardRepository = boardRepository;
+            ProjectUserRepository = projectUserRepository;
         }
+
         public async Task SaveChangesAsync(string loggerMessage,string serviceName, [CallerMemberName] string? operationName = null)
         {
             await _context.SaveChangesWithContextAsync(loggerMessage,serviceName, operationName);

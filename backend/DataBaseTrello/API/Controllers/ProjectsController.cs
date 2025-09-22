@@ -71,17 +71,26 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
             if (query == null)
                 throw new AppException(_errCreator.InternalServerError("Не удалось получить проект из базы данных"));
          
-            var response = ToResponseMapper.ToSummaryProjectResponse(query);
+            var response = ToResponseMapper.ToHomeProject(query);
             return Ok(response);
         
            
             }
-        [HttpGet("GetFullProject/{id}")]
-        public async Task<IActionResult> GetFullProject(int id)
+        [HttpDelete("{projectId}/DeleteProjectUsers")]
+        public async Task<IActionResult> GetFullProject(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
         {
-
-            return Ok();
+            return Ok("Всех исключил насяльника");
         }
-        
+        [HttpPatch("{projectId}/UpdateProjectName")]
+        public async Task<IActionResult> UpdateProjectName(int projectId,[FromBody] UpdateProjectNameRequest updateProjectNameRequest)
+        {
+            return Ok("Да да, обновил насяльника");
+        }
+        [HttpPatch("{projectId}/UpdateProjectDescription")]
+        public async Task<IActionResult> UpdateProjectDescription(int projectId, [FromBody] UpdateProjectDescriptonRequest updateProjectDescriptionRequest)
+        {
+            return Ok("Да да, обновил насяльника");
+        }
+
     }
 }

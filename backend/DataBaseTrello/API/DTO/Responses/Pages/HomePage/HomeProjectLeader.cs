@@ -1,6 +1,6 @@
-﻿namespace API.DTO.Responses
+﻿namespace API.DTO.Responses.Pages.HomePage
 {
-    public record ProjectLeaderResponse
+    public record HomeProjectLeader
     {
         public int ProjectLeaderId { get; set; }
         public string ProjectLeaderName { get; set;}

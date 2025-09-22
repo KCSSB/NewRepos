@@ -1,6 +1,6 @@
 ﻿using DataBaseInfo.models;
 
-namespace API.DTO.Responses.Pages
+namespace API.DTO.Responses.Pages.SettingsPage
 {
     public record class SettingsPage
     {

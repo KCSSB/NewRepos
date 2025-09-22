@@ -5,5 +5,6 @@ namespace API.Repositories.Interfaces
     public interface IMembersOfBoardRepository
     {
         public Task AddMemberRangeAsync(List<MemberOfBoard> members);
+        public Task AddMemberAsync(MemberOfBoard memberOfBoard);
     }
 }

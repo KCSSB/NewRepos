@@ -1,9 +1,12 @@
-﻿namespace API.Services.Application.Interfaces
+﻿using DataBaseInfo.models;
+
+namespace API.Services.Application.Interfaces
 {
     public interface IBoardService
     {
         public Task<int> CreateBoardAsync(string boardName);
-        public Task<List<int>> AddProjectUsersInBoardAsync(int boardId, int boardLeadId, List<int> projectUserIds);
+        public Task<Board?> AddLeadToBoardAsync(int boardId, int leadId, int projectId);
+        public Task<List<int>> AddProjectUsersInBoardAsync(int boardId, List<int> projectUserIds);
         
     }
 }

@@ -1,5 +1,4 @@
-﻿using API.DTO.Responses.Pages;
-using DataBaseInfo;
+﻿using DataBaseInfo;
 using Microsoft.EntityFrameworkCore;
 using API.Exceptions.Context;
 using API.DTO.Mappers;
@@ -7,6 +6,9 @@ using API.Exceptions.ContextCreator;
 using API.Services.Application.Interfaces;
 using API.Repositories.Queries;
 using API.Repositories.Uof;
+using API.DTO.Responses.Pages.HomePage;
+using API.DTO.Responses.Pages.SettingsPage;
+using API.DTO.Responses.Pages.HallPage;
 
 namespace API.Services.Application.Implementations
 {
@@ -39,7 +41,7 @@ namespace API.Services.Application.Implementations
 
             var projects = await _query.ProjectQueries.GetAllProjectsWhereUserAsync(userId);
 
-            var summaryProjects = projects.Select(ToResponseMapper.ToSummaryProjectResponse).ToList();
+            var summaryProjects = projects.Select(ToResponseMapper.ToHomeProject).ToList();
             return new HomePage { SummaryProject = summaryProjects };
         }
         public async Task<SettingsPage> CreateSettingsPageDTOAsync(int userId)
@@ -49,8 +51,25 @@ namespace API.Services.Application.Implementations
             if (user == null)
                 throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
 
-            var page = ToResponseMapper.ToSettingsPageResponse(user);
+            var page = ToResponseMapper.ToSettingsPage(user);
             return page;
+        }
+        public async Task<HallPage?> CreateHallPageDTOAsync(int userId,int projectId)
+        {
+            bool isMemberOfProject = await IsMember(userId,projectId);
+
+            if (!isMemberOfProject)
+                throw new AppException(_errCreator.Forbidden($"User {userId}, не является участником project {projectId}"));
+
+            var project = await _query.ProjectQueries.GetProjectForHallAsync(userId,projectId);
+            var page = ToResponseMapper.ToHallPage(project, userId);
+            return page;
+        }
+        private async Task<bool> IsMember(int userId, int projectId)
+        {
+            var project = await _query.ProjectQueries.GetProjectWithProjectUsersAsync(projectId);
+            bool IsMember = project.ProjectUsers.Where(pu => pu.UserId == userId).Any();
+            return IsMember;
         }
     }
 }
