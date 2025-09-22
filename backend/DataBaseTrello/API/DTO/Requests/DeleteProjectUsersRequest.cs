@@ -2,6 +2,6 @@
 {
     public class DeleteProjectUsersRequest
     {
-        List<int> ProjectUsers { get; set; } = new();
+        public List<int> ProjectUsers { get; set; } = new();
     }
 }

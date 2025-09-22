@@ -2,6 +2,6 @@
 {
     public class UpdateProjectNameRequest
     {
-        string UpdatedProjectName { get; set; }
+        public string UpdatedProjectName { get; set; }
     }
 }

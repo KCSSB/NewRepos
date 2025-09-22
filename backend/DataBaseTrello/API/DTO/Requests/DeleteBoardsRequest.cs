@@ -2,6 +2,6 @@
 {
     public record DeleteBoardsRequest
     {
-        List<int> BoardIds { get; set; } = new();
+        public List<int> BoardIds { get; set; } = new();
     }
 }

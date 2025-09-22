@@ -86,6 +86,11 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         {
             return Ok("Да да, обновил насяльника");
         }
-        
+        [HttpPatch("{projectId}/UpdateProjectDescription")]
+        public async Task<IActionResult> UpdateProjectDescription(int projectId, [FromBody] UpdateProjectDescriptonRequest updateProjectDescriptionRequest)
+        {
+            return Ok("Да да, обновил насяльника");
+        }
+
     }
 }

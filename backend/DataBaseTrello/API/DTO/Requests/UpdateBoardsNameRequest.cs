@@ -2,6 +2,6 @@
 {
     public record UpdateBoardsNameRequest
     {
-        List<UpdatedBoard> UpdatedBoard { get; set; } = new();
+        public List<UpdatedBoard> UpdatedBoard { get; set; } = new();
     }
 }
