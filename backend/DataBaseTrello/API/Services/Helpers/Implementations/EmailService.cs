@@ -11,6 +11,7 @@ namespace API.Services.Helpers.Implementations
         private readonly IOptions<EmailService> _settings;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private ErrorContextCreator? _errorContextCreator;
+        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));
 
 
         public EmailService(IOptions<EmailService> settings, IErrorContextCreatorFactory errCreatorFactory)
@@ -18,7 +19,6 @@ namespace API.Services.Helpers.Implementations
             _errCreatorFactory = errCreatorFactory;
             _settings = settings;
         }
-        private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(EmailService));
         public async Task<MimeMessage> CreateMessageAsync()
         {
             return new MimeMessage

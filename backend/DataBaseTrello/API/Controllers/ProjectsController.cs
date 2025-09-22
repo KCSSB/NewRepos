@@ -76,11 +76,15 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         
            
             }
-        [HttpGet("GetFullProject/{id}")]
-        public async Task<IActionResult> GetFullProject(int id)
+        [HttpDelete("{projectId}/DeleteProjectUsers")]
+        public async Task<IActionResult> GetFullProject(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
         {
-
-            return Ok();
+            return Ok("Всех исключил насяльника");
+        }
+        [HttpPatch("{projectId}/UpdateProjectName")]
+        public async Task<IActionResult> UpdateProjectName(int projectId,[FromBody] UpdateProjectNameRequest updateProjectNameRequest)
+        {
+            return Ok("Да да, обновил насяльника");
         }
         
     }

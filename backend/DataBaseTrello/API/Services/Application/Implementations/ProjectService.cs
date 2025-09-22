@@ -84,11 +84,6 @@ namespace API.Services.Application.Implementations
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
-        public async Task IsProjectOwner(int userId, int projectId)
-        {
-            var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(userId, projectId);
-            if (projectUser==null || projectUser.ProjectRole != ProjectRoles.Owner)
-                throw new AppException(_errCreator.Forbidden($"Пользователь {userId}, не является основателем проекта {projectId}"));
-        }
+
     }
 }

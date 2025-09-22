@@ -28,6 +28,7 @@ using API.Repositories.Queries.Intefaces;
 using API.Repositories.Queries.Interfaces;
 using DataBaseInfo.models;
 using Microsoft.AspNetCore.Identity;
+using API.Services.Helpers;
 
 // Создаёт билдер для настройки приложения
 var builder = WebApplication.CreateBuilder(args);
@@ -95,6 +96,7 @@ builder.Services.AddScoped<IProjectService,ProjectService>();
 builder.Services.AddScoped<IBoardService,BoardService>();
 builder.Services.AddScoped<IImageService,ImageService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
+builder.Services.AddScoped<IRolesHelper, RolesHelper>();
 //repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();

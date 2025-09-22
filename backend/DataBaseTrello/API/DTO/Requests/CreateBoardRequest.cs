@@ -9,6 +9,5 @@ namespace API.DTO.Requests
         [MinLength(AllowLengthProp.MinBoardName)]
         [MaxLength(AllowLengthProp.MaxBoardName)]
         public required string BoardName { get; set; }
-        public required int ProjectId { get; set; }
         }
 }
