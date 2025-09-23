@@ -19,5 +19,4 @@ html {
   flex-grow: 1;
   min-width: 0;
   box-sizing: border-box;
-  overflow-y: auto;
 }
