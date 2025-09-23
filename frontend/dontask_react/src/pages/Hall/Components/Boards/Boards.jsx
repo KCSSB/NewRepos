@@ -7,7 +7,7 @@ import "./Boards.css";
 
 export default function Boards() {
   const { projectData, loading } = useProject();
-  const boards = projectData?.boards || []; // Получаем список досок из контекста
+  const boards = projectData?.boards || [];
 
   return (
     <div className="board-container">

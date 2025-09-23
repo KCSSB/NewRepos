@@ -1,6 +1,8 @@
+// Board_list.jsx
 import React, { useState } from "react";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import { postWithAuth } from "../../../../service/api";
+import { useProject } from "../../HallContext.jsx";
 import create_board_icon from "./create_board_icon.png";
 import sand_watches_icon from "./sand_watches_icon.png";
 import people_icon from "./people_icon.png";
@@ -15,8 +17,9 @@ const BOARD_COLORS = [
   "#EE68BB",
 ];
 
-export default function Board_list({ boards, setBoards, loading, projectId }) {
+export default function Board_list({ boards, loading, projectId }) {
   const showToast = useToast();
+  const { updateBoards } = useProject(); // Получаем функцию из контекста
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [boardName, setBoardName] = useState("");
@@ -46,7 +49,8 @@ export default function Board_list({ boards, setBoards, loading, projectId }) {
         }
       );
 
-      setBoards((prevBoards) => [...prevBoards, newBoard]);
+      // Используем функцию из контекста для обновления списка
+      updateBoards(newBoard);
 
       setIsCreating(false);
       setBoardName("");
