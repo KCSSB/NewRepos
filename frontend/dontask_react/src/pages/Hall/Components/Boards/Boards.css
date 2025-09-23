@@ -9,4 +9,5 @@
   width: 35rem;
   margin: 2rem 1rem;
   padding: 0.5rem;
+  flex-shrink: 0;
 }

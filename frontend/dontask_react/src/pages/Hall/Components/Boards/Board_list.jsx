@@ -1,4 +1,3 @@
-// Board_list.jsx
 import React, { useState } from "react";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import { postWithAuth } from "../../../../service/api";
@@ -16,7 +15,6 @@ const BOARD_COLORS = [
   "#EE68BB",
 ];
 
-// Accept projectId in props
 export default function Board_list({ boards, setBoards, loading, projectId }) {
   const showToast = useToast();
   const [isCreating, setIsCreating] = useState(false);

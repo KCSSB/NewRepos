@@ -15,8 +15,7 @@ html {
 
 .hall-main-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-grow: 1;
-  min-width: 0;
   box-sizing: border-box;
 }

@@ -1,12 +1,11 @@
-// BoardHeader.jsx
 import React, { useEffect } from "react";
 import { useProject } from "../../HallContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./BoardHeader.css";
 import filter_icon from "./filter_icon.png";
 
-export default function BoardHeader({ boardsCount, loading }) {
-  const { projectData, showToast } = useProject();
+export default function BoardHeader({ boardsCount }) {
+  const { projectData, loading, showToast } = useProject();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,8 +21,8 @@ export default function BoardHeader({ boardsCount, loading }) {
     }
   }, [loading, projectData, navigate, showToast]);
 
-  if (loading) {
-    return <div>Загрузка...</div>; // СКЕЛЕТОН
+  if (loading || !projectData) {
+    return <div>Загрузка...</div>;
   }
 
   return (

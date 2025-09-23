@@ -1,3 +1,4 @@
+// Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
@@ -16,10 +17,11 @@ import default_avatar from "./avatar.png";
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
-  const isActiveHall = location.pathname === "/hall";
+  const isActiveHall = location.pathname.startsWith("/hall");
   const isActiveWorkspace = location.pathname === "/workspace";
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
+  const [lastProjectId, setLastProjectId] = useState(null);
 
   const updateAvatarFromToken = () => {
     const token = localStorage.getItem("token");
@@ -38,6 +40,10 @@ export default function Navbar() {
 
   useEffect(() => {
     updateAvatarFromToken();
+    const storedProjectId = localStorage.getItem("lastVisitedProjectId");
+    if (storedProjectId) {
+      setLastProjectId(storedProjectId);
+    }
 
     const handleTokenChange = () => {
       updateAvatarFromToken();
@@ -49,6 +55,11 @@ export default function Navbar() {
       window.removeEventListener("tokenUpdated", handleTokenChange);
     };
   }, []);
+
+  const hallLink = lastProjectId ? `/hall/${lastProjectId}` : "/hall";
+
+  // Новая переменная, которая определяет, должна ли ссылка быть неактивной
+  const isHallLinkDisabled = !lastProjectId && !isActiveHall;
 
   return (
     <div className="navbar-container">
@@ -70,7 +81,10 @@ export default function Navbar() {
             </button>
           </div>
         </Link>
-        <Link to="/hall">
+        <Link
+          to={hallLink}
+          className={isHallLinkDisabled ? "disabled-link" : ""}
+        >
           <div className="navbar-container-item">
             <button
               className={
