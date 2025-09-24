@@ -29,14 +29,21 @@ namespace API.Controllers
         private readonly ILogger<ProjectsController> _logger;
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
         private readonly IQueries _query;
+        private readonly IRolesHelper _rolesHelper;
         private ErrorContextCreator? _errorContextCreator;
-        public ProjectsController(IProjectService projectService, IImageService imageService, ILogger<ProjectsController> logger, IErrorContextCreatorFactory errCreatorFactory, IQueries query)
+        public ProjectsController(IProjectService projectService,
+            IImageService imageService,
+            ILogger<ProjectsController> logger, 
+            IErrorContextCreatorFactory errCreatorFactory,
+            IQueries query,
+            IRolesHelper rolesHelper)
         {
             _errCreatorFactory = errCreatorFactory;
             _projectService = projectService;
             _imageService = imageService;
             _logger = logger;
             _query = query;
+            _rolesHelper = rolesHelper;
         }
 private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(ProjectsController));
 
@@ -77,9 +84,14 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
            
             }
         [HttpDelete("{projectId}/DeleteProjectUsers")]
-        public async Task<IActionResult> GetFullProject(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
+        public async Task<IActionResult> DeleteProjectUsers(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
         {
-            return Ok("Всех исключил насяльника");
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId,projectId);
+            var projectUsers = deleteProjectUserRequest.ProjectUsers;
+            await _projectService.DeleteProjectUsersAsync(projectUsers);
+            
+            return Ok("Выбранные пользователи успешно исключены из проекта");
         }
         [HttpPatch("{projectId}/UpdateProjectName")]
         public async Task<IActionResult> UpdateProjectName(int projectId,[FromBody] UpdateProjectNameRequest updateProjectNameRequest)

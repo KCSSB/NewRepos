@@ -84,6 +84,17 @@ namespace API.Services.Application.Implementations
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
-
+        public async Task DeleteProjectUsersAsync(List<int> projectUsersIds)
+        {
+            foreach (var projectUserId in projectUsersIds)
+            {
+                var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(projectUserId);
+                if (projectUser != null && projectUser.ProjectRole!=ProjectRoles.Owner)
+                {
+                   _unitOfWork.ProjectUserRepository.RemoveProjectUser(projectUser);
+                }
+            }
+            await _unitOfWork.SaveChangesAsync("Произошла ошибка во время исключения участников проекта", ServiceName);
+        }
     }
 }

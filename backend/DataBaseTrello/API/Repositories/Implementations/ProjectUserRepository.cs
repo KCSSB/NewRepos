@@ -13,9 +13,17 @@ namespace API.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<ProjectUser> GetProjectUser(int userId, int projectId)
+        public async Task<ProjectUser?> GetProjectUser(int userId, int projectId)
         {
             return await _context.ProjectUsers.FirstOrDefaultAsync(pu => pu.ProjectId==projectId && pu.UserId ==userId);
+        }
+        public async Task<ProjectUser?> GetProjectUser(int projectUserId)
+        {
+            return await _context.ProjectUsers.FirstOrDefaultAsync(pu => pu.Id == projectUserId);
+        }
+        public void RemoveProjectUser(ProjectUser projectUser)
+        {
+            _context.Remove(projectUser);
         }
     }
 }
