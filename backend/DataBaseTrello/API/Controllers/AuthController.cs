@@ -35,7 +35,8 @@ namespace API.Controllers
         public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)//Refactor
         {
 
-            _logger.LogInformation(InfoMessages.StartOperation + "Register");
+            if (request == null)
+                return BadRequest();
 
             if (!ModelState.IsValid)
                 throw new AppException(_errCreator.BadRequest($"Данные переданные в экземпляр RegisterUserRequest не валидны {request.UserEmail}"));
@@ -51,7 +52,8 @@ namespace API.Controllers
         [HttpPost("login")] //Refactoring
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            _logger.LogInformation(InfoMessages.StartOperation + "Login");
+            if (loginRequest == null)
+                return BadRequest();
 
             if (!ModelState.IsValid)
                 throw new AppException(_errCreator.BadRequest("Данные переданные в экземпляр loginRequest не валидны"));
@@ -76,7 +78,7 @@ namespace API.Controllers
         [HttpPost("RefreshAccessToken")]
         public async Task<IActionResult> RefreshAccessToken()
         {
-            //Валидация здесь
+            
             _logger.LogInformation(InfoMessages.StartOperation + "RefreshAccessToken");
             string? deviceId = User.GetDeviceId();
            

@@ -1,7 +1,10 @@
-﻿namespace API.DTO.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.DTO.Requests
 {
     public record UpdateBoardsNameRequest
     {
-        public List<UpdatedBoard> UpdatedBoard { get; set; } = new();
+        [Required(ErrorMessage = "Список должен быть не Null!")]
+        public List<UpdatedBoard> UpdatedBoards { get; set; } = new();
     }
 }

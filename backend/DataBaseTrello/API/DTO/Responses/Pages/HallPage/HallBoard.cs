@@ -9,6 +9,7 @@
         public DateOnly? DateOfStartWork { get; set; }
         public DateOnly? DateOfDeadline {  get; set; }
         public int BoardLeadId { get; set; }
+        public bool IsMember { get; set; } = true;
 
     }
 }
