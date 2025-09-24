@@ -24,12 +24,12 @@ html {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  height: 91vh;
+  /* height: 52rem; */
   box-sizing: border-box;
 }
 
 .hall-footer {
   display: flex;
-  height: 100%;
+  /* height: 100%; */
   box-sizing: border-box;
 }

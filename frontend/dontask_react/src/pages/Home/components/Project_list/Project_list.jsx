@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom"; // Шаг 1: Добавляем импорт useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Project_list.css";
 import ProjectSkeleton from "./Project_list_skeleton";
 import {

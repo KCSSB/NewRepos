@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import invite_icon from "./invite_icon.png";
-import avatar_placeholder from "./avatar_placeholder.png";
 import "./MembersList.css";
+import { useToast } from "../../../../components/Toast/ToastContext";
 
 export default function MembersList({ isCreating, setIsCreating, members }) {
   const [newMemberName, setNewMemberName] = useState("");
+  const showToast = useToast();
 
   const handleInviteMemberClick = () => {
     setIsCreating(true);
@@ -12,7 +13,7 @@ export default function MembersList({ isCreating, setIsCreating, members }) {
 
   const handleInviteMember = (e) => {
     e.preventDefault();
-    console.log("Добавлен новый участник:", newMemberName);
+    showToast("Добавлен новый участник");
     setIsCreating(false);
     setNewMemberName("");
   };
@@ -61,7 +62,7 @@ export default function MembersList({ isCreating, setIsCreating, members }) {
           members.map((member) => (
             <div key={member.projectUserId} className="member-card">
               <img
-                src={avatar_placeholder}
+                src={member.userUrl}
                 alt="AVATAR"
                 className="member-avatar"
               />
