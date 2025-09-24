@@ -87,7 +87,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpDelete("{projectId}/DeleteProjectUsers")]
         public async Task<IActionResult> DeleteProjectUsers(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
         {
-            if (deleteProjectUserRequest == null)
+            if (deleteProjectUserRequest == null || deleteProjectUserRequest.ProjectUsers.Count<=0)
                 return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId,projectId);

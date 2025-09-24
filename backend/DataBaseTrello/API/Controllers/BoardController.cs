@@ -44,7 +44,7 @@ namespace API.Controllers
         [HttpDelete("DeleteBoards")]
         public async Task<IActionResult> DeleteBoards(int projectId, [FromBody] DeleteBoardsRequest deleteBoardsRequest)
         {
-            if (deleteBoardsRequest == null)
+            if (deleteBoardsRequest == null || deleteBoardsRequest.BoardIds.Count<=0)
                 return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);
@@ -56,7 +56,7 @@ namespace API.Controllers
         [HttpPatch("UpdateBoardsName")]
         public async Task<IActionResult> UpdateBoardsName(int projectId, [FromBody] UpdateBoardsNameRequest updateBoardsNameRequest)
         {
-            if (updateBoardsNameRequest == null)
+            if (updateBoardsNameRequest == null || updateBoardsNameRequest.UpdatedBoards.Count<=0)
                 return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);

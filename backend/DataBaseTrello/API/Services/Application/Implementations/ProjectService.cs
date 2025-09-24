@@ -86,14 +86,19 @@ namespace API.Services.Application.Implementations
         }
         public async Task DeleteProjectUsersAsync(List<int> projectUsersIds)
         {
+            int count = 0;
+
             foreach (var projectUserId in projectUsersIds)
             {
                 var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(projectUserId);
                 if (projectUser != null && projectUser.ProjectRole!=ProjectRoles.Owner)
                 {
                    _unitOfWork.ProjectUserRepository.RemoveProjectUser(projectUser);
+                    count++;
                 }
             }
+            if (count <= 0)
+                throw new AppException(_errCreator.NotFound("Данные для удаления не найдены"));
             await _unitOfWork.SaveChangesAsync("Произошла ошибка во время исключения участников проекта", ServiceName);
         }
         public async Task<string> UpdateProjectNameAsync(int projectId, string projectName)
