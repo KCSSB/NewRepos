@@ -96,5 +96,12 @@ namespace API.Services.Application.Implementations
             }
             await _unitOfWork.SaveChangesAsync("Произошла ошибка во время исключения участников проекта", ServiceName);
         }
+        public async Task<string> UpdateProjectNameAsync(int projectId, string projectName)
+        {
+            var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
+            project.ProjectName = projectName;
+            await _unitOfWork.SaveChangesAsync("Ошибка при изменении названия проекта" , ServiceName);
+            return project.ProjectName;
+        }
     }
 }

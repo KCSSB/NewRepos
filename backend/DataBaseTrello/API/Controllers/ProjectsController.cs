@@ -96,7 +96,16 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("{projectId}/UpdateProjectName")]
         public async Task<IActionResult> UpdateProjectName(int projectId,[FromBody] UpdateProjectNameRequest updateProjectNameRequest)
         {
-            return Ok("Да да, обновил насяльника");
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId , projectId);
+
+            var projectName = updateProjectNameRequest.UpdatedProjectName;
+
+            var updatedProjectName = await _projectService.UpdateProjectNameAsync(projectId, projectName);
+            return Ok(new
+            {
+                Name = updatedProjectName
+            });
         }
         [HttpPatch("{projectId}/UpdateProjectDescription")]
         public async Task<IActionResult> UpdateProjectDescription(int projectId, [FromBody] UpdateProjectDescriptonRequest updateProjectDescriptionRequest)
