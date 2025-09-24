@@ -1,4 +1,5 @@
 ﻿using API.Constants.Roles;
+using API.DTO.Requests;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
@@ -109,6 +110,33 @@ namespace API.Services.Application.Implementations
 
             await _unitOfWork.SaveChangesAsync(ServiceName,"Произошла ошибка при попытке сохранить MembersOfBoard в бд");
         }
-        
+
+        public async Task DeleteBoardsAsync(List<int> boardIds)
+        {
+            foreach (var boardId in boardIds)
+            {
+                var board = await _unitOfWork.BoardRepository.GetAsync(boardId);
+                if(board!= null)
+                {
+                    _unitOfWork.BoardRepository.RemoveBoard(board);
+                }
+            }
+            await _unitOfWork.SaveChangesAsync("Ошибка при удалении досок",ServiceName);
+        }
+        public async Task UpdateBoardsNameAsync(List<UpdatedBoard> updateBoards)
+        {
+            foreach(var updateBoard in updateBoards)
+            {
+                var boardId = updateBoard.BoardId;
+                var updatedName = updateBoard.UpdatedName;
+                var board = await _unitOfWork.BoardRepository.GetAsync(boardId);
+                if(board!= null)
+                {
+                    board.Name = updatedName;
+                }
+            }
+            await _unitOfWork.SaveChangesAsync("Ошибка при обнолвении названий досок",ServiceName);
+    
+        }
     }
 }

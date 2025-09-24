@@ -50,8 +50,9 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPost ("CreateProject")]
         public async Task<IActionResult> CreateProject([FromForm] CreateProjectRequest projectRequest)
         {
-            _logger.LogInformation("Начало создания проекта");
-            if(!ModelState.IsValid)
+            if (projectRequest == null)
+                return BadRequest();
+            if (!ModelState.IsValid)
             {
                 var errorMessages = string.Join(Environment.NewLine, ModelState.Values
          .SelectMany(v => v.Errors)
@@ -86,6 +87,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpDelete("{projectId}/DeleteProjectUsers")]
         public async Task<IActionResult> DeleteProjectUsers(int projectId,[FromBody] DeleteProjectUsersRequest deleteProjectUserRequest)
         {
+            if (deleteProjectUserRequest == null)
+                return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId,projectId);
             var projectUsers = deleteProjectUserRequest.ProjectUsers;
@@ -96,6 +99,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("{projectId}/UpdateProjectName")]
         public async Task<IActionResult> UpdateProjectName(int projectId,[FromBody] UpdateProjectNameRequest updateProjectNameRequest)
         {
+            if (updateProjectNameRequest == null)
+                return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId , projectId);
 
@@ -110,6 +115,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("{projectId}/UpdateProjectDescription")]
         public async Task<IActionResult> UpdateProjectDescription(int projectId, [FromBody] UpdateProjectDescriptonRequest updateProjectDescriptionRequest)
         {
+            if (updateProjectDescriptionRequest == null)
+                return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);
             var projectDescription = updateProjectDescriptionRequest.ProjectDescription;

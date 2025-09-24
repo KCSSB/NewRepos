@@ -116,5 +116,6 @@ namespace API.DTO.Mappers
                 ProgressBar= board.ProgressBar,
             };
         }
+        
     }
 }
