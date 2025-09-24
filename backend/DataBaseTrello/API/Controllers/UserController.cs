@@ -34,6 +34,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("UpdateGeneralUserInfo")]
         public async Task<IActionResult> UpdateGeneralUserInfo([FromBody]UpdateUserRequest request)
         {
+            if (request == null)
+                return BadRequest();
             var userId = User.GetUserId();
             var userInfoModel = ToDomainMapper.ToUpdateUserModel(request);
             var updatedUser = await _userService.UpdateUserAsync(userInfoModel, userId);
@@ -43,6 +45,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPost("UploadUserAvatar")]
         public async Task<IActionResult> UploadUserAvatar([FromForm] UploadAvatarRequest request)
         {
+            if (request == null)
+                return BadRequest();
             int userId = User.GetUserId();
             if (!ModelState.IsValid)
             {
@@ -65,6 +69,8 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
+            if (request == null)
+                return BadRequest();
             var userId = User.GetUserId();
             await _userService.ChangePasswordAsync(request.OldPassword, request.NewPassword, userId);
             return Ok("Пароль успешно изменён");

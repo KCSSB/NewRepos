@@ -88,7 +88,9 @@ namespace API.DTO.Mappers
 
                        DateOfStartWork = b.DateStartOfWork,
 
-                       DateOfDeadline = b.DateOfDeadline
+                       DateOfDeadline = b.DateOfDeadline,
+                       IsMember = b.MemberOfBoards.Any(mb => mb.ProjectUser.UserId == userId)
+
                    }).ToList()
             };
         }
@@ -114,5 +116,6 @@ namespace API.DTO.Mappers
                 ProgressBar= board.ProgressBar,
             };
         }
+        
     }
 }

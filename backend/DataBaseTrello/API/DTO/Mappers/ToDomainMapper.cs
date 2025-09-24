@@ -37,5 +37,6 @@ namespace API.DTO.Mappers
                 HashedToken = hashedToken.Value
             };
         }
+        
     }
 }

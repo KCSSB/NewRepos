@@ -84,6 +84,36 @@ namespace API.Services.Application.Implementations
             await _unitOfWork.SaveChangesAsync(ServiceName, $"Произошла ошибка во время обновления изображения проекта {projectId}, Не удалось сохранить изменения в бд");
 
         }
+        public async Task DeleteProjectUsersAsync(List<int> projectUsersIds)
+        {
+            int count = 0;
 
+            foreach (var projectUserId in projectUsersIds)
+            {
+                var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(projectUserId);
+                if (projectUser != null && projectUser.ProjectRole!=ProjectRoles.Owner)
+                {
+                   _unitOfWork.ProjectUserRepository.RemoveProjectUser(projectUser);
+                    count++;
+                }
+            }
+            if (count <= 0)
+                throw new AppException(_errCreator.NotFound("Данные для удаления не найдены"));
+            await _unitOfWork.SaveChangesAsync("Произошла ошибка во время исключения участников проекта", ServiceName);
+        }
+        public async Task<string> UpdateProjectNameAsync(int projectId, string projectName)
+        {
+            var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
+            project.ProjectName = projectName;
+            await _unitOfWork.SaveChangesAsync("Ошибка при изменении названия проекта" , ServiceName);
+            return project.ProjectName;
+        }
+        public async Task<string> UpdateProjectDescriptionAsync(int projectId, string projectDescription)
+        {
+            var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
+            project.Description = projectDescription;
+            await _unitOfWork.SaveChangesAsync("Ошибка при изменении описания проекта", ServiceName);
+            return project.Description;
+        }
     }
 }

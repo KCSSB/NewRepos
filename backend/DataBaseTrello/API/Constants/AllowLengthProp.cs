@@ -21,6 +21,9 @@ namespace API.Constants
         //Project
         public const int MinProjectName = 1;
         public const int MaxProjectName = 50;
+
+        public const int MinProjectDescription = 1;
+        public const int MaxProjectDescription = 800;
         //Project
 
         //Board

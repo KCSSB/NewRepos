@@ -27,6 +27,8 @@ namespace API.Controllers
         [HttpPost("CreateBoard")]
         public async Task<IActionResult> CreateBoard(int projectId,[FromBody] CreateBoardRequest createBoardRequest)
         {
+            if (createBoardRequest == null)
+                return BadRequest();
             var userId = User.GetUserId();
 
             await _rolesHelper.IsProjectOwner(userId, projectId);
@@ -42,12 +44,25 @@ namespace API.Controllers
         [HttpDelete("DeleteBoards")]
         public async Task<IActionResult> DeleteBoards(int projectId, [FromBody] DeleteBoardsRequest deleteBoardsRequest)
         {
-            return Ok("Всё удалил насяльника");
+            if (deleteBoardsRequest == null || deleteBoardsRequest.BoardIds.Count<=0)
+                return BadRequest();
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId, projectId);
+
+            var boardIds = deleteBoardsRequest.BoardIds;
+            await _boardService.DeleteBoardsAsync(boardIds);
+            return Ok("Доски были успешно удалены");
         }
         [HttpPatch("UpdateBoardsName")]
         public async Task<IActionResult> UpdateBoardsName(int projectId, [FromBody] UpdateBoardsNameRequest updateBoardsNameRequest)
         {
-            return Ok("Всё обновил насяльника");
+            if (updateBoardsNameRequest == null || updateBoardsNameRequest.UpdatedBoards.Count<=0)
+                return BadRequest();
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId, projectId);
+            var boardsForUpdate = updateBoardsNameRequest.UpdatedBoards;
+            await _boardService.UpdateBoardsNameAsync(boardsForUpdate);
+            return Ok("названия успешно обновлены");
         }
     }
 }
