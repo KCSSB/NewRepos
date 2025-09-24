@@ -1,4 +1,3 @@
-// Board_list.jsx
 import React, { useState } from "react";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import { postWithAuth } from "../../../../service/api";
@@ -19,7 +18,7 @@ const BOARD_COLORS = [
 
 export default function Board_list({ boards, loading, projectId }) {
   const showToast = useToast();
-  const { updateBoards } = useProject(); // Получаем функцию из контекста
+  const { updateBoards } = useProject();
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [boardName, setBoardName] = useState("");
@@ -49,7 +48,6 @@ export default function Board_list({ boards, loading, projectId }) {
         }
       );
 
-      // Используем функцию из контекста для обновления списка
       updateBoards(newBoard);
 
       setIsCreating(false);

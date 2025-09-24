@@ -1,4 +1,3 @@
-// HallContext.jsx
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { useToast } from "../../components/Toast/ToastContext";
 

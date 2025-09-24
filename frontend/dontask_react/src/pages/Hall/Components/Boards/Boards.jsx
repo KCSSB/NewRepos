@@ -1,4 +1,3 @@
-// Boards.jsx
 import React from "react";
 import { useProject } from "../../HallContext.jsx";
 import BoardHeader from "./BoardHeader.jsx";
