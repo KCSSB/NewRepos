@@ -1,17 +1,12 @@
-// Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { getAvatarFromToken } from "../../../../service/api";
 import dontask_logo from "./dontask_logo.png";
 import home_logo from "./home_logo.png";
-import home_logo_active from "./home_logo_active.png";
 import workspace_logo from "./workspace_logo.png";
-import workspace_logo_active from "./workspace_logo_active.png";
 import settings_logo from "./settings_logo.png";
-import settings_logo_active from "./settings_logo_active.png";
 import hall_logo from "./hall_logo.png";
-import hall_logo_active from "./hall_logo_active.png";
 import default_avatar from "./avatar.png";
 
 export default function Navbar() {
@@ -58,7 +53,6 @@ export default function Navbar() {
 
   const hallLink = lastProjectId ? `/hall/${lastProjectId}` : "/hall";
 
-  // Новая переменная, которая определяет, должна ли ссылка быть неактивной
   const isHallLinkDisabled = !lastProjectId && !isActiveHall;
 
   return (
@@ -74,10 +68,7 @@ export default function Navbar() {
                 isActiveHome ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveHome ? home_logo_active : home_logo}
-                alt="HOME"
-              />
+              <img src={home_logo} alt="HOME" />
             </button>
           </div>
         </Link>
@@ -91,10 +82,7 @@ export default function Navbar() {
                 isActiveHall ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveHall ? hall_logo_active : hall_logo}
-                alt="HALL"
-              />
+              <img src={hall_logo} alt="HALL" />
             </button>
           </div>
         </Link>
@@ -105,10 +93,7 @@ export default function Navbar() {
                 isActiveWorkspace ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveWorkspace ? workspace_logo_active : workspace_logo}
-                alt="WORKSPACE"
-              />
+              <img src={workspace_logo} alt="WORKSPACE" />
             </button>
           </div>
         </Link>
@@ -119,10 +104,7 @@ export default function Navbar() {
                 isActiveSettings ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveSettings ? settings_logo_active : settings_logo}
-                alt="SETTINGS"
-              />
+              <img src={settings_logo} alt="SETTINGS" />
             </button>
           </div>
         </Link>

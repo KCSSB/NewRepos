@@ -95,6 +95,10 @@ html {
   background-color: #202124;
 }
 
+.navbar-button.active img {
+  filter: brightness(0) invert(1);
+}
+
 .navbar-button.active:hover {
   background-color: #2d2e32;
   transition: background-color 0.2s ease;
@@ -122,25 +126,21 @@ html {
 }
 
 .disabled-link {
-  pointer-events: none; /* Отключаем клики */
+  pointer-events: none;
 }
 
-/* Изменение цвета фона для неактивной кнопки */
 .disabled-link .navbar-button {
   background-color: #cacaca;
 }
 
-/* Убираем эффект наведения для неактивной кнопки */
 .disabled-link .navbar-button:hover {
-  background-color: #cacaca; /* Оставляем тот же цвет */
+  background-color: #cacaca;
 }
 
-/* Убираем курсор-указатель для неактивной кнопки */
 .disabled-link .navbar-button {
   cursor: default;
 }
 
-/* Убираем курсор-указатель для неактивной ссылки */
 .disabled-link {
   cursor: default;
 }

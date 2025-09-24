@@ -3,9 +3,11 @@ import { useProject } from "../../HallContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./BoardHeader.css";
 import filter_icon from "./filter_icon.png";
+import board_icon from "./board_icon.png";
 
 export default function BoardHeader({ boardsCount }) {
-  const { projectData, loading, showToast } = useProject();
+  const { projectData, loading, showToast, isFilteredByMember, toggleFilter } =
+    useProject();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +27,16 @@ export default function BoardHeader({ boardsCount }) {
     return <div>Загрузка...</div>;
   }
 
+  const handleFilterClick = () => {
+    toggleFilter();
+    showToast(
+      isFilteredByMember
+        ? "Показаны все доски"
+        : "Показаны доски, в которых Вы состоите",
+      "info"
+    );
+  };
+
   return (
     <div className="board-header-container">
       <h5 className="project-title">{projectData.projectName}</h5>
@@ -32,11 +44,15 @@ export default function BoardHeader({ boardsCount }) {
         <div className="action-left-container">
           <h5 className="text-style">Доски</h5>
           <div className="board-counter">
+            <img src={board_icon} alt="BOARDS" />
             <p>{boardsCount}</p>
           </div>
         </div>
         <div className="action-right-container">
-          <button className="filter-button">
+          <button
+            className={`filter-button ${isFilteredByMember ? "active" : ""}`}
+            onClick={handleFilterClick}
+          >
             <img src={filter_icon} alt="FILTER" />
           </button>
         </div>

@@ -5,9 +5,9 @@
 .board-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 4rem);
   width: 35rem;
-  margin: 2rem 1rem;
+  height: calc(100% - 1.2rem);
+  margin: 0.85rem 1rem 0 1rem;
   padding: 0.5rem;
   flex-shrink: 0;
 }

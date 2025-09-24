@@ -79,15 +79,6 @@ export default function Board_list({ boards, loading, projectId }) {
         {isCreating ? (
           <form className="board-create-card-form" onSubmit={handleCreateBoard}>
             <div className="board-create-card-top">
-              <button
-                className="board-create-button"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Создание..." : "Создать"}
-              </button>
-            </div>
-            <div className="board-create-card-bottom">
               <div className="board-input-group board-floating-label-group">
                 <input
                   type="text"
@@ -100,6 +91,15 @@ export default function Board_list({ boards, loading, projectId }) {
                 />
                 <label className="board-floating-label">Название доски</label>
               </div>
+            </div>
+            <div className="board-create-card-bottom">
+              <button
+                className="board-create-button"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Создание..." : "Создать"}
+              </button>
             </div>
           </form>
         ) : (

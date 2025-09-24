@@ -13,9 +13,23 @@ html {
   box-sizing: border-box;
 }
 
+.hall-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
 .hall-main-content {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  height: 91vh;
+  box-sizing: border-box;
+}
+
+.hall-footer {
+  display: flex;
+  height: 100%;
   box-sizing: border-box;
 }

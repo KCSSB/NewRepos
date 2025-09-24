@@ -6,6 +6,7 @@ const ProjectContext = createContext(null);
 export const ProjectProvider = ({ children }) => {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFilteredByMember, setIsFilteredByMember] = useState(false);
   const showToast = useToast();
 
   const updateBoards = useCallback((newBoard) => {
@@ -18,6 +19,10 @@ export const ProjectProvider = ({ children }) => {
     });
   }, []);
 
+  const toggleFilter = useCallback(() => {
+    setIsFilteredByMember((prev) => !prev);
+  }, []);
+
   const value = {
     projectData,
     setProjectData,
@@ -25,6 +30,8 @@ export const ProjectProvider = ({ children }) => {
     setLoading,
     showToast,
     updateBoards,
+    isFilteredByMember,
+    toggleFilter,
   };
 
   return (

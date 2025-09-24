@@ -47,7 +47,7 @@
   font-family: Inter;
   font-weight: 600;
   font-style: Semi Bold;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   line-height: 150%;
   letter-spacing: 0%;
   vertical-align: middle;
@@ -55,14 +55,23 @@
 }
 
 .board-counter {
-  height: 1.65rem;
-  width: 2.2rem;
+  height: 2rem;
+  width: 3.4rem;
   margin: 0.5rem;
   padding: 0.2rem;
   border-radius: 1rem;
   align-items: center;
   border: 0.1rem solid black;
   background-color: transparent;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+}
+
+.board-counter img {
+  height: 100%;
+  width: auto;
+  margin-right: 0.1rem;
 }
 
 .board-counter p {
@@ -96,7 +105,21 @@
 
 .filter-button img {
   height: 100%;
-  width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.filter-button.active {
+  background-color: #202124;
+  border-color: transparent;
+}
+.filter-button.active:hover {
+  background-color: #2d2e32;
+  transition: background-color 0.2s ease;
+}
+
+.filter-button.active img {
+  filter: brightness(0) invert(1);
 }
 
 .separating-line {

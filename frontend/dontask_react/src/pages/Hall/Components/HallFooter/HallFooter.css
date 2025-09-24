@@ -1,0 +1,88 @@
+.hall-footer-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+}
+
+.hall-mode-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hall-mode-wrapper.active {
+  transform: translateX(-50%) translateY(-2rem);
+}
+
+.hall-mode-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.3rem;
+  background-color: rgba(241, 241, 241, 1);
+  border-radius: 4rem;
+  padding: 0.2rem;
+  z-index: 10;
+}
+
+.hall-mode-button {
+  height: 4rem;
+  width: 4rem;
+  padding: 0.2rem;
+  border-radius: 4rem;
+  border: none;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+}
+
+.hall-mode-button:hover {
+  background-color: #cacaca;
+  transition: background-color 0.2s ease;
+}
+
+.hall-mode-button img {
+  height: 50%;
+  width: 50%;
+  object-fit: contain;
+}
+
+.hall-mode-button.active {
+  background-color: #202124;
+}
+
+.hall-mode-button.active img {
+  filter: brightness(0) invert(1);
+}
+
+.hall-mode-button.active:hover {
+  background-color: #2d2e32;
+  transition: background-color 0.2s ease;
+}
+
+.members-list-container {
+  width: 25rem;
+  max-height: 0;
+  opacity: 0;
+  background-color: #f1f1f1;
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.hall-mode-wrapper.active .members-list-container {
+  max-height: 25rem;
+  opacity: 1;
+}

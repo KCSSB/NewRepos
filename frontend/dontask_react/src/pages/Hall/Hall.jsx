@@ -4,6 +4,7 @@ import { ProjectProvider, useProject } from "./HallContext.jsx";
 import Navbar from "../Home/components/Navbar/Navbar.jsx";
 import Boards from "./Components/Boards/Boards.jsx";
 import Info from "./Components/Info/Info.jsx";
+import Footer from "./Components/HallFooter/HallFooter.jsx";
 import { fetchWithAuth } from "../../service/api.js";
 import "./Hall.css";
 import "../../fonts/fonts.css";
@@ -41,9 +42,14 @@ const HallContent = () => {
   }, [projectId, setProjectData, setLoading]);
 
   return (
-    <div className="hall-main-content">
-      <Boards />
-      <Info />
+    <div className="hall-content-wrapper">
+      <div className="hall-main-content">
+        <Boards />
+        <Info />
+      </div>
+      <div className="hall-footer">
+        <Footer />
+      </div>
     </div>
   );
 };
