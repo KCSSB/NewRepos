@@ -103,5 +103,12 @@ namespace API.Services.Application.Implementations
             await _unitOfWork.SaveChangesAsync("Ошибка при изменении названия проекта" , ServiceName);
             return project.ProjectName;
         }
+        public async Task<string> UpdateProjectDescriptionAsync(int projectId, string projectDescription)
+        {
+            var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
+            project.Description = projectDescription;
+            await _unitOfWork.SaveChangesAsync("Ошибка при изменении описания проекта", ServiceName);
+            return project.Description;
+        }
     }
 }

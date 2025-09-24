@@ -10,6 +10,7 @@ namespace API.Services.Application.Interfaces
         public Task UpdateProjectImageAsync(int projectId, string imageUrl);
         public Task DeleteProjectUsersAsync(List<int> projectUsers);
         public Task<string> UpdateProjectNameAsync(int projectId, string projectName);
+        public Task<string> UpdateProjectDescriptionAsync(int projectId, string projectDescription);
         //public Task IsProjectOwner(int userId, int projectId);
         //public Task UpdateProjectDescription(int projectId, string desctiption);
         //public Task UpdateProjectName(int projectId, string projectName);

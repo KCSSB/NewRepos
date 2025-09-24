@@ -110,7 +110,14 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("{projectId}/UpdateProjectDescription")]
         public async Task<IActionResult> UpdateProjectDescription(int projectId, [FromBody] UpdateProjectDescriptonRequest updateProjectDescriptionRequest)
         {
-            return Ok("Да да, обновил насяльника");
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId, projectId);
+            var projectDescription = updateProjectDescriptionRequest.ProjectDescription;
+            var updatedDescription = await _projectService.UpdateProjectDescriptionAsync(projectId, projectDescription);
+            return Ok(new
+            {
+                Description = updatedDescription
+            });
         }
 
     }
