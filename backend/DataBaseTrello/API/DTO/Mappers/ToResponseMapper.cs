@@ -69,6 +69,7 @@ namespace API.DTO.Mappers
                 ProjectUsers = project.ProjectUsers.Select(pu => new HallProjectUser
                 {
                     ProjectUserId = pu.Id,
+                    userUrl = pu.User.Avatar,
                     FirstName = pu.User?.FirstName ?? string.Empty,
                     LastName = pu.User?.SecondName ?? string.Empty,
                     ProjectRole = pu.ProjectRole
