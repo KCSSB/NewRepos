@@ -13,16 +13,12 @@ export default function BoardHeader({ boardsCount }) {
     isFilteredByMember,
     toggleFilter,
     isEditMode,
-    setProjectData,
+    setProjectDataUI, // 💡 ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ
+    updateProjectNameChange,
   } = useProject();
   const navigate = useNavigate();
 
-  const [projectName, setProjectName] = useState("");
-
   useEffect(() => {
-    if (!loading && projectData) {
-      setProjectName(projectData.projectName);
-    }
     if (!loading && !projectData) {
       showToast(
         "Не удалось найти проект. Пожалуйста, попробуйте снова",
@@ -35,31 +31,23 @@ export default function BoardHeader({ boardsCount }) {
     }
   }, [loading, projectData, navigate, showToast]);
 
+  // Обработчик изменения поля ввода
   const handleProjectNameChange = (e) => {
-    setProjectName(e.target.value);
+    const newName = e.target.value;
+
+    // 1. Обновляем projectData для немедленного отображения в UI
+    setProjectDataUI((prev) => ({
+      ...prev,
+      projectName: newName,
+    }));
+
+    // 2. Обновляем поле в projectChanges, чтобы знать, что его нужно сохранить/откатить
+    updateProjectNameChange(newName);
   };
 
-  const handleSaveProjectName = async (e) => {
-    if (e.key === "Enter" || e.type === "blur") {
-      e.target.blur();
-      const trimmedName = projectName.trim();
-      if (!trimmedName || trimmedName === projectData.projectName) {
-        setProjectName(projectData.projectName);
-        return;
-      }
-
-      // логика отправки на сервер
-      // try {
-      //   await putWithAuth(`/project/${projectData.projectId}/UpdateName`, { NewName: trimmedName });
-      //   // Обновляем контекст, чтобы изменения отразились
-      //   setProjectData(prev => ({ ...prev, projectName: trimmedName }));
-      //   showToast("Название проекта обновлено!", "success");
-      // } catch (error) {
-      //   showToast("Ошибка при обновлении названия.", "error");
-      //   setProjectName(projectData.projectName);
-      // }
-      console.log("Сохранение нового названия проекта:", trimmedName);
-    }
+  // Отключаем автоматическое сохранение по Enter или blur
+  const handleNoSave = (e) => {
+    e.target.blur();
   };
 
   if (loading || !projectData) {
@@ -82,11 +70,11 @@ export default function BoardHeader({ boardsCount }) {
         <input
           type="text"
           className="project-title-input"
-          value={projectName}
+          value={projectData.projectName}
           onChange={handleProjectNameChange}
-          onBlur={handleSaveProjectName}
+          onBlur={handleNoSave}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleSaveProjectName(e);
+            if (e.key === "Enter") handleNoSave(e);
           }}
         />
       ) : (

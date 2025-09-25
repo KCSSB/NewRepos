@@ -41,6 +41,10 @@
   background-color: #2196f3;
 }
 
+.toast-warning {
+  background-color: #ffc107;
+}
+
 .toast-close-button {
   background: none;
   border: none;

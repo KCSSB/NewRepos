@@ -8,7 +8,13 @@ import confirmChanges_icon from "./confirmChanges_icon.png";
 import resetChanges_icon from "./resetChanges_icon.png";
 
 export default function HallFooter() {
-  const { projectData, isEditMode, toggleEditMode } = useProject();
+  const {
+    projectData,
+    isEditMode,
+    toggleEditMode,
+    resetChanges, // 💡 Подключена исправленная функция
+    applyChanges, // 💡 Подключена исправленная функция
+  } = useProject();
 
   const [showMembersList, setShowMembersList] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -21,11 +27,12 @@ export default function HallFooter() {
 
   const handleConfirmClick = () => {
     console.log("Сохранение изменений...");
-    toggleEditMode();
+    applyChanges(); // Вызывает функцию из контекста, которая отправит запросы и выйдет из режима
   };
 
   const handleResetClick = () => {
-    toggleEditMode();
+    console.log("Отмена изменений...");
+    resetChanges(); // Вызывает функцию из контекста, которая откатит данные и выйдет из режима
   };
 
   const handleMembersClick = () => {

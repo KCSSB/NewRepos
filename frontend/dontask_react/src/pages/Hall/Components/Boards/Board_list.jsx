@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import { postWithAuth } from "../../../../service/api";
 import { useProject } from "../../HallContext.jsx";
@@ -17,15 +17,25 @@ const BOARD_COLORS = [
   "#EE68BB",
 ];
 
-const BoardCard = ({
-  board,
-  index,
-  isEditMode,
-  handleDeleteBoard,
-  setProjectData,
-  showToast,
-}) => {
-  const [boardName, setBoardName] = useState(board.boardName);
+const BoardCard = ({ board, index }) => {
+  const {
+    isEditMode,
+    addBoardToDelete,
+    addBoardToUpdateName,
+    checkBoardExistsInChanges,
+    projectData,
+  } = useProject();
+  const showToast = useToast();
+  const [localBoardName, setLocalBoardName] = useState(board.boardName);
+
+  useEffect(() => {
+    const currentBoard = projectData?.boards.find(
+      (b) => b.boardId === board.boardId
+    );
+    if (currentBoard) {
+      setLocalBoardName(currentBoard.boardName);
+    }
+  }, [projectData, board.boardId]);
 
   const formatDate = (dateString) => {
     if (!dateString) return null;
@@ -39,45 +49,41 @@ const BoardCard = ({
     if (isEditMode) {
       return;
     }
+    console.log(`Переход на доску с ID: ${board.boardId}`);
   };
 
   const handleBoardNameChange = (e) => {
-    setBoardName(e.target.value);
+    setLocalBoardName(e.target.value);
   };
 
-  const handleSaveBoardName = async (e) => {
+  const handleSaveBoardName = (e) => {
     if (e.key === "Enter" || e.type === "blur") {
-      e.target.blur();
-      const trimmedName = boardName.trim();
-      if (!trimmedName || trimmedName === board.boardName) {
-        setBoardName(board.boardName);
+      if (e.type === "blur") e.target.blur();
+      const trimmedName = localBoardName.trim();
+      if (!trimmedName) {
+        setLocalBoardName(board.boardName);
         return;
       }
 
-      // логика отправки нового имени доски на сервер
-      // try {
-      //    await putWithAuth(`/board/${board.boardId}/UpdateName`, { BoardName: trimmedName });
-      //    setProjectData(prev => ({
-      //      ...prev,
-      //      boards: prev.boards.map(b =>
-      //        b.boardId === board.boardId ? { ...b, boardName: trimmedName } : b
-      //      )
-      //    }));
-      //    showToast("Название доски обновлено!", "success");
-      // } catch (error) {
-      //    showToast("Ошибка при обновлении названия доски.", "error");
-      //    setBoardName(board.boardName);
-      // }
-      console.log(
-        `Сохранение нового названия для доски ${board.boardId}:`,
-        trimmedName
-      );
+      addBoardToUpdateName(board.boardId, trimmedName);
     }
   };
 
+  const handleBoardDeleteClick = () => {
+    addBoardToDelete(board.boardId);
+    showToast(
+      `Доска "${board.boardName}" помечена на удаление. Примените изменения, чтобы подтвердить`,
+      "info"
+    );
+  };
+
+  const { isMarkedForUpdate } = checkBoardExistsInChanges(board.boardId);
+
   return (
     <div
-      className={`board-card ${isEditMode ? "disabled-edit" : ""}`}
+      className={`board-card ${isEditMode ? "disabled-edit" : ""} ${
+        isMarkedForUpdate ? "board-card-updated" : ""
+      }`}
       style={{
         backgroundColor: BOARD_COLORS[index % BOARD_COLORS.length],
       }}
@@ -89,7 +95,7 @@ const BoardCard = ({
             <input
               type="text"
               className="board-card-title-input"
-              value={boardName}
+              value={localBoardName}
               onChange={handleBoardNameChange}
               onBlur={handleSaveBoardName}
               spellCheck="false"
@@ -104,7 +110,7 @@ const BoardCard = ({
           {isEditMode && (
             <button
               className="board-card-delete-button"
-              onClick={() => handleDeleteBoard(board.boardId, board.boardName)}
+              onClick={handleBoardDeleteClick}
             >
               <img
                 src={deleteBoard_icon}
@@ -154,7 +160,7 @@ const BoardCard = ({
 
 export default function Board_list({ boards, loading, projectId }) {
   const showToast = useToast();
-  const { updateBoards, isEditMode, setProjectData } = useProject();
+  const { updateBoards, isEditMode, projectData } = useProject();
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [boardName, setBoardName] = useState("");
@@ -165,9 +171,8 @@ export default function Board_list({ boards, loading, projectId }) {
 
   const handleCreateBoard = async (e) => {
     e.preventDefault();
-
     if (!boardName.trim()) {
-      showToast("Название доски не может быть пустым.", "error");
+      showToast("Название доски не может быть пустым!", "error");
       return;
     }
 
@@ -191,30 +196,13 @@ export default function Board_list({ boards, loading, projectId }) {
       showToast("Доска успешно создана!", "success");
     } catch (err) {
       console.error("Ошибка при создании доски:", err.response || err.message);
-      showToast("Ошибка при создании доски. Попробуйте снова.", "error");
+      showToast("Ошибка при создании доски. Попробуйте снова", "error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDeleteBoard = (boardId, boardName) => {
-    if (
-      window.confirm(`Вы уверены, что хотите удалить доску "${boardName}"?`)
-    ) {
-      // Логика удаления доски через API
-      // try {
-      //    await deleteWithAuth(`/project/${projectId}/Board/DeleteBoard/${boardId}`);
-      setProjectData((prev) => ({
-        ...prev,
-        boards: prev.boards.filter((b) => b.boardId !== boardId),
-      }));
-      showToast(`Доска "${boardName}" удалена!`, "success");
-      // } catch (error) {
-      //    showToast("Ошибка при удалении доски.", "error");
-      // }
-      console.log("Удаление доски с ID:", boardId);
-    }
-  };
+  const boardsToRender = projectData?.boards || [];
 
   if (loading) {
     return <div>Загрузка...</div>;
@@ -268,16 +256,8 @@ export default function Board_list({ boards, loading, projectId }) {
               <p className="board-create-text">Добавить доску</p>
             </button>
           ))}
-        {boards.map((board, index) => (
-          <BoardCard
-            key={board.boardId}
-            board={board}
-            index={index}
-            isEditMode={isEditMode}
-            handleDeleteBoard={handleDeleteBoard}
-            setProjectData={setProjectData}
-            showToast={showToast}
-          />
+        {boardsToRender.map((board, index) => (
+          <BoardCard key={board.boardId} board={board} index={index} />
         ))}
       </div>
     </div>
