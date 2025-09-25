@@ -32,7 +32,7 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/workspace" element={<WorkspacePage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/hall" element={<HallPage />} />
+        <Route path="/hall/:projectId" element={<HallPage />} />
       </Routes>
     </ToastProvider>
   );

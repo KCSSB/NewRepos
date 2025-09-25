@@ -4,22 +4,19 @@ import "./Navbar.css";
 import { getAvatarFromToken } from "../../../../service/api";
 import dontask_logo from "./dontask_logo.png";
 import home_logo from "./home_logo.png";
-import home_logo_active from "./home_logo_active.png";
 import workspace_logo from "./workspace_logo.png";
-import workspace_logo_active from "./workspace_logo_active.png";
 import settings_logo from "./settings_logo.png";
-import settings_logo_active from "./settings_logo_active.png";
 import hall_logo from "./hall_logo.png";
-import hall_logo_active from "./hall_logo_active.png";
 import default_avatar from "./avatar.png";
 
 export default function Navbar() {
   const location = useLocation();
   const isActiveHome = location.pathname === "/home";
-  const isActiveHall = location.pathname === "/hall";
+  const isActiveHall = location.pathname.startsWith("/hall");
   const isActiveWorkspace = location.pathname === "/workspace";
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
+  const [lastProjectId, setLastProjectId] = useState(null);
 
   const updateAvatarFromToken = () => {
     const token = localStorage.getItem("token");
@@ -38,6 +35,10 @@ export default function Navbar() {
 
   useEffect(() => {
     updateAvatarFromToken();
+    const storedProjectId = localStorage.getItem("lastVisitedProjectId");
+    if (storedProjectId) {
+      setLastProjectId(storedProjectId);
+    }
 
     const handleTokenChange = () => {
       updateAvatarFromToken();
@@ -49,6 +50,10 @@ export default function Navbar() {
       window.removeEventListener("tokenUpdated", handleTokenChange);
     };
   }, []);
+
+  const hallLink = lastProjectId ? `/hall/${lastProjectId}` : "/hall";
+
+  const isHallLinkDisabled = !lastProjectId && !isActiveHall;
 
   return (
     <div className="navbar-container">
@@ -63,24 +68,21 @@ export default function Navbar() {
                 isActiveHome ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveHome ? home_logo_active : home_logo}
-                alt="HOME"
-              />
+              <img src={home_logo} alt="HOME" />
             </button>
           </div>
         </Link>
-        <Link to="/hall">
+        <Link
+          to={hallLink}
+          className={isHallLinkDisabled ? "disabled-link" : ""}
+        >
           <div className="navbar-container-item">
             <button
               className={
                 isActiveHall ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveHall ? hall_logo_active : hall_logo}
-                alt="HALL"
-              />
+              <img src={hall_logo} alt="HALL" />
             </button>
           </div>
         </Link>
@@ -91,10 +93,7 @@ export default function Navbar() {
                 isActiveWorkspace ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveWorkspace ? workspace_logo_active : workspace_logo}
-                alt="WORKSPACE"
-              />
+              <img src={workspace_logo} alt="WORKSPACE" />
             </button>
           </div>
         </Link>
@@ -105,10 +104,7 @@ export default function Navbar() {
                 isActiveSettings ? "navbar-button active" : "navbar-button"
               }
             >
-              <img
-                src={isActiveSettings ? settings_logo_active : settings_logo}
-                alt="SETTINGS"
-              />
+              <img src={settings_logo} alt="SETTINGS" />
             </button>
           </div>
         </Link>

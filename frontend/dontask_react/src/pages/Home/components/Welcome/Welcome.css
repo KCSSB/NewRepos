@@ -1,8 +1,11 @@
+/* Welcome.css */
+
 .welcome-link {
   text-decoration: none;
   color: inherit;
 }
 
+/* Обновлённые стили для welcome-container */
 .welcome-container {
   height: 18rem;
   margin: 1rem 1rem 0 1rem;
@@ -17,10 +20,26 @@
   box-sizing: border-box;
 }
 
+/* Стиль при наведении только для активной кнопки */
 .welcome-container:hover {
   background-color: #5d98fa;
   transition: background-color 0.2s ease;
 }
+
+/* Новые стили для неактивной кнопки */
+.welcome-container.disabled {
+  /* Заменяем курсор на обычную стрелку */
+  cursor: default;
+  /* Убираем эффект наведения */
+  pointer-events: none;
+}
+
+/* Убираем подсветку при наведении для неактивной кнопки */
+.welcome-container.disabled:hover {
+  background-color: #4285f4; /* Возвращаем к исходному цвету */
+}
+
+/* ... остальные стили без изменений ... */
 
 .welcome-container img {
   width: auto;

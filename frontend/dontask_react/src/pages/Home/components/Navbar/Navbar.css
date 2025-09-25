@@ -95,6 +95,10 @@ html {
   background-color: #202124;
 }
 
+.navbar-button.active img {
+  filter: brightness(0) invert(1);
+}
+
 .navbar-button.active:hover {
   background-color: #2d2e32;
   transition: background-color 0.2s ease;
@@ -119,4 +123,24 @@ html {
   height: 80%;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.disabled-link {
+  pointer-events: none;
+}
+
+.disabled-link .navbar-button {
+  background-color: #cacaca;
+}
+
+.disabled-link .navbar-button:hover {
+  background-color: #cacaca;
+}
+
+.disabled-link .navbar-button {
+  cursor: default;
+}
+
+.disabled-link {
+  cursor: default;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Project_list.css";
 import ProjectSkeleton from "./Project_list_skeleton";
 import {
@@ -24,6 +25,8 @@ export default function Project_list() {
   const [imageLoadName, setImageLoadName] = useState("");
   const [leaderAvatar, setLeaderAvatar] = useState(default_avatar);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProjectsAndAvatar = async () => {
       try {
@@ -37,7 +40,7 @@ export default function Project_list() {
 
         console.log("Начинаем отправку запроса к API...");
         const data = await fetchWithAuth("/getpages/GetHomePage");
-        console.log("Данные получены:", data);
+        console.log("Данные списка проектов получены:", data);
         setProjects(data.summaryProject || []);
       } catch (err) {
         console.error("Ошибка при получении проектов:", err);
@@ -115,6 +118,25 @@ export default function Project_list() {
     }
   };
 
+  const handleProjectCardClick = async (projectId) => {
+    try {
+      const projectData = await fetchWithAuth(
+        `/getpages/GetHallPage/${projectId}`
+      );
+      console.log("Данные проекта получены:", projectData);
+      navigate(`/hall/${projectId}`);
+    } catch (err) {
+      console.error(
+        `Ошибка при получении данных для проекта с ID ${projectId}:`,
+        err
+      );
+      showToast(
+        "Не удалось получить данные для проекта. Попробуйте снова",
+        "error"
+      );
+    }
+  };
+
   if (loading) {
     return (
       <div className="project-list-container">
@@ -132,7 +154,11 @@ export default function Project_list() {
       <h5 className="project-title">Ваши проекты</h5>
       <div className="project-list-wrapper">
         {projects.map((project) => (
-          <button key={project.projectId} className="project-card">
+          <button
+            key={project.projectId}
+            className="project-card"
+            onClick={() => handleProjectCardClick(project.projectId)}
+          >
             <div className="card-top">
               {project.projectImageUrl ? (
                 <img

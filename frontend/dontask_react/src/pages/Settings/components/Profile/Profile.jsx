@@ -18,7 +18,11 @@ import copy_inviteId_logo from "./copy_inviteId_logo.png";
 export default function Profile() {
   const showToast = useToast();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+
+  const [pageLoading, setPageLoading] = useState(true);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [isSavingChanges, setIsSavingChanges] = useState(false);
+
   const [error, setError] = useState(null);
   const [userAvatar, setUserAvatar] = useState(default_avatar);
   const [serverAvatar, setServerAvatar] = useState(default_avatar);
@@ -34,7 +38,7 @@ export default function Profile() {
 
   const fetchSettingsPageData = async () => {
     try {
-      setLoading(true);
+      setPageLoading(true);
       const data = await fetchWithAuth("/GetPages/GetSettingsPage");
       console.log("Данные профиля получены:", data);
 
@@ -57,8 +61,6 @@ export default function Profile() {
       setGender(initialGender);
 
       setUserEmail(data.userEmail || "");
-
-      setLoading(false);
     } catch (err) {
       console.error("Ошибка при получении данных настроек:", err);
       showToast(
@@ -66,7 +68,8 @@ export default function Profile() {
         "error"
       );
       setError("Не удалось загрузить данные. Пожалуйста, попробуйте снова.");
-      setLoading(false);
+    } finally {
+      setPageLoading(false);
     }
   };
 
@@ -106,7 +109,7 @@ export default function Profile() {
       showToast("Пожалуйста, сначала выберите файл.", "error");
       return;
     }
-    setLoading(true);
+    setAvatarUploading(true);
     setError(null);
 
     const formData = new FormData();
@@ -134,7 +137,7 @@ export default function Profile() {
       showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
       setError("Не удалось загрузить аватар. Попробуйте снова.");
     } finally {
-      setLoading(false);
+      setAvatarUploading(false);
     }
   };
 
@@ -161,7 +164,7 @@ export default function Profile() {
       }
     }
 
-    setLoading(true);
+    setIsSavingChanges(true);
     setError(null);
     try {
       let sexValue;
@@ -196,7 +199,7 @@ export default function Profile() {
       showToast("Не удалось сохранить изменения. Попробуйте снова.", "error");
       setError("Не удалось сохранить изменения. Попробуйте снова.");
     } finally {
-      setLoading(false);
+      setIsSavingChanges(false);
     }
   };
 
@@ -240,7 +243,7 @@ export default function Profile() {
     }
   };
 
-  if (loading) {
+  if (pageLoading) {
     return <ProfileSkeleton />;
   }
 
@@ -264,9 +267,9 @@ export default function Profile() {
           <button
             className="profile-button"
             onClick={handleUpload}
-            disabled={!croppedFile || loading}
+            disabled={!croppedFile || avatarUploading}
           >
-            {loading ? "Загрузка..." : "Загрузить"}
+            {avatarUploading ? "Загрузка..." : "Загрузить"}
           </button>
           <button className="profile-button delete" onClick={handleDeleteClick}>
             Отменить
@@ -340,8 +343,12 @@ export default function Profile() {
           </button>
         </div>
         <div className="action-buttons-group">
-          <button className="profile-button" onClick={handleSaveChanges}>
-            Принять
+          <button
+            className="profile-button"
+            onClick={handleSaveChanges}
+            disabled={isSavingChanges}
+          >
+            {isSavingChanges ? "Сохранение..." : "Принять"}
           </button>
           <button className="profile-button" onClick={handleResetChanges}>
             Сбросить
