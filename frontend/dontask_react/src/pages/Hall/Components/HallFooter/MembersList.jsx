@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useToast } from "../../../../components/Toast/ToastContext";
+import { useProject } from "../../HallContext.jsx";
 import invite_icon from "./invite_icon.png";
 import removeMember_icon from "./removeMember_icon.png";
 import "./MembersList.css";
@@ -12,6 +13,7 @@ export default function MembersList({
 }) {
   const [newMemberName, setNewMemberName] = useState("");
   const showToast = useToast();
+  const { currentUserId, addMemberToKick } = useProject();
 
   const handleInviteMemberClick = () => {
     setIsCreating(true);
@@ -29,12 +31,7 @@ export default function MembersList({
   };
 
   const handleRemoveMember = (memberId, memberName) => {
-    // Логика удаления участника через API
-    console.log(`Удаление участника ${memberName} с ID: ${memberId}`);
-    showToast(
-      `Участник ${memberName} удален (функционал не реализован).`,
-      "info"
-    );
+    addMemberToKick(memberId);
   };
 
   return (
@@ -90,19 +87,21 @@ export default function MembersList({
                   {getMemberRole(member.projectRole)}
                 </p>
               </div>
-              {isEditMode && (
-                <button
-                  className="member-remove-button"
-                  onClick={() =>
-                    handleRemoveMember(
-                      member.projectUserId,
-                      `${member.firstName} ${member.lastName}`
-                    )
-                  }
-                >
-                  <img src={removeMember_icon} alt="KICK" />
-                </button>
-              )}
+              {isEditMode &&
+                currentUserId &&
+                member.userId.toString() !== currentUserId && (
+                  <button
+                    className="member-remove-button"
+                    onClick={() =>
+                      handleRemoveMember(
+                        member.projectUserId,
+                        `${member.firstName} ${member.lastName}`
+                      )
+                    }
+                  >
+                    <img src={removeMember_icon} alt="KICK" />
+                  </button>
+                )}
             </div>
           ))}
       </div>

@@ -32,7 +32,13 @@ export const patchWithAuth = async (url, data, config = {}) => {
   return response.data;
 };
 
-// Функция для DELETE-запросов (выход из аккаунта)
+// Функция для DELETE-запросов
+export const deleteWithAuth = async (url, data, config = {}) => {
+  const response = await apiService.delete(url, { ...config, data });
+  return response.data;
+};
+
+// Функция для выхода из аккаунта
 export const logout = async () => {
   try {
     await apiService.delete("/Auth/Logout");
@@ -62,6 +68,23 @@ export const getAvatarFromToken = (token) => {
     console.error("Failed to decode token", e);
     return null;
   }
+};
+
+// Функция для декодирования userID из токена
+export const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = getAvatarFromToken(token);
+      const userIdClaim =
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+      return decoded ? decoded[userIdClaim] : null;
+    } catch (e) {
+      console.error("Failed to get user ID from token", e);
+      return null;
+    }
+  }
+  return null;
 };
 
 // Функция для декодирования имени из токена
