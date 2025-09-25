@@ -201,17 +201,11 @@ export default function Board_list({ boards, loading, projectId }) {
     if (
       window.confirm(`Вы уверены, что хотите удалить доску "${boardName}"?`)
     ) {
-      // Логика удаления доски через API
-      // try {
-      //    await deleteWithAuth(`/project/${projectId}/Board/DeleteBoard/${boardId}`);
       setProjectData((prev) => ({
         ...prev,
         boards: prev.boards.filter((b) => b.boardId !== boardId),
       }));
       showToast(`Доска "${boardName}" удалена!`, "success");
-      // } catch (error) {
-      //    showToast("Ошибка при удалении доски.", "error");
-      // }
       console.log("Удаление доски с ID:", boardId);
     }
   };

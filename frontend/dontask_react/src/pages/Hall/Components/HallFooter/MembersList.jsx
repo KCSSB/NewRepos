@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import invite_icon from "./invite_icon.png";
-import "./MembersList.css";
 import { useToast } from "../../../../components/Toast/ToastContext";
+import invite_icon from "./invite_icon.png";
+import removeMember_icon from "./removeMember_icon.png";
+import "./MembersList.css";
 
 export default function MembersList({
   isCreating,
@@ -99,7 +100,7 @@ export default function MembersList({
                     )
                   }
                 >
-                  &times;
+                  <img src={removeMember_icon} alt="KICK" />
                 </button>
               )}
             </div>
