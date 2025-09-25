@@ -7,6 +7,7 @@ export const ProjectProvider = ({ children }) => {
   const [projectData, setProjectData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFilteredByMember, setIsFilteredByMember] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // 👈 Новое состояние для режима редактирования
   const showToast = useToast();
 
   const updateBoards = useCallback((newBoard) => {
@@ -23,6 +24,11 @@ export const ProjectProvider = ({ children }) => {
     setIsFilteredByMember((prev) => !prev);
   }, []);
 
+  const toggleEditMode = useCallback(() => {
+    // 👈 Функция для переключения режима
+    setIsEditMode((prev) => !prev);
+  }, []);
+
   const value = {
     projectData,
     setProjectData,
@@ -32,6 +38,8 @@ export const ProjectProvider = ({ children }) => {
     updateBoards,
     isFilteredByMember,
     toggleFilter,
+    isEditMode, // 👈 Передаем состояние
+    toggleEditMode, // 👈 Передаем функцию
   };
 
   return (

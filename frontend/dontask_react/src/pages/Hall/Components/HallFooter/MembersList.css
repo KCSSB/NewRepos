@@ -1,3 +1,15 @@
+.members-list-container {
+  width: 27rem;
+  max-height: 0;
+  opacity: 0;
+  background-color: #f1f1f1;
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+  box-shadow: 0 0.45rem 0.75rem rgba(0, 0, 0, 0.3);
+}
+
 .members-list-wrapper {
   display: flex;
   flex-direction: column;
@@ -11,6 +23,7 @@
   padding: 0.5rem;
   background-color: #ffffff;
   border-radius: 0.5rem;
+  height: 5rem;
 }
 
 .member-avatar {
@@ -26,7 +39,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: left;
+  justify-content: center;
   align-items: flex-start;
 }
 

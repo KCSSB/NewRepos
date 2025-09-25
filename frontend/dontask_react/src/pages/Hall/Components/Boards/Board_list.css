@@ -32,8 +32,17 @@
 }
 
 .board-card:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.07);
   transition: filter 0.2s ease;
+}
+
+.board-card.disabled-edit {
+  cursor: default; /* Курсор по умолчанию, чтобы не выглядело как кнопка */
+}
+
+.board-card.disabled-edit:hover {
+  filter: none; /* Убираем увеличение яркости */
+  transition: none; /* Отключаем переход */
 }
 
 .board-card-top {
@@ -44,15 +53,63 @@
   align-items: center;
 }
 
+.board-card-title-container {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
 .board-card-title {
   font-family: Inter;
   font-weight: 600;
   font-style: Semi Bold;
   font-size: 2rem;
-  line-height: 150%;
   letter-spacing: 0%;
   vertical-align: bottom;
   color: #ffffff;
+}
+
+.board-card-title-input {
+  background-color: rgb(255, 255, 255, 0.4);
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  text-align: left;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 2rem;
+  letter-spacing: 0%;
+  vertical-align: bottom;
+  color: #ffffff;
+}
+
+.board-card-delete-button {
+  background-color: rgb(255, 255, 255, 0.4);
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.board-card-delete-button:hover {
+  filter: brightness(1.2);
+  transition: filter 0.2s ease;
+}
+
+.board-card-delete-button img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .board-card-info {

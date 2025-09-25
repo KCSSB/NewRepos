@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useProject } from "../../HallContext.jsx";
 import { useNavigate } from "react-router-dom";
 import "./BoardHeader.css";
@@ -6,11 +6,24 @@ import filter_icon from "./filter_icon.png";
 import board_icon from "./board_icon.png";
 
 export default function BoardHeader({ boardsCount }) {
-  const { projectData, loading, showToast, isFilteredByMember, toggleFilter } =
-    useProject();
+  const {
+    projectData,
+    loading,
+    showToast,
+    isFilteredByMember,
+    toggleFilter,
+    isEditMode, // 👈 Используем isEditMode
+    setProjectData,
+  } = useProject();
   const navigate = useNavigate();
 
+  // Локальное состояние для редактирования названия проекта
+  const [projectName, setProjectName] = useState("");
+
   useEffect(() => {
+    if (!loading && projectData) {
+      setProjectName(projectData.projectName);
+    }
     if (!loading && !projectData) {
       showToast(
         "Не удалось найти проект. Пожалуйста, попробуйте снова",
@@ -22,6 +35,34 @@ export default function BoardHeader({ boardsCount }) {
       return () => clearTimeout(timer);
     }
   }, [loading, projectData, navigate, showToast]);
+
+  const handleProjectNameChange = (e) => {
+    setProjectName(e.target.value);
+  };
+
+  const handleSaveProjectName = async (e) => {
+    // Сохранение при потере фокуса или нажатии Enter
+    if (e.key === "Enter" || e.type === "blur") {
+      e.target.blur();
+      const trimmedName = projectName.trim();
+      if (!trimmedName || trimmedName === projectData.projectName) {
+        setProjectName(projectData.projectName); // Возврат к исходному, если пусто или не изменилось
+        return;
+      }
+
+      // TODO: Здесь должна быть логика отправки на сервер (например, PUT запрос)
+      // try {
+      //   await putWithAuth(`/project/${projectData.projectId}/UpdateName`, { NewName: trimmedName });
+      //   // Обновляем контекст, чтобы изменения отразились
+      //   setProjectData(prev => ({ ...prev, projectName: trimmedName }));
+      //   showToast("Название проекта обновлено!", "success");
+      // } catch (error) {
+      //   showToast("Ошибка при обновлении названия.", "error");
+      //   setProjectName(projectData.projectName);
+      // }
+      console.log("Сохранение нового названия проекта:", trimmedName);
+    }
+  };
 
   if (loading || !projectData) {
     return <div>Загрузка...</div>;
@@ -39,7 +80,21 @@ export default function BoardHeader({ boardsCount }) {
 
   return (
     <div className="board-header-container">
-      <h5 className="project-title">{projectData.projectName}</h5>
+      {isEditMode ? (
+        <input
+          type="text"
+          className="project-title-input"
+          value={projectName}
+          onChange={handleProjectNameChange}
+          onBlur={handleSaveProjectName}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSaveProjectName(e);
+          }}
+        />
+      ) : (
+        <h5 className="project-title">{projectData.projectName}</h5>
+      )}
+
       <div className="action-container">
         <div className="action-left-container">
           <h5 className="text-style">Доски</h5>

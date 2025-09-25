@@ -17,6 +17,24 @@
   color: black;
 }
 
+.project-title-input {
+  background-color: #f1f1f1;
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  text-align: left;
+  font-family: Inter;
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 2rem;
+  line-height: 150%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: black;
+  margin: 0.25rem 0;
+}
+
 .action-container {
   display: flex;
   flex-direction: row;
