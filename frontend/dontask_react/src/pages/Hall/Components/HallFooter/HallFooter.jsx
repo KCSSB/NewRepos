@@ -14,25 +14,21 @@ export default function HallFooter() {
   const [isCreating, setIsCreating] = useState(false);
 
   const handleEditClick = () => {
-    toggleEditMode(); // Включаем режим редактирования
-    setShowMembersList(true); // Показываем список участников, чтобы можно было сразу удалять
+    toggleEditMode();
+    setShowMembersList(true);
     setIsCreating(false);
   };
 
   const handleConfirmClick = () => {
-    // TODO: Здесь должна быть логика сохранения изменений (отправка API запросов)
     console.log("Сохранение изменений...");
-    // После сохранения выключаем режим редактирования
     toggleEditMode();
   };
 
   const handleResetClick = () => {
-    // Выключаем режим редактирования, отменяя все несохраненные изменения
     toggleEditMode();
   };
 
   const handleMembersClick = () => {
-    // Блокируем кнопку Members, если включен режим редактирования
     if (isEditMode) return;
 
     setIsCreating(false);
@@ -44,7 +40,6 @@ export default function HallFooter() {
       <div className={`hall-mode-wrapper ${showMembersList ? "active" : ""}`}>
         <div className="hall-mode-container">
           {isEditMode ? (
-            // В режиме редактирования: показываем Confirm и Reset
             <>
               <button className="hall-mode-button" onClick={handleConfirmClick}>
                 <img src={confirmChanges_icon} alt="CONFIRM" />
@@ -54,7 +49,6 @@ export default function HallFooter() {
               </button>
             </>
           ) : (
-            // В обычном режиме: показываем только Edit
             <button
               className={`hall-mode-button ${isEditMode ? "active" : ""}`}
               onClick={handleEditClick}
@@ -62,9 +56,6 @@ export default function HallFooter() {
               <img src={edit_icon} alt="EDIT" />
             </button>
           )}
-
-          {/* Кнопка Members: Рендерится всегда, но отключается в режиме редактирования.
-              🛑 Удален дублирующий блок, который был ниже. */}
           <button
             className={`hall-mode-button ${showMembersList ? "active" : ""} ${
               isEditMode ? "disabled-member" : ""

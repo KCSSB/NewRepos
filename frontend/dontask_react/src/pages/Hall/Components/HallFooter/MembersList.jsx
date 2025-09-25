@@ -7,7 +7,7 @@ export default function MembersList({
   isCreating,
   setIsCreating,
   members,
-  isEditMode, // 👈 Принимаем isEditMode
+  isEditMode,
 }) {
   const [newMemberName, setNewMemberName] = useState("");
   const showToast = useToast();
@@ -28,7 +28,7 @@ export default function MembersList({
   };
 
   const handleRemoveMember = (memberId, memberName) => {
-    // TODO: Здесь должна быть логика удаления участника через API
+    // Логика удаления участника через API
     console.log(`Удаление участника ${memberName} с ID: ${memberId}`);
     showToast(
       `Участник ${memberName} удален (функционал не реализован).`,
@@ -39,7 +39,7 @@ export default function MembersList({
   return (
     <div className="members-list-container">
       <div className="members-list-wrapper">
-        {!isEditMode && // 👈 УСЛОВИЕ: Показываем карточку добавления ТОЛЬКО если НЕ в режиме редактирования
+        {!isEditMode &&
           (isCreating ? (
             <form
               className="member-invite-card-form"
@@ -89,7 +89,7 @@ export default function MembersList({
                   {getMemberRole(member.projectRole)}
                 </p>
               </div>
-              {isEditMode && ( // 👈 Показываем кнопку удаления только в режиме EDIT
+              {isEditMode && (
                 <button
                   className="member-remove-button"
                   onClick={() =>
@@ -108,5 +108,3 @@ export default function MembersList({
     </div>
   );
 }
-
-

@@ -37,12 +37,12 @@
 }
 
 .board-card.disabled-edit {
-  cursor: default; /* Курсор по умолчанию, чтобы не выглядело как кнопка */
+  cursor: default;
 }
 
 .board-card.disabled-edit:hover {
-  filter: none; /* Убираем увеличение яркости */
-  transition: none; /* Отключаем переход */
+  filter: none;
+  transition: none;
 }
 
 .board-card-top {

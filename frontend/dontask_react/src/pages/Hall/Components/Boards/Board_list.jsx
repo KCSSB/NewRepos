@@ -17,7 +17,6 @@ const BOARD_COLORS = [
   "#EE68BB",
 ];
 
-// Вспомогательный компонент для карточки доски
 const BoardCard = ({
   board,
   index,
@@ -38,11 +37,8 @@ const BoardCard = ({
 
   const handleCardClick = () => {
     if (isEditMode) {
-      // Если режим редактирования включен, блокируем навигацию/действие
       return;
     }
-    // TODO: Здесь должна быть логика навигации/перехода на страницу доски
-    console.log(`Переход на доску с ID: ${board.boardId}`);
   };
 
   const handleBoardNameChange = (e) => {
@@ -58,7 +54,7 @@ const BoardCard = ({
         return;
       }
 
-      // TODO: Здесь должна быть логика отправки нового имени доски на сервер
+      // логика отправки нового имени доски на сервер
       // try {
       //    await putWithAuth(`/board/${board.boardId}/UpdateName`, { BoardName: trimmedName });
       //    setProjectData(prev => ({
@@ -81,7 +77,7 @@ const BoardCard = ({
 
   return (
     <div
-      className={`board-card ${isEditMode ? "disabled-edit" : ""}`} // 👈 Добавляем условный класс
+      className={`board-card ${isEditMode ? "disabled-edit" : ""}`}
       style={{
         backgroundColor: BOARD_COLORS[index % BOARD_COLORS.length],
       }}
@@ -90,7 +86,7 @@ const BoardCard = ({
       <div className="board-card-top">
         <div className="board-card-title-container">
           {isEditMode ? (
-            <input // 👈 Редактируемое поле
+            <input
               type="text"
               className="board-card-title-input"
               value={boardName}
@@ -105,7 +101,7 @@ const BoardCard = ({
             <h5 className="board-card-title">{board.boardName}</h5>
           )}
 
-          {isEditMode && ( // 👈 Кнопка удаления только в режиме EDIT
+          {isEditMode && (
             <button
               className="board-card-delete-button"
               onClick={() => handleDeleteBoard(board.boardId, board.boardName)}
@@ -158,7 +154,6 @@ const BoardCard = ({
 
 export default function Board_list({ boards, loading, projectId }) {
   const showToast = useToast();
-  // Используем isEditMode и setProjectData (для обновления после удаления/переименования)
   const { updateBoards, isEditMode, setProjectData } = useProject();
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -179,7 +174,6 @@ export default function Board_list({ boards, loading, projectId }) {
     setIsSubmitting(true);
 
     try {
-      // TODO: Реализовать fetch
       const newBoard = await postWithAuth(
         `/project/${projectId}/Board/CreateBoard`,
         { BoardName: boardName },
@@ -207,7 +201,7 @@ export default function Board_list({ boards, loading, projectId }) {
     if (
       window.confirm(`Вы уверены, что хотите удалить доску "${boardName}"?`)
     ) {
-      // TODO: Здесь должна быть логика удаления доски через API
+      // Логика удаления доски через API
       // try {
       //    await deleteWithAuth(`/project/${projectId}/Board/DeleteBoard/${boardId}`);
       setProjectData((prev) => ({
@@ -229,7 +223,7 @@ export default function Board_list({ boards, loading, projectId }) {
   return (
     <div className="board-list-container">
       <div className="board-list-wrapper">
-        {!isEditMode && // 👈 УСЛОВИЕ: Скрываем кнопку/форму создания в режиме редактирования
+        {!isEditMode &&
           (isCreating ? (
             <form
               key="create-form"
@@ -279,7 +273,7 @@ export default function Board_list({ boards, loading, projectId }) {
             key={board.boardId}
             board={board}
             index={index}
-            isEditMode={isEditMode} // Передаем состояние режима редактирования
+            isEditMode={isEditMode}
             handleDeleteBoard={handleDeleteBoard}
             setProjectData={setProjectData}
             showToast={showToast}

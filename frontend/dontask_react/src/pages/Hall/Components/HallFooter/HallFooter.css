@@ -71,13 +71,12 @@
 }
 
 .hall-mode-button.disabled-member {
-  background-color: #cacaca; /* Требуемый цвет фона */
-  cursor: default; /* Отключение курсора-указателя */
+  background-color: #cacaca;
+  cursor: default;
 }
 
-/* Переопределение стилей hover для заблокированной кнопки */
 .hall-mode-button.disabled-member:hover {
-  background-color: #cacaca; /* Убеждаемся, что hover не меняет цвет */
+  background-color: #cacaca;
   transition: none;
 }
 

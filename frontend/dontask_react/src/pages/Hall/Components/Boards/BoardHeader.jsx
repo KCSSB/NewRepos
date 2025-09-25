@@ -12,12 +12,11 @@ export default function BoardHeader({ boardsCount }) {
     showToast,
     isFilteredByMember,
     toggleFilter,
-    isEditMode, // 👈 Используем isEditMode
+    isEditMode,
     setProjectData,
   } = useProject();
   const navigate = useNavigate();
 
-  // Локальное состояние для редактирования названия проекта
   const [projectName, setProjectName] = useState("");
 
   useEffect(() => {
@@ -41,16 +40,15 @@ export default function BoardHeader({ boardsCount }) {
   };
 
   const handleSaveProjectName = async (e) => {
-    // Сохранение при потере фокуса или нажатии Enter
     if (e.key === "Enter" || e.type === "blur") {
       e.target.blur();
       const trimmedName = projectName.trim();
       if (!trimmedName || trimmedName === projectData.projectName) {
-        setProjectName(projectData.projectName); // Возврат к исходному, если пусто или не изменилось
+        setProjectName(projectData.projectName);
         return;
       }
 
-      // TODO: Здесь должна быть логика отправки на сервер (например, PUT запрос)
+      // логика отправки на сервер
       // try {
       //   await putWithAuth(`/project/${projectData.projectId}/UpdateName`, { NewName: trimmedName });
       //   // Обновляем контекст, чтобы изменения отразились
