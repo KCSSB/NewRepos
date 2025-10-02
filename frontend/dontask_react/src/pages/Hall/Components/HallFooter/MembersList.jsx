@@ -13,7 +13,7 @@ export default function MembersList({
 }) {
   const [newMemberName, setNewMemberName] = useState("");
   const showToast = useToast();
-  const { currentUserId, addMemberToKick } = useProject();
+  const { currentUserId, addMemberToKick, isOwner } = useProject();
 
   const handleInviteMemberClick = () => {
     setIsCreating(true);
@@ -21,7 +21,7 @@ export default function MembersList({
 
   const handleInviteMember = (e) => {
     e.preventDefault();
-    showToast("Добавлен новый участник");
+    showToast("Приглашение отправлено!", "success");
     setIsCreating(false);
     setNewMemberName("");
   };
@@ -37,7 +37,8 @@ export default function MembersList({
   return (
     <div className="members-list-container">
       <div className="members-list-wrapper">
-        {!isEditMode &&
+        {isOwner &&
+          !isEditMode &&
           (isCreating ? (
             <form
               className="member-invite-card-form"
