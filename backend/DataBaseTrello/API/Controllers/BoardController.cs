@@ -3,10 +3,12 @@ using API.Attributes;
 using API.DTO.Mappers;
 using API.DTO.Requests;
 using API.DTO.Responses.Pages.HallPage;
+using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Extensions;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using DataBaseInfo.models;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,44 +27,65 @@ namespace API.Controllers
             _rolesHelper = rolesHelper;
         }
         [HttpPost("CreateBoard")]
-        public async Task<IActionResult> CreateBoard(int projectId,[FromBody] CreateBoardRequest createBoardRequest)
+        public async Task<IActionResult> CreateBoard(int projectId,[FromBody] CreateBoardRequest request)
         {
-            if (createBoardRequest == null)
+            if (request== null)
                 return BadRequest();
             var userId = User.GetUserId();
 
             await _rolesHelper.IsProjectOwner(userId, projectId);
             
-            int boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
-            var board = await _boardService.AddLeadToBoardAsync(boardId, userId,projectId);
+           // int boardId = await _boardService.CreateBoardAsync(createBoardRequest.BoardName);
+            //var board = await _boardService.AddLeadToBoardAsync(boardId, userId,projectId);
 
-            var hallBoard = ToResponseMapper.ToHallBoard(board);
+            //var hallBoard = ToResponseMapper.ToHallBoard(board);
 
-            return Ok(hallBoard);
+            return Ok();
            
         }
         [HttpDelete("DeleteBoards")]
-        public async Task<IActionResult> DeleteBoards(int projectId, [FromBody] DeleteBoardsRequest deleteBoardsRequest)
+        public async Task<IActionResult> DeleteBoards(int projectId, [FromBody] DeleteBoardsRequest request)
         {
-            if (deleteBoardsRequest == null || deleteBoardsRequest.BoardIds.Count<=0)
+            if (request == null || request.BoardIds.Count<=0)
                 return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);
 
-            var boardIds = deleteBoardsRequest.BoardIds;
+            var boardIds = request.BoardIds;
             await _boardService.DeleteBoardsAsync(boardIds);
             return Ok("Доски были успешно удалены");
         }
         [HttpPatch("UpdateBoardsName")]
-        public async Task<IActionResult> UpdateBoardsName(int projectId, [FromBody] UpdateBoardsNameRequest updateBoardsNameRequest)
+        public async Task<IActionResult> UpdateBoardsName(int projectId, [FromBody] UpdateBoardsNameRequest request)
         {
-            if (updateBoardsNameRequest == null || updateBoardsNameRequest.UpdatedBoards.Count<=0)
+            if (request == null || request.UpdatedBoards.Count<=0)
                 return BadRequest();
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);
-            var boardsForUpdate = updateBoardsNameRequest.UpdatedBoards;
+            var boardsForUpdate = request.UpdatedBoards;
             await _boardService.UpdateBoardsNameAsync(boardsForUpdate);
             return Ok("названия успешно обновлены");
+        }
+        [HttpPatch("{boardId}/UpdateBoardName")]
+        public async Task<IActionResult> UpdateBoardName(int projectId, int boardId, string name)
+        {
+            int userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwner(userId, projectId);
+            //await _boardService.UpdateBoardNameAsync(boardId,name);
+            return Ok("Название успешно обновлено");
+        }
+        [HttpDelete("{boardId}/DeleteMembers")]
+        public async Task<IActionResult> DeleteMembers(int projectId, int boardId, [FromBody] DeleteMembersRequest request)
+        {
+            var userId = User.GetUserId();
+            return Ok();
+        }
+        [HttpPost("{boardId}/AddMember{memberId}")]
+        public async Task<IActionResult> AddMember(int projectId, int boardId, int memberId)
+        {
+            var userId = User.GetUserId();
+            var member = new WorkSpaceMember();
+            return Ok();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetWorkSpacePage(int boardId)
         {
             var userId = User.GetUserId();
-            var workSpacePage = await _getPagesService.CreateWorkSpacePageAsync(userId, boardId);
+           // var workSpacePage = await _getPagesService.CreateWorkSpacePageAsync(userId, boardId);
             return Ok();
         }
     }
