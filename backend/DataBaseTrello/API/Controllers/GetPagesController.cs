@@ -40,5 +40,12 @@ namespace API.Controllers
             HallPage? hallPage = await _getPagesService.CreateHallPageDTOAsync(userId, id);
             return Ok(hallPage);
         }
+        [HttpGet("GetWorkSpacePage/{boardId}")]
+        public async Task<IActionResult> GetWorkSpacePage(int boardId)
+        {
+            var userId = User.GetUserId();
+           // var workSpacePage = await _getPagesService.CreateWorkSpacePageAsync(userId, boardId);
+            return Ok();
+        }
     }
 }
