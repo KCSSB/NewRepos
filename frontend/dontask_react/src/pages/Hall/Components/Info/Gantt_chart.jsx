@@ -1,10 +1,6 @@
 import React, { useState, useMemo } from "react";
 import "./Gantt_chart.css";
 
-// --------------------------------------------------------
-// КОНСТАНТЫ
-// --------------------------------------------------------
-
 const BOARD_COLORS = [
   "#8E8DFF",
   "#6868EE",
@@ -29,20 +25,15 @@ const MONTHS = [
   "Дек",
 ];
 
-// Увеличенная высота строки для доски
-const BOARD_BAR_HEIGHT = 60; // Высота самой доски
-const ROW_HEIGHT = 75; // Высота строки (BOARD_BAR_HEIGHT + отступ)
-
-// --------------------------------------------------------
-// МОКАП ДАННЫХ
-// --------------------------------------------------------
+const BOARD_BAR_HEIGHT = 60;
+const ROW_HEIGHT = 75;
 
 const MOCK_BOARDS = [
   {
     boardId: 1,
     boardName: "Дизайн UX/UI",
     dateOfStartWork: "2025-09-01",
-    dateOfDeadline: "2025-10-10",
+    dateOfDeadline: "2026-10-10",
     progressBar: 70,
   },
   {
@@ -82,7 +73,7 @@ const MOCK_BOARDS = [
   },
   {
     boardId: 8,
-    boardName: "Дополнительная задача 2",
+    boardName: "Лох",
     dateOfStartWork: "2025-07-20",
     dateOfDeadline: "2025-08-20",
     progressBar: 60,
@@ -90,77 +81,81 @@ const MOCK_BOARDS = [
   {
     boardId: 9,
     boardName: "Дополнительная задача 3",
-    dateOfStartWork: "2025-07-20",
-    dateOfDeadline: "2025-08-20",
-    progressBar: 60,
-  },
-  {
-    boardId: 10,
-    boardName: "Дополнительная задача 4",
-    dateOfStartWork: "2025-07-20",
-    dateOfDeadline: "2025-08-20",
-    progressBar: 60,
+    dateOfStartWork: "2025-07-01",
+    dateOfDeadline: "2025-07-31",
+    progressBar: 2,
   },
 ];
 
-// --------------------------------------------------------
-// КОМПОНЕНТ "ДОСКА ГАНТА" (С ИСПРАВЛЕННОЙ ЛОГИКОЙ ТЕКСТА)
-// --------------------------------------------------------
+/**
+ * @param {string} dateString
+ * @returns {Date|null}
+ */
+const parseDateString = (dateString) => {
+  if (!dateString) return null;
+  const parts = dateString.split("-").map((p) => parseInt(p, 10));
+  return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+};
+
+/**
+ * @param {Date} date
+ * @param {number} year
+ * @returns {number}
+ */
+const getDayOfYear = (date, year) => {
+  const jan1 = Date.UTC(year, 0, 1);
+  const currentDateUTC = date.getTime();
+  return Math.floor((currentDateUTC - jan1) / (1000 * 60 * 60 * 24));
+};
 
 const GanttBoard = ({ board, index, selectedYear }) => {
   const { boardName, dateOfStartWork, dateOfDeadline, progressBar } = board;
 
   if (!dateOfStartWork || !dateOfDeadline) return null;
 
-  // 1. ВЕРТИКАЛЬНОЕ ПОЗИЦИОНИРОВАНИЕ
   const topPosition = index * ROW_HEIGHT + 10;
 
-  // 2. ЦВЕТА
   const color = BOARD_COLORS[index % BOARD_COLORS.length];
   const nonProgressColor = `${color}4D`;
 
-  // 3. РАСЧЕТ ДАТ И ШИРИНЫ (логика без изменений)
-  const startDate = new Date(dateOfStartWork);
-  const deadlineDate = new Date(dateOfDeadline);
+  const startDate = parseDateString(dateOfStartWork);
+  const deadlineDate = parseDateString(dateOfDeadline);
+  if (!startDate || !deadlineDate) return null;
 
-  const boardStartYear = startDate.getFullYear();
-  const boardEndYear = deadlineDate.getFullYear();
+  const boardStartYear = startDate.getUTCFullYear();
+  const boardEndYear = deadlineDate.getUTCFullYear();
 
-  const daysInYear = new Date(selectedYear, 1, 29).getMonth() === 1 ? 366 : 365;
+  const isLeap = new Date(selectedYear, 1, 29).getMonth() === 1;
+  const daysInYear = isLeap ? 366 : 365;
 
   let startDayOfYear;
   let endDayOfYear;
 
-  // Расчет начала (LEFT)
   if (boardStartYear > selectedYear) {
     return null;
   } else if (boardStartYear < selectedYear) {
     startDayOfYear = 0;
   } else {
-    const jan1 = new Date(selectedYear, 0, 1);
-    startDayOfYear = Math.floor((startDate - jan1) / (1000 * 60 * 60 * 24));
+    startDayOfYear = getDayOfYear(startDate, selectedYear);
   }
 
-  // Расчет конца (WIDTH)
   if (boardEndYear < selectedYear) {
     return null;
   } else if (boardEndYear > selectedYear) {
     endDayOfYear = daysInYear;
   } else {
-    const jan1 = new Date(selectedYear, 0, 1);
-    endDayOfYear = Math.floor((deadlineDate - jan1) / (1000 * 60 * 60 * 24));
+    endDayOfYear = getDayOfYear(deadlineDate, selectedYear) + 1;
   }
 
   const widthInDays = endDayOfYear - startDayOfYear;
-  if (widthInDays < 0) return null;
+  if (widthInDays <= 0) return null;
 
-  const left = (startDayOfYear / daysInYear) * 100;
+  const left = (startDayOfYear / daysInYear) * 100 + 0.8;
   const width = (widthInDays / daysInYear) * 100;
 
-  // 4. ФОРМАТИРОВАНИЕ
   const formatMonthDay = (date) => {
-    return `${String(date.getDate()).padStart(2, "0")}.${String(
-      date.getMonth() + 1
+    return `${String(date.getUTCDate()).padStart(2, "0")}.${String(
+      date.getUTCMonth() + 1
     ).padStart(2, "0")}`;
   };
 
@@ -168,11 +163,8 @@ const GanttBoard = ({ board, index, selectedYear }) => {
     deadlineDate
   )}`;
 
-  // Если прогресс 0, то ширина прогресс-бара должна быть 0,
-  // чтобы min-width не срабатывал.
   const progressWidth = progressBar > 0 ? `${progressBar}%` : `0%`;
 
-  // Определяем, нужно ли отображать светлый текст на фоне
   const showNonProgressText = progressBar < 40;
 
   return (
@@ -187,15 +179,12 @@ const GanttBoard = ({ board, index, selectedYear }) => {
       }}
       title={`${boardName} (${datesDisplay})`}
     >
-      {/* 1. Контейнер для текста на светлом фоне (если прогресс маленький) */}
       {showNonProgressText && (
         <div className="gantt-non-progress-text-container">
           <p className="gantt-board-name light-text">{boardName}</p>
           <p className="gantt-board-dates light-text">{datesDisplay}</p>
         </div>
       )}
-
-      {/* 2. Прогресс-бар (темный фон) */}
       <div
         className="gantt-progress-bar"
         style={{
@@ -203,7 +192,6 @@ const GanttBoard = ({ board, index, selectedYear }) => {
           backgroundColor: color,
         }}
       >
-        {/* Текст внутри прогресс-бара (если прогресс достаточно большой) */}
         {progressBar >= 40 && (
           <>
             <p className="gantt-board-name dark-text">{boardName}</p>
@@ -215,52 +203,42 @@ const GanttBoard = ({ board, index, selectedYear }) => {
   );
 };
 
-// --------------------------------------------------------
-// ГЛАВНЫЙ КОМПОНЕНТ ДИАГРАММЫ (логика фиксированной высоты)
-// --------------------------------------------------------
-
 export default function Gantt_chart() {
   const currentYear = new Date().getFullYear();
+
+  const allBoardYears = useMemo(() => {
+    const years = new Set();
+    MOCK_BOARDS.forEach((b) => {
+      if (b.dateOfStartWork)
+        years.add(parseDateString(b.dateOfStartWork).getUTCFullYear());
+      if (b.dateOfDeadline)
+        years.add(parseDateString(b.dateOfDeadline).getUTCFullYear());
+    });
+    return Array.from(years).sort();
+  }, []);
+
+  const availableYears = useMemo(() => {
+    const years = new Set(allBoardYears);
+
+    years.add(currentYear);
+
+    return Array.from(years)
+      .filter((y) => y >= 2000 && y < 2100)
+      .sort();
+  }, [allBoardYears, currentYear]);
+
   const initialYear = MOCK_BOARDS.some(
     (b) =>
       (b.dateOfStartWork &&
-        new Date(b.dateOfStartWork).getFullYear() === currentYear) ||
+        parseDateString(b.dateOfStartWork).getUTCFullYear() === currentYear) ||
       (b.dateOfDeadline &&
-        new Date(b.dateOfDeadline).getFullYear() === currentYear)
+        parseDateString(b.dateOfDeadline).getUTCFullYear() === currentYear)
   )
     ? currentYear
     : 2025;
 
   const [selectedYear, setSelectedYear] = useState(initialYear);
 
-  const availableYears = useMemo(() => {
-    const years = new Set();
-    MOCK_BOARDS.forEach((b) => {
-      if (b.dateOfStartWork)
-        years.add(new Date(b.dateOfStartWork).getFullYear());
-      if (b.dateOfDeadline) years.add(new Date(b.dateOfDeadline).getFullYear());
-    });
-
-    years.add(currentYear);
-    years.add(currentYear + 1);
-
-    return Array.from(years)
-      .filter((y) => y >= 2000 && y < 2100)
-      .sort();
-  }, [currentYear]);
-
-  // 1. Определяем все года, которые содержат доски
-  const allBoardYears = useMemo(() => {
-    const years = new Set();
-    MOCK_BOARDS.forEach((b) => {
-      if (b.dateOfStartWork)
-        years.add(new Date(b.dateOfStartWork).getFullYear());
-      if (b.dateOfDeadline) years.add(new Date(b.dateOfDeadline).getFullYear());
-    });
-    return Array.from(years).sort();
-  }, []);
-
-  // 2. Находим максимальное количество досок в любой год (для фиксации высоты)
   const maxRowCount = useMemo(() => {
     let max = 0;
 
@@ -273,8 +251,8 @@ export default function Gantt_chart() {
     yearsToCheck.forEach((year) => {
       const count = MOCK_BOARDS.filter((b) => {
         if (!b.dateOfStartWork || !b.dateOfDeadline) return false;
-        const startYear = new Date(b.dateOfStartWork).getFullYear();
-        const endYear = new Date(b.dateOfDeadline).getFullYear();
+        const startYear = parseDateString(b.dateOfStartWork).getUTCFullYear();
+        const endYear = parseDateString(b.dateOfDeadline).getUTCFullYear();
         return startYear <= year && endYear >= year;
       }).length;
       max = Math.max(max, count);
@@ -283,8 +261,22 @@ export default function Gantt_chart() {
     return max;
   }, [allBoardYears, currentYear]);
 
-  // 3. Фиксированная высота внутреннего контента
   const fixedBoardsContentHeight = maxRowCount * ROW_HEIGHT + ROW_HEIGHT;
+
+  const monthStartPositions = useMemo(() => {
+    const positions = [];
+    const daysInYear =
+      new Date(selectedYear, 1, 29).getMonth() === 1 ? 366 : 365;
+
+    for (let month = 1; month < 12; month++) {
+      const firstDayOfMonth = new Date(Date.UTC(selectedYear, month, 1));
+      const dayOfYear = getDayOfYear(firstDayOfMonth, selectedYear);
+
+      const position = (dayOfYear / daysInYear) * 100;
+      positions.push(position);
+    }
+    return positions;
+  }, [selectedYear]);
 
   const todayPosition = useMemo(() => {
     const today = new Date();
@@ -292,8 +284,10 @@ export default function Gantt_chart() {
 
     if (currentYearCheck !== selectedYear) return -1;
 
-    const jan1 = new Date(selectedYear, 0, 1);
-    const dayOfYear = Math.floor((today - jan1) / (1000 * 60 * 60 * 24));
+    const todayUTC = new Date(
+      Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
+    );
+    const dayOfYear = getDayOfYear(todayUTC, selectedYear);
     const daysInYear =
       new Date(selectedYear, 1, 29).getMonth() === 1 ? 366 : 365;
 
@@ -306,15 +300,14 @@ export default function Gantt_chart() {
   const renderedBoards = MOCK_BOARDS.filter(
     (b) => b.dateOfStartWork && b.dateOfDeadline
   ).filter((board) => {
-    const startYear = new Date(board.dateOfStartWork).getFullYear();
-    const endYear = new Date(board.dateOfDeadline).getFullYear();
+    const startYear = parseDateString(board.dateOfStartWork).getUTCFullYear();
+    const endYear = parseDateString(board.dateOfDeadline).getUTCFullYear();
 
     return startYear <= selectedYear && endYear >= selectedYear;
   });
 
   return (
     <div className="gantt-chart-wrapper">
-      {/* Выбор года */}
       <div className="gantt-year-selector">
         <select
           value={selectedYear}
@@ -329,7 +322,6 @@ export default function Gantt_chart() {
       </div>
 
       <div className="gantt-main-container">
-        {/* Шапка с месяцами */}
         <div className="gantt-header">
           {MONTHS.map((month, index) => (
             <div
@@ -342,38 +334,26 @@ export default function Gantt_chart() {
             </div>
           ))}
         </div>
-
-        {/* ✅ Вертикальные линии сетки (Месяцы и Сегодня) */}
+        {monthStartPositions.map((position, index) => (
+          <div
+            key={`vline-${index}`}
+            className="gantt-month-line"
+            style={{ left: `${position}%` }}
+          ></div>
+        ))}
         {todayPosition !== -1 && (
           <div
             className="gantt-today-line"
             style={{ left: `${todayPosition}%` }}
           ></div>
         )}
-
-        {/* Вертикальные линии месяцев */}
-        {[...Array(12).keys()].map((index) => {
-          const monthDayPosition = ((index + 1) / 12) * 100;
-          return (
-            <div
-              key={`vline-${index}`}
-              className="gantt-month-line"
-              style={{ left: `${monthDayPosition}%` }}
-            ></div>
-          );
-        })}
-
-        {/* Контейнер для досок (прокручиваемый) */}
         <div className="gantt-timeline-container scrollbar-fixed">
-          {/* ✅ КОНТЕЙНЕР ДЛЯ ФАКТИЧЕСКОГО КОНТЕНТА, КОТОРЫЙ СКРОЛЛИТСЯ */}
           <div
             className="gantt-boards-content"
             style={{
-              // Используем фиксированную максимальную высоту!
               height: `${fixedBoardsContentHeight}px`,
             }}
           >
-            {/* Отображение досок */}
             {renderedBoards.map((board, index) => (
               <GanttBoard
                 key={board.boardId}

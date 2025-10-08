@@ -5,10 +5,6 @@ import dontask_logo from "./dontask_logo.png";
 
 export default function Header() {
   const navigate = useNavigate();
-  const handleHelpClick = () => {
-    localStorage.removeItem("token");
-    navigate("/auth/register");
-  };
   return (
     <div className="header-container">
       <div className="header-left">
@@ -16,9 +12,6 @@ export default function Header() {
         <h1>DONTASK</h1>
       </div>
       <div className="header-right">
-        <button className="text-button help" onClick={handleHelpClick}>
-          Удалить accessToken
-        </button>
         <Link to="/auth/login">
           <button>Войти</button>
         </Link>

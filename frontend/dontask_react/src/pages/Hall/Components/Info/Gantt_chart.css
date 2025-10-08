@@ -60,6 +60,7 @@
 }
 
 .gantt-month-column {
+  /* Устанавливаем ширину в 1/12, но позволяем ей быть гибкой */
   flex: 1;
   min-width: 0;
   text-align: center;
@@ -97,6 +98,7 @@
 
 .gantt-timeline-container.scrollbar-fixed {
   overflow-y: scroll;
+  /* Корректировка ширины для прокрутки, чтобы контент не съезжал */
   padding-right: 15px;
   width: calc(100% + 15px);
   margin-right: -15px;
@@ -108,20 +110,21 @@
 }
 
 /* -------------------------------------------------------- */
-/* СЕТКА */
+/* СЕТКА (Линии) */
 /* -------------------------------------------------------- */
 
 .gantt-main-container > .gantt-month-line,
 .gantt-main-container > .gantt-today-line {
   position: absolute;
-  top: calc(2rem + 2px);
+  /* Начинаем линии сразу под шапкой (высота 2rem + 2px border-bottom) */
+  top: calc(2.5rem + 2px);
   bottom: 0;
-  background-color: #eee;
   z-index: 1;
 }
 
 .gantt-main-container > .gantt-month-line {
   width: 2px;
+  background-color: #eee;
 }
 
 .gantt-main-container > .gantt-today-line {
@@ -151,7 +154,6 @@
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Контейнер для текста на светлом фоне */
 .gantt-non-progress-text-container {
   position: absolute;
   height: 100%;
@@ -161,7 +163,6 @@
   justify-content: center;
   top: 0;
   left: 0;
-  /* Текст будет внутри padding: 0 10px; родителя */
 }
 
 /* Прогресс-бар */
@@ -171,13 +172,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* 🔥 Убрал min-width: 40px; */
-  padding: 0 10px;
   color: white;
   font-weight: 500;
   box-sizing: border-box;
   white-space: nowrap;
-  /* Теперь min-width нет, поэтому при width: 0% он будет 0px */
 }
 
 /* Базовые стили текста */
@@ -188,21 +186,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin: 0 0.5rem;
 }
 
-/* Текст на светлом фоне (progressBar < 40%) */
 .gantt-board-row .light-text {
-  /* Цвет, который вы хотели для не-прогресс текста */
   color: rgba(63, 63, 63, 1);
+  margin: 0 0.5rem;
 }
 
 .gantt-board-dates.light-text {
   color: rgba(101, 101, 101, 1);
+  margin: 0 0.5rem;
 }
 
-/* Текст на темном фоне (внутри progress-bar) */
 .gantt-progress-bar .dark-text {
-  color: white; /* Белый текст на прогресс-баре */
+  color: white;
 }
 
 .gantt-board-name {
@@ -218,4 +216,46 @@
   font-size: 0.7rem;
   line-height: 150%;
   vertical-align: middle;
+}
+
+/* СКЕЛЕТОНЫ */
+@keyframes pulse {
+  0% {
+    background-color: #f3f3f3;
+  }
+  50% {
+    background-color: #ecebeb;
+  }
+  100% {
+    background-color: #f3f3f3;
+  }
+}
+
+.gantt-skeleton-year-select {
+  height: 30px;
+  width: 100px;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.gantt-month-column .gantt-skeleton-month-text {
+  color: #ccc !important;
+  background-color: transparent !important;
+}
+
+.gantt-skeleton-bar {
+  background-color: #e0e0e0;
+  border: 1px solid #d3d3d3;
+  position: absolute;
+  border-radius: 4px;
+  overflow: hidden;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.gantt-skeleton-bar .gantt-skeleton-text {
+  height: 10px;
+  width: 60%;
+  margin: 10px;
+  background-color: #cccccc;
+  border-radius: 2px;
 }
