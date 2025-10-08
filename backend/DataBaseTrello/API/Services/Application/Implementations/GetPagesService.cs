@@ -9,14 +9,16 @@ using API.Repositories.Uof;
 using API.DTO.Responses.Pages.HomePage;
 using API.DTO.Responses.Pages.SettingsPage;
 using API.DTO.Responses.Pages.HallPage;
+using Microsoft.AspNetCore.Http.HttpResults;
+using API.DTO.Responses.Pages.WorkSpacePage;
 
 namespace API.Services.Application.Implementations
 {
     public class GetPagesService: IGetPagesService
     {
         private readonly IErrorContextCreatorFactory _errCreatorFactory;
-        private readonly ILogger<IGetPagesService> _logger;
         private ErrorContextCreator? _errorContextCreator;
+        private readonly ILogger<IGetPagesService> _logger;
         private readonly IQueries _query;
         private readonly IUnitOfWork _unitOfWork;
         public GetPagesService(ILogger<IGetPagesService> logger,
@@ -70,6 +72,15 @@ namespace API.Services.Application.Implementations
             var project = await _query.ProjectQueries.GetProjectWithProjectUsersAsync(projectId);
             bool IsMember = project.ProjectUsers.Where(pu => pu.UserId == userId).Any();
             return IsMember;
+        }
+        public async Task<WorkSpace?> CreateWorkSpacePageAsync(int userId,int boardId)
+        {
+            var user = await _unitOfWork.UserRepository.GetDbUserAsync(userId);
+            if (user == null)
+                throw new AppException(_errCreator.NotFound($"Произошла ошибка в процессе формирования SettingsPage, Пользователь id: {userId}, не найден в базе данных"));
+            var board = await _query.BoardQueries.GetWorkSpaceAsync(boardId);
+            var workSpacePage = ToResponseMapper.ToWorkSpacePage(userId,board);
+            return workSpacePage;
         }
     }
 }

@@ -3,6 +3,8 @@ using API.DTO.Domain;
 using API.DTO.Responses.Pages.HallPage;
 using API.DTO.Responses.Pages.HomePage;
 using API.DTO.Responses.Pages.SettingsPage;
+using API.DTO.Responses.Pages.WorkSpacePage;
+using DataBaseInfo.Entities;
 using DataBaseInfo.models;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 
@@ -118,6 +120,58 @@ namespace API.DTO.Mappers
                 ProgressBar= board.ProgressBar,
             };
         }
-        
+        public static WorkSpace ToWorkSpacePage(int userId, Board board)
+        {
+            return new WorkSpace
+            {
+                BoardId = board.Id,
+                BoardName = board.Name,
+                ProjectName = board.MemberOfBoards
+            .Where(m => m.ProjectUser.UserId == userId)
+            .Select(m => m.ProjectUser.Project.ProjectName)
+            .FirstOrDefault(),
+
+                BoardRole = board.MemberOfBoards?
+            .Where(m => m.ProjectUser?.UserId == userId)
+            .Select(m => m.BoardRole)
+            .FirstOrDefault(),
+
+               Cards = board.Cards.Select(ToWorkSpaceCard).ToList()
+
+            };
+        }
+        public static WorkSpaceCard ToWorkSpaceCard(Card card)
+        {
+            return new WorkSpaceCard
+            {
+                CardId = card.Id,
+                CardName = card.Name,
+                Tasks = card.Tasks?.Select(ToWorkSpaceTask).ToList() ?? new List<WorkSpaceTask>(),
+            }; 
+        }
+        public static WorkSpaceTask ToWorkSpaceTask(_Task task)
+        {
+            return new WorkSpaceTask
+            {
+                TaskId = task.Id,
+                DateOfStartWork = task.DateOfStartWork,
+                DateOfDeadline = task.DateOfDeadline,
+                Priority = task.Priority,
+                ProgressBar = task.Progress,
+                TaskDescription = task.Description,
+                TaskName = task.Name,
+                ResponsibleIds = task.ResponsibleIds,
+                SubTasks = task.SubTasks?.Select(ToWorkSpaceSubTask).ToList() ?? new List<WorkSpaceSubTask>()
+            };
+        }
+        public static WorkSpaceSubTask ToWorkSpaceSubTask(SubTask subTask)
+        {
+            return new WorkSpaceSubTask
+            {
+                SubTaskId = subTask.Id,
+                SubTaskName = subTask.Name,
+                IsCompleted = subTask.IsCompleted,
+            };
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DataBaseInfo.Entities;
 
 namespace DataBaseInfo.models
 {
@@ -17,6 +18,8 @@ namespace DataBaseInfo.models
         public virtual ProjectUser? ProjectUser { get; set; }
         public int BoardId { get; set; }
         public virtual Board? Board { get; set; }
-     
+
+        public virtual List<ResponsibleForTask> Responsibles { get; set; } = new();
+
     }
 }

@@ -1,9 +1,12 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using API.DTO.Mappers;
 using API.DTO.Requests;
 using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Services.Application.Implementations;
 using API.Services.Application.Interfaces;
+using API.Services.Helpers;
 using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +18,12 @@ namespace API.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-
-        public TaskController()
+        private readonly TaskService _taskService;
+        private readonly IRolesHelper _rolesHelper;
+        public TaskController(TaskService taskService, IRolesHelper rolesHelper)
         {
-
+            _taskService = taskService;
+            _rolesHelper = rolesHelper;
         }
 
         [HttpDelete("DeleteResponsibles")]
@@ -62,7 +67,11 @@ namespace API.Controllers
         [HttpPost("CreateTask")]
         public async Task<IActionResult> CreateTask(int projectId, int boardId)
         {
-            WorkSpaceTask task = new WorkSpaceTask();
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var task = _taskService.CreateTaskAsync(boardId);
+            var taskResponse = ToResponseMapper.ToWorkSpaceTask(task);
             return Ok(task);
         }
         [HttpPost("CreateSubTask")]
