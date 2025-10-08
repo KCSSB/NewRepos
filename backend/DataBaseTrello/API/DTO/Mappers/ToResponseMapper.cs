@@ -85,11 +85,8 @@ namespace API.DTO.Mappers
                        BoardName = b.Name,
                        MembersCount = b.MemberOfBoards.Count,
                        ProgressBar = b.ProgressBar,
-
                        BoardLeadId = b.LeadOfBoardId,
-
                        DateOfStartWork = b.DateStartOfWork,
-
                        DateOfDeadline = b.DateOfDeadline,
                        IsMember = b.MemberOfBoards.Any(mb => mb.ProjectUser.UserId == userId)
 
