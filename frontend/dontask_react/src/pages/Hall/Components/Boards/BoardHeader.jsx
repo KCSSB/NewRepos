@@ -13,7 +13,7 @@ export default function BoardHeader({ boardsCount }) {
     isFilteredByMember,
     toggleFilter,
     isEditMode,
-    setProjectDataUI, // 💡 ИСПОЛЬЗУЕМ НОВУЮ ФУНКЦИЮ
+    setProjectDataUI,
     updateProjectNameChange,
   } = useProject();
   const navigate = useNavigate();
@@ -31,21 +31,17 @@ export default function BoardHeader({ boardsCount }) {
     }
   }, [loading, projectData, navigate, showToast]);
 
-  // Обработчик изменения поля ввода
   const handleProjectNameChange = (e) => {
     const newName = e.target.value;
 
-    // 1. Обновляем projectData для немедленного отображения в UI
     setProjectDataUI((prev) => ({
       ...prev,
       projectName: newName,
     }));
 
-    // 2. Обновляем поле в projectChanges, чтобы знать, что его нужно сохранить/откатить
     updateProjectNameChange(newName);
   };
 
-  // Отключаем автоматическое сохранение по Enter или blur
   const handleNoSave = (e) => {
     e.target.blur();
   };

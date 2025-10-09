@@ -14,6 +14,9 @@ import "./Profile.css";
 import default_avatar from "../../../Home/components/Navbar/avatar.png";
 import load_image_logo from "./load_image_logo.png";
 import copy_inviteId_logo from "./copy_inviteId_logo.png";
+import edit_icon from "./edit_icon.png";
+import confirmChanges_icon from "./confirmChanges_icon.png";
+import resetChanges_icon from "./resetChanges_icon.png";
 
 export default function Profile() {
   const showToast = useToast();
@@ -101,12 +104,12 @@ export default function Profile() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    showToast("Выбор изображения отменен.", "info");
+    showToast("Выбор изображения отменен", "info");
   };
 
   const handleUpload = async () => {
     if (!croppedFile) {
-      showToast("Пожалуйста, сначала выберите файл.", "error");
+      showToast("Пожалуйста, сначала выберите файл", "error");
       return;
     }
     setAvatarUploading(true);
@@ -134,7 +137,7 @@ export default function Profile() {
       showToast("Аватар успешно загружен!", "success");
     } catch (err) {
       console.error("Ошибка при загрузке аватара:", err);
-      showToast("Не удалось загрузить аватар. Попробуйте снова.", "error");
+      showToast("Не удалось загрузить аватар. Попробуйте снова", "error");
       setError("Не удалось загрузить аватар. Попробуйте снова.");
     } finally {
       setAvatarUploading(false);
@@ -159,7 +162,7 @@ export default function Profile() {
       const isGenderChanged = currentSexValue !== initialData.sex;
 
       if (!isFirstNameChanged && !isSecondNameChanged && !isGenderChanged) {
-        showToast("Вы не внесли никаких изменений.", "info");
+        showToast("Вы не внесли никаких изменений", "info");
         return;
       }
     }
@@ -196,7 +199,7 @@ export default function Profile() {
       window.dispatchEvent(new Event("tokenUpdated"));
     } catch (err) {
       console.error("Ошибка при сохранении изменений:", err);
-      showToast("Не удалось сохранить изменения. Попробуйте снова.", "error");
+      showToast("Не удалось сохранить изменения. Попробуйте снова", "error");
       setError("Не удалось сохранить изменения. Попробуйте снова.");
     } finally {
       setIsSavingChanges(false);
@@ -224,7 +227,7 @@ export default function Profile() {
       setGender(initialGender);
 
       setError(null);
-      showToast("Изменения отменены.", "info");
+      showToast("Изменения отменены", "info");
     }
   };
 
@@ -234,7 +237,7 @@ export default function Profile() {
     } catch (err) {
       console.error("Ошибка при выходе из системы:", err);
       showToast(
-        "Не удалось полностью выйти из системы. Попробуйте снова.",
+        "Не удалось полностью выйти из системы. Попробуйте снова",
         "error"
       );
     } finally {
@@ -248,115 +251,140 @@ export default function Profile() {
   }
 
   return (
-    <div className="profile-container">
-      <div className="profile-header-group">
-        <div className="profile-avatar-container">
-          <img src={userAvatar} alt="AVATAR" className="profile-avatar" />
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            ref={fileInputRef}
-            onChange={handleFileChange}
-          />
-          <button className="load-avatar-button" onClick={handleLoadClick}>
-            <img src={load_image_logo} alt="LOAD" />
-          </button>
-        </div>
-        <div className="profile-button-group">
-          <button
-            className="profile-button"
-            onClick={handleUpload}
-            disabled={!croppedFile || avatarUploading}
-          >
-            {avatarUploading ? "Загрузка..." : "Загрузить"}
-          </button>
-          <button className="profile-button delete" onClick={handleDeleteClick}>
-            Отменить
-          </button>
-        </div>
-      </div>
-      <div className="profile-info-group">
-        <div className="input-group floating-label-group">
-          <input
-            type="text"
-            className="profile-input"
-            value={secondName}
-            onChange={(e) => setSecondName(e.target.value)}
-          />
-          <label className="floating-label">Фамилия</label>
-        </div>
-        <div className="input-group floating-label-group">
-          <input
-            type="text"
-            className="profile-input"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <label className="floating-label">Имя</label>
-        </div>
-        <div className="profile-actions-row">
-          <div className="action-buttons-group">
+    <div className="profile-container-wrapper">
+      <div className="profile-container">
+        <div className="profile-header-group">
+          <p className="profile-title-text">Ваш аватар</p>
+          <div className="profile-separation-line"></div>
+          <div className="profile-avatar-line-container">
+            <div className="profile-avatar-container">
+              <img src={userAvatar} alt="AVATAR" className="profile-avatar" />
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
+              <button className="load-avatar-button" onClick={handleLoadClick}>
+                <img src={load_image_logo} alt="LOAD" />
+              </button>
+            </div>
             <button
-              className={
-                gender === "unknown"
-                  ? "profile-button active"
-                  : "profile-button inactive"
-              }
-              onClick={() => setGender("unknown")}
+              className="profile-button"
+              onClick={handleUpload}
+              disabled={!croppedFile || avatarUploading}
             >
-              Не указан
+              {avatarUploading ? "Загрузка..." : "Загрузить"}
             </button>
             <button
-              className={
-                gender === "male"
-                  ? "profile-button active"
-                  : "profile-button inactive"
-              }
-              onClick={() => setGender("male")}
+              className="profile-button delete"
+              onClick={handleDeleteClick}
             >
-              Мужской
-            </button>
-            <button
-              className={
-                gender === "female"
-                  ? "profile-button active"
-                  : "profile-button inactive"
-              }
-              onClick={() => setGender("female")}
-            >
-              Женский
+              Отменить
             </button>
           </div>
-          <span className="info-label">Пол</span>
         </div>
-        <div className="input-group floating-label-group invite-input-group">
-          <input
-            type="text"
-            className="profile-input read-only-input"
-            value={inviteId}
-            readOnly
-          />
-          <label className="floating-label">ID</label>
-          <button className="button-light-style" onClick={handleCopyInviteId}>
-            <img src={copy_inviteId_logo} alt="COPY" />
-          </button>
+        <p className="profile-title-text">Данные профиля</p>
+        <div className="profile-separation-line"></div>
+        <div className="profile-data-container">
+          <div className="profile-data-row">
+            <input
+              type="text"
+              className="profile-field"
+              value={firstName}
+              onChange={(e) => setSecondName(e.target.value)}
+            />
+            <input
+              type="text"
+              className="profile-field"
+              value={firstName}
+              onChange={(e) => setSecondName(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="action-buttons-group">
-          <button
-            className="profile-button"
-            onClick={handleSaveChanges}
-            disabled={isSavingChanges}
-          >
-            {isSavingChanges ? "Сохранение..." : "Принять"}
-          </button>
-          <button className="profile-button" onClick={handleResetChanges}>
-            Сбросить
-          </button>
-          <button className="profile-button delete" onClick={handleLogout}>
-            Выйти
-          </button>
-        </div>
+        <div className="profile-data-row"></div>
+
+        {/* <div className="input-group floating-label-group">
+            <input
+              type="text"
+              className="profile-input"
+              value={secondName}
+              onChange={(e) => setSecondName(e.target.value)}
+            />
+            <label className="floating-label">Фамилия</label>
+          </div>
+          <div className="input-group floating-label-group">
+            <input
+              type="text"
+              className="profile-input"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <label className="floating-label">Имя</label>
+          </div>
+          <div className="profile-actions-row">
+            <div className="action-buttons-group">
+              <button
+                className={
+                  gender === "unknown"
+                    ? "profile-button active"
+                    : "profile-button inactive"
+                }
+                onClick={() => setGender("unknown")}
+              >
+                Не указан
+              </button>
+              <button
+                className={
+                  gender === "male"
+                    ? "profile-button active"
+                    : "profile-button inactive"
+                }
+                onClick={() => setGender("male")}
+              >
+                Мужской
+              </button>
+              <button
+                className={
+                  gender === "female"
+                    ? "profile-button active"
+                    : "profile-button inactive"
+                }
+                onClick={() => setGender("female")}
+              >
+                Женский
+              </button>
+            </div>
+            <span className="info-label">Пол</span>
+          </div>
+          <div className="input-group floating-label-group invite-input-group">
+            <input
+              type="text"
+              className="profile-input read-only-input"
+              value={inviteId}
+              readOnly
+            />
+            <label className="floating-label">ID</label>
+            <button className="button-light-style" onClick={handleCopyInviteId}>
+              <img src={copy_inviteId_logo} alt="COPY" />
+            </button>
+          </div>
+          <div className="action-buttons-group">
+            <button
+              className="profile-button"
+              onClick={handleSaveChanges}
+              disabled={isSavingChanges}
+            >
+              {isSavingChanges ? "Сохранение..." : "Принять"}
+            </button>
+            <button className="profile-button" onClick={handleResetChanges}>
+              Сбросить
+            </button>
+            <button className="profile-button delete" onClick={handleLogout}>
+              Выйти
+            </button>
+          </div> */}
       </div>
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
     </div>
