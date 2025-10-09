@@ -66,20 +66,24 @@ namespace API.Controllers
             return Ok("Задачи изменены");
         }
         [HttpPost("CreateTask")]
-        public async Task<IActionResult> CreateTask(int projectId, int boardId)
+        public async Task<IActionResult> CreateTask(int projectId, int boardId, int cardId)
         {
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
 
-            var task = await _taskService.CreateTaskAsync(boardId);
+            var task = await _taskService.CreateTaskAsync(cardId);
             var taskResponse = ToResponseMapper.ToWorkSpaceTask(task);
-            return Ok(task);
+            return Ok(taskResponse);
         }
         [HttpPost("CreateSubTask")]
-        public async Task<IActionResult> CreateSubTask(int projectId, int boardId)
+        public async Task<IActionResult> CreateSubTask(int projectId, int boardId, int taskId)
         {
-            WorkSpaceSubTask subTask = new WorkSpaceSubTask();
-            return Ok(subTask);
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var subTask = await _taskService.CreateSubTaskAsync(taskId);
+            var subTaskResponse = ToResponseMapper.ToWorkSpaceSubTask(subTask);
+            return Ok(subTaskResponse);
         }
     }
 }

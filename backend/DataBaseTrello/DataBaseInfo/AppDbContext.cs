@@ -86,7 +86,6 @@ namespace DataBaseInfo
                 .HasForeignKey(mb => mb.ProjectUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             });
 
            
@@ -97,9 +96,8 @@ namespace DataBaseInfo
                 entity.Property(b => b.Id).IsRequired();
                 //Настройка полей
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
-                
-                //Настройка связи между полями(Нэту)
-                
+
+                entity.HasOne(b => b.Project).WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId);
                
                 
             });

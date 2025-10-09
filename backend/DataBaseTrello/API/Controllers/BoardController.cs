@@ -35,7 +35,7 @@ namespace API.Controllers
 
             await _rolesHelper.IsProjectOwner(userId, projectId);
             
-           int boardId = await _boardService.CreateBoardAsync(request.BoardName);
+           int boardId = await _boardService.CreateBoardAsync(request.BoardName, projectId);
            var board = await _boardService.AddLeadToBoardAsync(boardId, userId,projectId);
 
             var hallBoard = ToResponseMapper.ToHallBoard(board);

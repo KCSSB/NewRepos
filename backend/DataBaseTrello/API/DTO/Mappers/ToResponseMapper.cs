@@ -136,7 +136,10 @@ namespace API.DTO.Mappers
             .Select(m => m.BoardRole)
             .FirstOrDefault(),
 
-               Cards = board.Cards.Select(ToWorkSpaceCard).ToList()
+               Cards = board.Cards.Select(ToWorkSpaceCard).ToList(),
+                Members = board.Project?.ProjectUsers?
+    .Select(pu => ToWorkSpaceMember(pu, board.Id))  
+    .ToList() ?? new List<WorkSpaceMember>()
 
             };
         }
@@ -146,6 +149,8 @@ namespace API.DTO.Mappers
             {
                 CardId = card.Id,
                 CardName = card.Name,
+                DateOfStartWork = card.DateStartOfWork,
+                DateOfDeadline = card.DateOfDeadline,
                 Tasks = card.Tasks?.Select(ToWorkSpaceTask).ToList() ?? new List<WorkSpaceTask>(),
             }; 
         }
@@ -171,6 +176,24 @@ namespace API.DTO.Mappers
                 SubTaskId = subTask.Id,
                 SubTaskName = subTask.Name,
                 IsCompleted = subTask.IsCompleted,
+            };
+        }
+        public static WorkSpaceMember ToWorkSpaceMember(ProjectUser projectUser, int boardId)
+        {
+            var memberOfBoard = projectUser.MembersOfBoards
+    .FirstOrDefault(mb => mb.BoardId == boardId);
+
+
+            return new WorkSpaceMember
+            {
+                UserId = projectUser.UserId,
+                ProjectUserId = projectUser.Id,
+                MemberId = memberOfBoard?.Id ?? 0,
+                BoardRole = memberOfBoard?.BoardRole ?? null,
+                ProjectRole = projectUser.ProjectRole,
+                FirstName = projectUser.User.FirstName,
+                SecondName = projectUser.User.SecondName,
+                UserAvatar = projectUser.User.Avatar,
             };
         }
     }

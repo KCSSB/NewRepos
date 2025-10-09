@@ -86,7 +86,12 @@ namespace DataBaseInfo.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Boards");
                 });
@@ -347,6 +352,17 @@ namespace DataBaseInfo.Migrations
                     b.Navigation("Task");
                 });
 
+            modelBuilder.Entity("DataBaseInfo.models.Board", b =>
+                {
+                    b.HasOne("DataBaseInfo.models.Project", "Project")
+                        .WithMany("Boards")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
                 {
                     b.HasOne("DataBaseInfo.models.Board", "Board")
@@ -437,6 +453,8 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
                 {
+                    b.Navigation("Boards");
+
                     b.Navigation("ProjectUsers");
                 });
 

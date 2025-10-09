@@ -37,13 +37,18 @@ namespace API.Services.Application.Implementations
             _query = query;
         }
         private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorFactory.Create(nameof(IBoardService));
-        public async Task<int> CreateBoardAsync(string boardName)
+        public async Task<int> CreateBoardAsync(string boardName, int projectId)
         {
+           var project = await _unitOfWork.ProjectRepository.GetProjectAsync(projectId);
+            if (project == null)
+                throw new AppException(_errCreator.NotFound("Проект не был найден"));
+
             Board board = new Board
             {
                 Name = boardName,
+                ProjectId = projectId,
             };
-            await _unitOfWork.BoardRepository.AddAsync(board);
+            project.Boards.Add(board);
             await _unitOfWork.SaveChangesAsync(ServiceName, "Произошла ошибка при попытке сохранить board в бд");
             return board.Id;
         }

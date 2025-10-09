@@ -13,20 +13,6 @@ namespace DataBaseInfo.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Boards",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    LeadOfBoardId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Boards", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -34,6 +20,7 @@ namespace DataBaseInfo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProjectName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Avatar = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     DateStartWork = table.Column<DateOnly>(type: "date", nullable: false),
                     DateOfDeadline = table.Column<DateOnly>(type: "date", nullable: true)
                 },
@@ -62,22 +49,22 @@ namespace DataBaseInfo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cards",
+                name: "Boards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Progress = table.Column<int>(type: "integer", nullable: false),
-                    BoardId = table.Column<int>(type: "integer", nullable: false)
+                    LeadOfBoardId = table.Column<int>(type: "integer", nullable: false),
+                    ProjectId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cards", x => x.Id);
+                    table.PrimaryKey("PK_Boards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cards_Boards_BoardId",
-                        column: x => x.BoardId,
-                        principalTable: "Boards",
+                        name: "FK_Boards_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -110,12 +97,13 @@ namespace DataBaseInfo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshTokens",
+                name: "Sessions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Token = table.Column<string>(type: "text", nullable: false),
+                    DeviceId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsRevoked = table.Column<bool>(type: "boolean", nullable: false),
@@ -123,9 +111,9 @@ namespace DataBaseInfo.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_UserId",
+                        name: "FK_Sessions_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -133,26 +121,21 @@ namespace DataBaseInfo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Cards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DateOfDeadline = table.Column<DateOnly>(type: "date", nullable: true),
-                    MemberResponsibleForCard = table.Column<int>(type: "integer", nullable: false),
-                    Priority = table.Column<string>(type: "text", nullable: false),
-                    Complete = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    CardId = table.Column<int>(type: "integer", nullable: false)
+                    BoardId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Cards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Cards_CardId",
-                        column: x => x.CardId,
-                        principalTable: "Cards",
+                        name: "FK_Cards_Boards_BoardId",
+                        column: x => x.BoardId,
+                        principalTable: "Boards",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -184,6 +167,82 @@ namespace DataBaseInfo.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    DateOfStartWork = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateOfDeadline = table.Column<DateOnly>(type: "date", nullable: true),
+                    Priority = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    CardId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tasks_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResponsibleForTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TaskId = table.Column<int>(type: "integer", nullable: false),
+                    MemberOfBoardId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResponsibleForTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResponsibleForTasks_MembersOfBoards_MemberOfBoardId",
+                        column: x => x.MemberOfBoardId,
+                        principalTable: "MembersOfBoards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResponsibleForTasks_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
+                    TaskId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubTasks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubTasks_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Boards_ProjectId",
+                table: "Boards",
+                column: "ProjectId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cards_BoardId",
                 table: "Cards",
@@ -211,10 +270,24 @@ namespace DataBaseInfo.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_UserId",
-                table: "RefreshTokens",
-                column: "UserId",
-                unique: true);
+                name: "IX_ResponsibleForTasks_MemberOfBoardId",
+                table: "ResponsibleForTasks",
+                column: "MemberOfBoardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResponsibleForTasks_TaskId",
+                table: "ResponsibleForTasks",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sessions_UserId",
+                table: "Sessions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubTasks_TaskId",
+                table: "SubTasks",
+                column: "TaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_CardId",
@@ -232,10 +305,16 @@ namespace DataBaseInfo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MembersOfBoards");
+                name: "ResponsibleForTasks");
 
             migrationBuilder.DropTable(
-                name: "RefreshTokens");
+                name: "Sessions");
+
+            migrationBuilder.DropTable(
+                name: "SubTasks");
+
+            migrationBuilder.DropTable(
+                name: "MembersOfBoards");
 
             migrationBuilder.DropTable(
                 name: "Tasks");
@@ -247,13 +326,13 @@ namespace DataBaseInfo.Migrations
                 name: "Cards");
 
             migrationBuilder.DropTable(
-                name: "Projects");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Boards");
+
+            migrationBuilder.DropTable(
+                name: "Projects");
         }
     }
 }

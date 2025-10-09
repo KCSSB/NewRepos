@@ -5,7 +5,7 @@ namespace API.Services.Application.Interfaces
 {
     public interface IBoardService
     {
-        public Task<int> CreateBoardAsync(string boardName);
+        public Task<int> CreateBoardAsync(string boardName, int projectId);
         public Task<Board?> AddLeadToBoardAsync(int boardId, int leadId, int projectId);
         public Task<List<int>> AddProjectUsersInBoardAsync(int boardId, List<int> projectUserIds);
         public Task DeleteBoardsAsync(List<int> boardIds);

@@ -16,6 +16,8 @@ namespace DataBaseInfo.models
         public int LeadOfBoardId { get; set; }
         public virtual List<MemberOfBoard> MemberOfBoards { get; set; } = new();
         public virtual List<Card> Cards { get; set; } = new();
+        public int ProjectId { get; set; }
+        public virtual Project Project { get; set; }
 
         [NotMapped]
         public int ProgressBar
