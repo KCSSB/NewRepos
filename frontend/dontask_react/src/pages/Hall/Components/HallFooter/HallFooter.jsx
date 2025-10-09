@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useProject } from "../../HallContext.jsx";
+import { useToast } from "../../../../components/Toast/ToastContext";
 import MembersList from "./MembersList.jsx";
 import "./HallFooter.css";
 import people_icon from "./people_icon.png";
@@ -12,27 +13,30 @@ export default function HallFooter() {
     projectData,
     isEditMode,
     toggleEditMode,
-    resetChanges, // 💡 Подключена исправленная функция
-    applyChanges, // 💡 Подключена исправленная функция
+    resetChanges,
+    applyChanges,
+    isOwner,
   } = useProject();
 
   const [showMembersList, setShowMembersList] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const showToast = useToast();
 
   const handleEditClick = () => {
     toggleEditMode();
     setShowMembersList(true);
     setIsCreating(false);
+    showToast("Вы вошли в режим редактирования", "info");
   };
 
   const handleConfirmClick = () => {
     console.log("Сохранение изменений...");
-    applyChanges(); // Вызывает функцию из контекста, которая отправит запросы и выйдет из режима
+    applyChanges();
   };
 
   const handleResetClick = () => {
     console.log("Отмена изменений...");
-    resetChanges(); // Вызывает функцию из контекста, которая откатит данные и выйдет из режима
+    resetChanges();
   };
 
   const handleMembersClick = () => {
@@ -46,7 +50,7 @@ export default function HallFooter() {
     <div className="hall-footer-container">
       <div className={`hall-mode-wrapper ${showMembersList ? "active" : ""}`}>
         <div className="hall-mode-container">
-          {isEditMode ? (
+          {isOwner && isEditMode ? (
             <>
               <button className="hall-mode-button" onClick={handleConfirmClick}>
                 <img src={confirmChanges_icon} alt="CONFIRM" />
@@ -56,12 +60,14 @@ export default function HallFooter() {
               </button>
             </>
           ) : (
-            <button
-              className={`hall-mode-button ${isEditMode ? "active" : ""}`}
-              onClick={handleEditClick}
-            >
-              <img src={edit_icon} alt="EDIT" />
-            </button>
+            isOwner && (
+              <button
+                className={`hall-mode-button ${isEditMode ? "active" : ""}`}
+                onClick={handleEditClick}
+              >
+                <img src={edit_icon} alt="EDIT" />
+              </button>
+            )
           )}
           <button
             className={`hall-mode-button ${showMembersList ? "active" : ""} ${

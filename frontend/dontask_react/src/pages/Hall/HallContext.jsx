@@ -22,6 +22,7 @@ export const ProjectProvider = ({ children }) => {
   const [isFilteredByMember, setIsFilteredByMember] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const isOwner = projectData?.projectRole === "owner";
 
   const [projectChanges, setProjectChanges] = useState({
     newProjectName: null,
@@ -194,7 +195,6 @@ export const ProjectProvider = ({ children }) => {
 
   const addMemberToKick = useCallback(
     (projectUserId) => {
-      // 1. Добавляем ID участника в список изменений
       setProjectChanges((prev) => {
         if (!prev.membersToKick.includes(projectUserId)) {
           return {
@@ -205,7 +205,6 @@ export const ProjectProvider = ({ children }) => {
         return prev;
       });
 
-      // 2. Визуально удаляем участника из projectData
       setProjectData((prevData) => {
         if (!prevData || !prevData.projectUsers) return null;
         return {
@@ -216,10 +215,7 @@ export const ProjectProvider = ({ children }) => {
         };
       });
 
-      showToast(
-        "Участник помечен на удаление. Примените изменения.",
-        "warning"
-      );
+      showToast("Участник помечен на удаление. Примените изменения", "warning");
     },
     [setProjectData, showToast]
   );
@@ -366,7 +362,6 @@ export const ProjectProvider = ({ children }) => {
     }
 
     if (projectChanges.membersToKick.length > 0) {
-      // Получаем имена для уведомления
       const membersToKickNames = projectChanges.membersToKick.map((userId) => {
         const member = snapshotProjectData?.projectUsers.find(
           (u) => u.projectUserId === userId
@@ -378,7 +373,6 @@ export const ProjectProvider = ({ children }) => {
 
       const namesString = membersToKickNames.join(", ");
 
-      // Формат запроса: { "projectUsers": [0, 1] }
       const deleteMembersPayload = {
         projectUsers: projectChanges.membersToKick,
       };
@@ -390,7 +384,6 @@ export const ProjectProvider = ({ children }) => {
         .then(() => {
           showToast(`Участники удалены: ${namesString}`, "success");
 
-          // Обновляем snapshot и initial, чтобы зафиксировать изменение
           setInitialProjectData((prev) => ({
             ...prev,
             projectUsers: prev.projectUsers.filter(
@@ -406,14 +399,10 @@ export const ProjectProvider = ({ children }) => {
         })
         .catch((error) => {
           showToast(
-            "Ошибка при удалении участников. Попробуйте снова.",
+            "Ошибка при удалении участников. Попробуйте снова",
             "error"
           );
           console.error("Ошибка удаления участников:", error);
-
-          // При ошибке: откатываем UI (projectData) к состоянию snapshot
-          // *Это уже реализовано через общий сброс в resetChanges, который будет вызван,
-          // если другие операции провалятся, но явный откат здесь более надежен*
         });
       promises.push(deleteMembersPromise);
     }
@@ -480,6 +469,7 @@ export const ProjectProvider = ({ children }) => {
     addBoardToUpdateName,
     addMemberToKick,
     checkBoardExistsInChanges,
+    isOwner,
   };
 
   return (

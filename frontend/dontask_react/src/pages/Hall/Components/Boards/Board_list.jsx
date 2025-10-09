@@ -160,7 +160,7 @@ const BoardCard = ({ board, index }) => {
 
 export default function Board_list({ boards, loading, projectId }) {
   const showToast = useToast();
-  const { updateBoards, isEditMode, projectData } = useProject();
+  const { updateBoards, isEditMode, projectData, isOwner } = useProject();
   const [isCreating, setIsCreating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [boardName, setBoardName] = useState("");
@@ -211,7 +211,8 @@ export default function Board_list({ boards, loading, projectId }) {
   return (
     <div className="board-list-container">
       <div className="board-list-wrapper">
-        {!isEditMode &&
+        {isOwner &&
+          !isEditMode &&
           (isCreating ? (
             <form
               key="create-form"
