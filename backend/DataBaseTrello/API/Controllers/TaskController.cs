@@ -8,6 +8,7 @@ using API.Services.Application.Implementations;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers;
 using API.Services.Helpers.Interfaces;
+using DataBaseInfo.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +71,7 @@ namespace API.Controllers
             var userId = User.GetUserId();
             await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
 
-            var task = _taskService.CreateTaskAsync(boardId);
+            var task = await _taskService.CreateTaskAsync(boardId);
             var taskResponse = ToResponseMapper.ToWorkSpaceTask(task);
             return Ok(task);
         }

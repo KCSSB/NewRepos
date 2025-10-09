@@ -21,6 +21,7 @@ namespace DataBaseInfo
         public DbSet<_Task> Tasks { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<SubTask> SubTasks { get; set; }
+        public DbSet<ResponsibleForTask> ResponsibleForTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -153,7 +154,20 @@ namespace DataBaseInfo
                .HasForeignKey(r => r.UserId);
 
             });
+            modelBuilder.Entity<ResponsibleForTask>(entity =>
+            {
+                entity.HasKey(r => r.Id);
 
+                entity.HasOne(r => r.Task)
+                .WithMany(t => t.Responsibles)
+                .HasForeignKey(t => t.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.MemberOfBoard)
+                .WithMany(mb => mb.Responsibles)
+                .HasForeignKey(mb => mb.MemberOfBoardId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
         }
     }

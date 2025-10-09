@@ -24,7 +24,10 @@ namespace API.Services.Application.Implementations
             Board? board = await _unitOfWork.BoardRepository.GetAsync(boardId);
             if (board == null)
                 throw new AppException(_errCreator.NotFound("Доска не найдена"));
-            Card card = new Card();
+            Card card = new Card()
+            {
+                BoardId = boardId,
+            };
             
             await _unitOfWork.CardRepository.AddCardAsync(card);
 

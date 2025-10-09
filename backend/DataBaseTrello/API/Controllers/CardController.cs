@@ -1,4 +1,5 @@
-﻿using API.DTO.Requests;
+﻿using API.DTO.Mappers;
+using API.DTO.Requests;
 using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Extensions;
 using API.Services.Application.Implementations;
@@ -37,7 +38,8 @@ namespace API.Controllers
             await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
 
             var card = await _cardService.CreateCardAsync(boardId);
-            return Ok(card);
+            var workSpaceCard = ToResponseMapper.ToWorkSpaceCard(card);
+            return Ok(workSpaceCard);
         }
     }
 }
