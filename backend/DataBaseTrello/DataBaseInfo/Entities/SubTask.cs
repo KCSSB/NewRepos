@@ -7,9 +7,9 @@ namespace DataBaseInfo.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public bool IsCompleted { get; set; }
+        public string Name { get; set; } = "Новая подзадача";
+        public bool IsCompleted { get; set; } = false;
         public int TaskId { get; set; }
-        public _Task Task { get; set; }
+        public virtual _Task Task { get; set; }
     }
 }

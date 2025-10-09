@@ -1,7 +1,6 @@
 ﻿using API.DTO.Responses.Pages.HallPage;
 using API.Extensions;
 using API.Services.Application.Interfaces;
-using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,8 +43,8 @@ namespace API.Controllers
         public async Task<IActionResult> GetWorkSpacePage(int boardId)
         {
             var userId = User.GetUserId();
-           // var workSpacePage = await _getPagesService.CreateWorkSpacePageAsync(userId, boardId);
-            return Ok();
+           var workSpacePage = await _getPagesService.CreateWorkSpacePageAsync(userId, boardId);
+            return Ok(workSpacePage);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.Repositories.Interfaces;
 using DataBaseInfo;
 using DataBaseInfo.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories.Implementations
 {
@@ -19,6 +20,15 @@ namespace API.Repositories.Implementations
         public async Task AddMemberAsync(MemberOfBoard member)
         {
             await _context.AddAsync(member);
+        }
+        public async Task<MemberOfBoard?> GetMemberOfBoardAsync(int userId, int boardId)
+        {
+            return await _context.Users
+        .Where(u => u.Id == userId)
+        .SelectMany(u => u.ProjectUsers)
+        .SelectMany(pu => pu.MembersOfBoards) 
+        .Where(m => m.BoardId == boardId) 
+        .FirstOrDefaultAsync();
         }
     }
 }

@@ -1,5 +1,9 @@
-﻿using API.DTO.Requests;
+﻿using API.DTO.Mappers;
+using API.DTO.Requests;
 using API.DTO.Responses.Pages.WorkSpacePage;
+using API.Extensions;
+using API.Services.Application.Implementations;
+using API.Services.Helpers.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +14,12 @@ namespace API.Controllers
     [ApiController]
     public class CardController : ControllerBase
     {
-        public CardController()
+        private readonly CardService _cardService;
+        private readonly IRolesHelper _rolesHelper;
+        public CardController(CardService cardService, IRolesHelper rolesHelper)
         {
-
+            _cardService = cardService;
+            _rolesHelper = rolesHelper;
         }
         [HttpDelete("DeleteCards")]
         public async Task<IActionResult> DeleteCards(int projectId, int boardId, List<int> CardIds)
@@ -27,8 +34,12 @@ namespace API.Controllers
         [HttpPost("CreateCard")]
         public async Task<IActionResult> CreateCard(int projectId, int boardId)
         {
-            WorkSpaceCard card = new WorkSpaceCard();
-            return Ok(card);
+            int userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var card = await _cardService.CreateCardAsync(boardId);
+            var workSpaceCard = ToResponseMapper.ToWorkSpaceCard(card);
+            return Ok(workSpaceCard);
         }
     }
 }

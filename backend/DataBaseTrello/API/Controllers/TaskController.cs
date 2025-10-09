@@ -1,10 +1,14 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using API.DTO.Mappers;
 using API.DTO.Requests;
 using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
+using API.Services.Application.Implementations;
 using API.Services.Application.Interfaces;
+using API.Services.Helpers;
 using API.Services.Helpers.Interfaces;
+using DataBaseInfo.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +19,12 @@ namespace API.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-
-        public TaskController()
+        private readonly TaskService _taskService;
+        private readonly IRolesHelper _rolesHelper;
+        public TaskController(TaskService taskService, IRolesHelper rolesHelper)
         {
-
+            _taskService = taskService;
+            _rolesHelper = rolesHelper;
         }
 
         [HttpDelete("DeleteResponsibles")]
@@ -60,16 +66,24 @@ namespace API.Controllers
             return Ok("Задачи изменены");
         }
         [HttpPost("CreateTask")]
-        public async Task<IActionResult> CreateTask(int projectId, int boardId)
+        public async Task<IActionResult> CreateTask(int projectId, int boardId, int cardId)
         {
-            WorkSpaceTask task = new WorkSpaceTask();
-            return Ok(task);
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var task = await _taskService.CreateTaskAsync(cardId);
+            var taskResponse = ToResponseMapper.ToWorkSpaceTask(task);
+            return Ok(taskResponse);
         }
         [HttpPost("CreateSubTask")]
-        public async Task<IActionResult> CreateSubTask(int projectId, int boardId)
+        public async Task<IActionResult> CreateSubTask(int projectId, int boardId, int taskId)
         {
-            WorkSpaceSubTask subTask = new WorkSpaceSubTask();
-            return Ok(subTask);
+            var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var subTask = await _taskService.CreateSubTaskAsync(taskId);
+            var subTaskResponse = ToResponseMapper.ToWorkSpaceSubTask(subTask);
+            return Ok(subTaskResponse);
         }
     }
 }

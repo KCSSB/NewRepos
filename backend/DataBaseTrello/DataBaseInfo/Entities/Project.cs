@@ -18,6 +18,7 @@ namespace DataBaseInfo.models
         public DateOnly DateStartWork { get; set; }
         public DateOnly? DateOfDeadline { get; set; }
         public virtual List<ProjectUser> ProjectUsers { get; set; } = new();
+        public virtual List<Board> Boards { get; set; } = new();
 
       
     }

@@ -97,6 +97,8 @@ builder.Services.AddScoped<IBoardService,BoardService>();
 builder.Services.AddScoped<IImageService,ImageService>();
 builder.Services.AddScoped<ISessionService,SessionService>();
 builder.Services.AddScoped<IRolesHelper, RolesHelper>();
+builder.Services.AddScoped<TaskService>();
+builder.Services.AddScoped<CardService>();
 //repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -105,6 +107,9 @@ builder.Services.AddScoped<IMembersOfBoardRepository, MembersOfBoardRepository>(
 builder.Services.AddScoped<IBoardRepository, BoardRepository>();
 builder.Services.AddScoped<IProjectUserRepository, ProjectUserRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICardRepository,CardRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ISubTaskRepository, SubTaskRepository>();
 
 //Queries
 builder.Services.AddScoped<IBoardQueries, BoardQueries>();
