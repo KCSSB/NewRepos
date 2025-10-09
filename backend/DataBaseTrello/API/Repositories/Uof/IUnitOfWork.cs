@@ -11,6 +11,9 @@ namespace API.Repositories.Uof
         ISessionRepository SessionRepository { get; set; }
         IUserRepository UserRepository { get; set; }
         IProjectUserRepository ProjectUserRepository { get; set; }
+        public ICardRepository CardRepository { get; set; }
+        public ITaskRepository TaskRepository { get; set; }
+        public ISubTaskRepository SubTaskRepository { get; set; }
         public Task SaveChangesAsync(string loggerMessage, string serviceName, [CallerMemberName] string? operationName = null);
     }
 }

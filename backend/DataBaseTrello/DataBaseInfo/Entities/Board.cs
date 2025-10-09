@@ -14,8 +14,10 @@ namespace DataBaseInfo.models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int LeadOfBoardId { get; set; }
-        public List<MemberOfBoard> MemberOfBoards { get; set; } = new();
+        public virtual List<MemberOfBoard> MemberOfBoards { get; set; } = new();
         public virtual List<Card> Cards { get; set; } = new();
+        public int ProjectId { get; set; }
+        public virtual Project Project { get; set; }
 
         [NotMapped]
         public int ProgressBar
@@ -45,22 +47,22 @@ namespace DataBaseInfo.models
         {
             get
             {
-                // 1. Проверяем есть ли вообще карточки
+     
                 if (Cards == null || !Cards.Any())
                     return null;
 
-                // 2. Собираем ВСЕ задачи из ВСЕХ карточек
+        
                 var allTasks = Cards
-                    .Where(c => c.Tasks != null)          // Отфильтровали null карточки
-                    .SelectMany(c => c.Tasks)             // Объединили все задачи
-                    .Where(t => t.DateOfStartWork != null)      // Отфильтровали задачи без дат
+                    .Where(c => c.Tasks != null)    
+                    .SelectMany(c => c.Tasks)            
+                    .Where(t => t.DateOfStartWork != null)     
                     .ToList();
 
-                // 3. Если нет задач с датами - возвращаем null
+          
                 if (!allTasks.Any())
                     return null;
 
-                // 4. Возвращаем минимальную дату (DateOnly)
+            
                 return allTasks.Min(t => t.DateOfStartWork);
             }
         }
@@ -69,22 +71,22 @@ namespace DataBaseInfo.models
         {
             get
             {
-                // 1. Проверяем есть ли вообще карточки
+          
                 if (Cards == null || !Cards.Any())
                     return null;
 
-                // 2. Собираем ВСЕ задачи из ВСЕХ карточек
+            
                 var allTasks = Cards
-                    .Where(c => c.Tasks != null)          // Отфильтровали null карточки
-                    .SelectMany(c => c.Tasks)             // Объединили все задачи
-                    .Where(t => t.DateOfDeadline != null)  // Отфильтровали задачи без дат окончания
+                    .Where(c => c.Tasks != null)    
+                    .SelectMany(c => c.Tasks)            
+                    .Where(t => t.DateOfDeadline != null)  
                     .ToList();
 
-                // 3. Если нет задач с датами окончания - возвращаем null
+           
                 if (!allTasks.Any())
                     return null;
 
-                // 4. Возвращаем МАКСИМАЛЬНУЮ дату (последний дедлайн)
+            
                 return allTasks.Max(t => t.DateOfDeadline);
             }
         }

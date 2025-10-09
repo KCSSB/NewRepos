@@ -4,6 +4,7 @@ using API.Exceptions.ContextCreator;
 using API.Repositories.Uof;
 using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
+using DataBaseInfo.models;
 
 namespace API.Services.Helpers
 {
@@ -18,11 +19,40 @@ namespace API.Services.Helpers
             _errCreatorFactory = errCreatorFactory;
             _unitOfWork = unitOfWork;
         }
-        public async Task IsProjectOwner(int userId, int projectId)
+        public async Task<bool> IsProjectOwner(int userId, int projectId)
         {
             var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(userId, projectId);
             if (projectUser == null || projectUser.ProjectRole != ProjectRoles.Owner)
-                throw new AppException(_errCreator.Forbidden($"Пользователь {userId}, не является основателем проекта {projectId}"));
+                throw new AppException(_errCreator.Forbidden($"Пользователь не является основателем проекта"));
+            return true;
+        }
+        public async Task<bool> IsLeadOfBoard(int userId, int boardId)
+        {
+            var memberOfBoard = await _unitOfWork.MembersOfBoardRepository.GetMemberOfBoardAsync(userId, boardId);
+            if (memberOfBoard == null || memberOfBoard.BoardRole != BoardRoles.Leader)
+                throw new AppException(_errCreator.Forbidden($"Пользователь не является главой доски"));
+            return true;
+        }
+        public async Task<bool> IsProjectOwnerOrLeaderOfBoard(int userId, int projectId, int boardId)
+        {
+            try
+            {
+                bool isOwner = await IsProjectOwner(userId, projectId);
+                return isOwner;
+            }
+            catch (AppException)
+            {
+                try
+                {
+                bool isLead = await IsLeadOfBoard(userId, boardId);
+                    return isLead;
+                }
+                catch (AppException)
+                {
+                    throw;
+                }
+                
+            }
         }
     }
 }

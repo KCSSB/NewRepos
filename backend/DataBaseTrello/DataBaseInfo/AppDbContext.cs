@@ -21,6 +21,7 @@ namespace DataBaseInfo
         public DbSet<_Task> Tasks { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<SubTask> SubTasks { get; set; }
+        public DbSet<ResponsibleForTask> ResponsibleForTasks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -85,7 +86,6 @@ namespace DataBaseInfo
                 .HasForeignKey(mb => mb.ProjectUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             });
 
            
@@ -96,9 +96,8 @@ namespace DataBaseInfo
                 entity.Property(b => b.Id).IsRequired();
                 //Настройка полей
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
-                
-                //Настройка связи между полями(Нэту)
-                
+
+                entity.HasOne(b => b.Project).WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId);
                
                 
             });
@@ -153,7 +152,20 @@ namespace DataBaseInfo
                .HasForeignKey(r => r.UserId);
 
             });
+            modelBuilder.Entity<ResponsibleForTask>(entity =>
+            {
+                entity.HasKey(r => r.Id);
 
+                entity.HasOne(r => r.Task)
+                .WithMany(t => t.Responsibles)
+                .HasForeignKey(t => t.TaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.MemberOfBoard)
+                .WithMany(mb => mb.Responsibles)
+                .HasForeignKey(mb => mb.MemberOfBoardId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
         }
     }

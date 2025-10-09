@@ -13,6 +13,10 @@ namespace API.Repositories.Uof
         public IProjectUserRepository ProjectUserRepository { get; set; }
         public ISessionRepository SessionRepository { get; set; }
         public IMembersOfBoardRepository MembersOfBoardRepository { get; set; }
+        public ICardRepository  CardRepository { get; set; }
+        public ITaskRepository TaskRepository { get; set; }
+        public ISubTaskRepository SubTaskRepository { get; set; }
+
         public IBoardRepository BoardRepository { get; set; }
 
         public UnitOfWork(AppDbContext context,
@@ -21,7 +25,10 @@ namespace API.Repositories.Uof
             ISessionRepository sessionRepository,
             IMembersOfBoardRepository membersOfBoardRepository,
             IBoardRepository boardRepository,
-            IProjectUserRepository projectUserRepository)
+            IProjectUserRepository projectUserRepository,
+            ICardRepository cardRepository,
+            ITaskRepository taskRepository,
+            ISubTaskRepository subTaskRepository)
         {
             _context = context;
             UserRepository = userRepository;
@@ -30,6 +37,9 @@ namespace API.Repositories.Uof
             MembersOfBoardRepository = membersOfBoardRepository;
             BoardRepository = boardRepository;
             ProjectUserRepository = projectUserRepository;
+            CardRepository = cardRepository;
+            TaskRepository = taskRepository;
+            SubTaskRepository = subTaskRepository;
         }
 
         public async Task SaveChangesAsync(string loggerMessage,string serviceName, [CallerMemberName] string? operationName = null)

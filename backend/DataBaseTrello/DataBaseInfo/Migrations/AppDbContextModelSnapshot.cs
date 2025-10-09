@@ -22,6 +22,29 @@ namespace DataBaseInfo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DataBaseInfo.Entities.ResponsibleForTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MemberOfBoardId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberOfBoardId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("ResponsibleForTasks");
+                });
+
             modelBuilder.Entity("DataBaseInfo.Entities.SubTask", b =>
                 {
                     b.Property<int>("Id")
@@ -63,7 +86,12 @@ namespace DataBaseInfo.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Boards");
                 });
@@ -287,14 +315,30 @@ namespace DataBaseInfo.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ResponsibleMemberIds")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CardId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("DataBaseInfo.Entities.ResponsibleForTask", b =>
+                {
+                    b.HasOne("DataBaseInfo.models.MemberOfBoard", "MemberOfBoard")
+                        .WithMany("Responsibles")
+                        .HasForeignKey("MemberOfBoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataBaseInfo.models._Task", "Task")
+                        .WithMany("Responsibles")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MemberOfBoard");
+
+                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("DataBaseInfo.Entities.SubTask", b =>
@@ -306,6 +350,17 @@ namespace DataBaseInfo.Migrations
                         .IsRequired();
 
                     b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("DataBaseInfo.models.Board", b =>
+                {
+                    b.HasOne("DataBaseInfo.models.Project", "Project")
+                        .WithMany("Boards")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("DataBaseInfo.models.Card", b =>
@@ -391,8 +446,15 @@ namespace DataBaseInfo.Migrations
                     b.Navigation("Tasks");
                 });
 
+            modelBuilder.Entity("DataBaseInfo.models.MemberOfBoard", b =>
+                {
+                    b.Navigation("Responsibles");
+                });
+
             modelBuilder.Entity("DataBaseInfo.models.Project", b =>
                 {
+                    b.Navigation("Boards");
+
                     b.Navigation("ProjectUsers");
                 });
 
@@ -410,6 +472,8 @@ namespace DataBaseInfo.Migrations
 
             modelBuilder.Entity("DataBaseInfo.models._Task", b =>
                 {
+                    b.Navigation("Responsibles");
+
                     b.Navigation("SubTasks");
                 });
 #pragma warning restore 612, 618
