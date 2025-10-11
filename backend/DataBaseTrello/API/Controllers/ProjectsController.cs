@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.DTO.Requests;
 using API.Exceptions.Context;
 using API.Constants;
 using API.Extensions;
@@ -14,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using API.DTO.Mappers;
 using API.Repositories.Queries.Intefaces;
 using API.Repositories.Queries;
+using API.DTO.Requests.Delete;
+using API.DTO.Requests.Change;
+using API.DTO.Requests.Create;
 
 
 namespace API.Controllers

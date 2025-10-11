@@ -1,7 +1,7 @@
 ﻿using API.Constants;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Change
 {
     public record ChangePasswordRequest
     {

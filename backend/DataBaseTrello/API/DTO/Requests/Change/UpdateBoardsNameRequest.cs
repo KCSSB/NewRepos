@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Change
 {
-    public class DeleteProjectUsersRequest
+    public record UpdateBoardsNameRequest
     {
         [Required(ErrorMessage = "Список должен быть не Null!")]
-        public List<int> ProjectUsers { get; set; } = new();
+        public List<UpdatedBoard> UpdatedBoards { get; set; } = new();
     }
 }

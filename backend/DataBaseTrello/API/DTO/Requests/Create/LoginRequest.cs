@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using API.Constants;
-using Microsoft.AspNetCore.Mvc;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Create
 {
-    public record RegisterUserRequest
+    public class LoginRequest
     {
-
         [Required(ErrorMessage = "Вы не указали email")]
         [EmailAddress(ErrorMessage = "Неверный формат email")]
         [MinLength(AllowLengthProp.MinEmail, ErrorMessage = $"email должен содержать больше символов")]

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Delete
 {
     public record DeleteBoardsRequest
     {

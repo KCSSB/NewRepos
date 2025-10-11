@@ -30,5 +30,13 @@ namespace API.Repositories.Implementations
         .Where(m => m.BoardId == boardId) 
         .FirstOrDefaultAsync();
         }
+        public async Task<MemberOfBoard?> GetMemberOfBoardAsync(int memberId)
+        {
+            return await _context.MembersOfBoards.FirstOrDefaultAsync(mb => mb.Id == memberId);
+        }
+        public void RemoveMember(MemberOfBoard member)
+        {
+            _context.MembersOfBoards.Remove(member);
+        }
     }
 }

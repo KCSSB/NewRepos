@@ -1,8 +1,7 @@
-﻿namespace API.DTO.Requests
+﻿namespace API.DTO.Requests.Change
 {
     public class UpdateSubTaskRequest
     {
-        public int SubTaskId { get; set; }
         public bool IsCompleted { get; set; }
     }
 }

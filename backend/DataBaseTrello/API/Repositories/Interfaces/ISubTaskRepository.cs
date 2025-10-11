@@ -7,5 +7,6 @@ namespace API.Repositories.Interfaces
     {
         public Task AddAsync(SubTask subTask);
         public Task<SubTask?> GetAsync(int subTaskId);
+        public void Delete(SubTask subTask);
     }
 }

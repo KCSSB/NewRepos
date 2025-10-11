@@ -20,5 +20,9 @@ namespace API.Repositories.Implementations
         {
             return await _context.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
         }
+        public async Task Delete(_Task task)
+        {
+           _context.Tasks.Remove(task);
+        }
     }
 }

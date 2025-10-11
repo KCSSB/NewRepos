@@ -1,14 +1,14 @@
 ﻿using System.Net.WebSockets;
 using API.Attributes;
 using API.DTO.Mappers;
-using API.DTO.Requests;
+using API.DTO.Requests.Change;
+using API.DTO.Requests.Create;
+using API.DTO.Requests.Delete;
 using API.DTO.Responses.Pages.HallPage;
 using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Extensions;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
-using DataBaseInfo.models;
-using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,28 +64,34 @@ namespace API.Controllers
             await _rolesHelper.IsProjectOwner(userId, projectId);
             var boardsForUpdate = request.UpdatedBoards;
             await _boardService.UpdateBoardsNameAsync(boardsForUpdate);
-            return Ok("названия успешно обновлены");
+            return Ok("Названия успешно обновлены");
         }
         [HttpPatch("{boardId}/UpdateBoardName")]
         public async Task<IActionResult> UpdateBoardName(int projectId, int boardId, string name)
         {
             int userId = User.GetUserId();
             await _rolesHelper.IsProjectOwner(userId, projectId);
-            //await _boardService.UpdateBoardNameAsync(boardId,name);
+            await _boardService.UpdateBoardNameAsync(boardId,name);
             return Ok("Название успешно обновлено");
         }
+
         [HttpDelete("{boardId}/DeleteMembers")]
         public async Task<IActionResult> DeleteMembers(int projectId, int boardId, [FromBody] DeleteMembersRequest request)
         {
             var userId = User.GetUserId();
-            return Ok();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            await _boardService.DeleteMembersAsync(boardId,request.Members);
+            return Ok("Участники успешно удалены");
         }
         [HttpPost("{boardId}/AddMember{memberId}")]
-        public async Task<IActionResult> AddMember(int projectId, int boardId, int memberId)
+        public async Task<IActionResult> AddMember(int projectId, int boardId, int projectUserId)
         {
             var userId = User.GetUserId();
-            var member = new WorkSpaceMember();
-            return Ok();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            var pu = await _boardService.AddMemberAsync(boardId,projectUserId);
+            return Ok(pu);
         }
     }
 }

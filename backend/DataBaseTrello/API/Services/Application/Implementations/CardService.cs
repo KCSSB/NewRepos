@@ -37,5 +37,22 @@ namespace API.Services.Application.Implementations
 
             return card;
         }
+        public async Task DeleteCardsAsync(List<int> CardIds) 
+        {
+            int count = 0;
+            foreach(var cardId in CardIds)
+            {
+  
+                var card = await _unitOfWork.CardRepository.GetCardAsync(cardId);
+                if (card != null)
+                {
+                    await _unitOfWork.CardRepository.DeleteCardAsync(card);
+                    count++;
+                }
+            }
+            if (count==0)
+                throw new AppException(_errCreator.NotFound("Карточка не найдена"));
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибки при удалении карточек");
+        }
     }
 }

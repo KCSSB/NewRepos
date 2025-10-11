@@ -1,6 +1,8 @@
 ﻿using System.Collections.Specialized;
 using API.Constants.Roles;
-using API.DTO.Requests;
+using API.DTO.Mappers;
+using API.DTO.Requests.Change;
+using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Extensions;
@@ -130,7 +132,7 @@ namespace API.Services.Application.Implementations
                 }
             }
             if (count <= 0)
-                throw new AppException(_errCreator.NotFound("данные для удаления не найдены"));
+                throw new AppException(_errCreator.NotFound("Доски для удаления не найдены"));
             await _unitOfWork.SaveChangesAsync("Ошибка при удалении досок",ServiceName);
         }
         public async Task UpdateBoardsNameAsync(List<UpdatedBoard> updateBoards)
@@ -148,9 +150,50 @@ namespace API.Services.Application.Implementations
                 }
             }
             if (count <= 0)
-                throw new AppException(_errCreator.NotFound("Данные для удаление не найдены"));
+                throw new AppException(_errCreator.NotFound("Данные для обновления не найдены"));
             await _unitOfWork.SaveChangesAsync("Ошибка при обнолвении названий досок",ServiceName);
     
         }
+        public async Task UpdateBoardNameAsync(int boardId, string name)
+        {
+            var board = await _unitOfWork.BoardRepository.GetAsync(boardId);
+            if (board == null)
+                throw new AppException(_errCreator.NotFound("Доска не найдена"));
+
+                board.Name = name;
+
+            await _unitOfWork.SaveChangesAsync("Ошибка при обнолвении названия доски", ServiceName);
+        }
+        public async Task DeleteMembersAsync(int boardId,List<int> membersIds)
+        {
+            var board = _query.BoardQueries.GetBoardWithMembersAsync(boardId);
+            foreach(var memberId in membersIds)
+            {
+            var member = await _unitOfWork.MembersOfBoardRepository.GetMemberOfBoardAsync(memberId);
+                if(member != null)
+                    _unitOfWork.MembersOfBoardRepository.RemoveMember(member);
+            }
+        }
+        public async Task<WorkSpaceMember?> AddMemberAsync(int boardId, int projectUserId)
+        {
+            var board = await _unitOfWork.BoardRepository.GetAsync(boardId);
+            if(board==null)
+                throw new AppException(_errCreator.NotFound($"Board не найден"));
+            var projectUser = await _unitOfWork.ProjectUserRepository.GetProjectUser(projectUserId);
+            if (projectUser == null)
+                throw new AppException(_errCreator.NotFound($"ProjectUser не найден"));
+            var member = new MemberOfBoard
+            {
+                BoardId = boardId,
+                ProjectUserId = projectUserId,
+                BoardRole = BoardRoles.Member,
+            };
+            board.MemberOfBoards.Add(member);
+            projectUser.MembersOfBoards.Add(member);
+            await _unitOfWork.SaveChangesAsync("Ошибка при добавлении участника доски", ServiceName);
+            var workSpaceMember = ToResponseMapper.ToWorkSpaceMember(projectUser, boardId);
+            return workSpaceMember;
+        }
+        
     }
 }
