@@ -58,6 +58,9 @@ namespace API.Controllers
         public async Task<IActionResult> ChangeSubTasksNames(int projectId, int boardId, [FromBody] ChangedSubTasksRequest request)
         {
             var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            await _taskService.UpdateSubTaskNames(request.subTasks);
             return Ok("Подзадачи были изменены");
         }
         [HttpPatch("UpdateSubTaskStatus/{subTaskId}")]
@@ -75,7 +78,10 @@ namespace API.Controllers
         public async Task<IActionResult> ChangeTasks(int projectId, int boardId, [FromBody] TasksChangeRequest request)
         {
             var userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
             var tasks = request.tasks;
+            await _taskService.ChangeTasksAsync(tasks);
             return Ok("Задачи изменены");
         }
         [HttpPost("CreateTask")]

@@ -1,4 +1,5 @@
-﻿using API.DTO.Requests.Delete;
+﻿using API.DTO.Requests.Change;
+using API.DTO.Requests.Delete;
 using API.DTO.Responses;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
@@ -77,6 +78,7 @@ namespace API.Services.Application.Implementations
             var member = await _context.MembersOfBoards.Include(mb => mb.Responsibles).Include(mb => mb.ProjectUser).ThenInclude(pu => pu.User).Where(mb => mb.Id == memberId).FirstOrDefaultAsync();
             if (member == null)
                 throw new AppException(_errCreator.NotFound("Участник доски не найден"));
+
             foreach(var mb in member.Responsibles)
             {
                 if(mb.TaskId == taskId && mb.MemberOfBoardId == memberId)
@@ -147,6 +149,47 @@ namespace API.Services.Application.Implementations
             }
             if (count == 0)
                 throw new AppException(_errCreator.NotFound("Подзадачи для удаления не были найдены"));
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при удалени подзадач");
+        }
+        public async Task UpdateSubTaskNames(List<ChangedSubTask> subTasks)
+        {
+            int count = 0;
+            foreach (var subTaskDTO in subTasks)
+            {
+                var subTask = await _unitOfWork.SubTaskRepository.GetAsync(subTaskDTO.SubTaskId);
+                if (subTask != null)
+                {
+                    subTask.Name = subTaskDTO.SubTaskName;
+                    count++;
+                }
+            }
+            if (count == 0)
+                throw new AppException(_errCreator.NotFound("Подзадачи для обновления не были найдены"));
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при удалени подзадач");
+        }
+        public async Task ChangeTasksAsync(List<ChangedTask> tasks)
+        {
+            int count = 0;
+            foreach (var taskDTO in tasks)
+            {
+                var task = await _unitOfWork.TaskRepository.GetAsync(taskDTO.TaskId);
+                if (task != null)
+                {
+                   if(taskDTO.Name != null)
+                        task.Name = taskDTO.Name;
+                   if(taskDTO.DateOfStartWork!=null)
+                        task.DateOfStartWork = taskDTO.DateOfStartWork;
+                   if(taskDTO.DateOfDeadline!=null)
+                        task.DateOfDeadline = taskDTO.DateOfDeadline;
+                   if(taskDTO.Description!=null)
+                        task.Description = taskDTO.Description;
+                   if(taskDTO.Priority!=null)
+                        task.Priority = taskDTO.Priority;
+                    count++;
+                }
+            }
+            if (count == 0)
+                throw new AppException(_errCreator.NotFound("Задачи для обновления не были найдены"));
             await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при удалени подзадач");
         }
 

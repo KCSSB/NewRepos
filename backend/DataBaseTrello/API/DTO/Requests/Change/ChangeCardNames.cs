@@ -2,6 +2,6 @@
 {
     public record ChangeCardNames
     {
-        public List<ChangedCards> Cards { get; set; } = new();
+        public List<ChangedCard> Cards { get; set; } = new();
     }
 }

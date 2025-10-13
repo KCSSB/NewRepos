@@ -34,6 +34,10 @@ namespace API.Controllers
         [HttpPatch("ChangeCardsNames")]
         public async Task<IActionResult> ChangeCardsNames(int projectId, int boardId, [FromBody] ChangeCardNames request)
         {
+            int userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            await _cardService.ChangeCardsNamesAsync(request.Cards);
             return Ok("Названия успешно изменены");
         }
         [HttpPost("CreateCard")]
