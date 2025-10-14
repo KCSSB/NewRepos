@@ -23,6 +23,9 @@ namespace API.Repositories.Queries.Implementations
         .Where(b => b.Id == boardId)
     .Include(b => b.Cards).ThenInclude(c => c.Tasks)
         .ThenInclude(t => t.SubTasks)
+        .Include(b => b.Cards).
+        ThenInclude(c => c.Tasks).
+        ThenInclude(t => t.Responsibles)
     .Include(b => b.MemberOfBoards)
         .ThenInclude(m => m.ProjectUser).ThenInclude(pu => pu.Project)
     .FirstOrDefaultAsync();

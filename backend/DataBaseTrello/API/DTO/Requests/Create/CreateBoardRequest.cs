@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using API.Constants;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Create
 {
     public class CreateBoardRequest
     {

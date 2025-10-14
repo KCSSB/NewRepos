@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using API.Attributes;
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Change
 {
     public class UploadAvatarRequest
     {

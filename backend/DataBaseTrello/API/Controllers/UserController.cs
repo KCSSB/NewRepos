@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Constants;
 using API.Exceptions.Context;
-using API.DTO.Requests;
 using API.Extensions;
 using API.DTO.Mappers;
 using API.Services.Application.Interfaces;
 using API.Services.Helpers.Interfaces;
 using API.Exceptions.ContextCreator;
+using API.DTO.Requests.Change;
 
 namespace API.Controllers
 {
@@ -69,7 +69,7 @@ private ErrorContextCreator _errCreator => _errorContextCreator ??= _errCreatorF
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            if (request == null)
+            if (request == null || !ModelState.IsValid)
                 return BadRequest();
             var userId = User.GetUserId();
             await _userService.ChangePasswordAsync(request.OldPassword, request.NewPassword, userId);

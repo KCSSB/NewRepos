@@ -16,11 +16,9 @@ namespace API.Repositories.Implementations
         {
             return await _context.Cards.FirstOrDefaultAsync(c => c.Id == cardId);
         }
-        public async Task DeleteCardAsync(int cardId)
+        public async Task DeleteCardAsync(Card card)
         {
-            var card = await GetCardAsync(cardId);
-            if(card!=null)
-               _context.Cards.Remove(card);
+            _context.Cards.Remove(card);
         }
         public async Task AddCardAsync(Card card)
         {

@@ -1,5 +1,6 @@
 ﻿using API.DTO.Mappers;
-using API.DTO.Requests;
+using API.DTO.Requests.Change;
+using API.DTO.Requests.Delete;
 using API.DTO.Responses.Pages.WorkSpacePage;
 using API.Extensions;
 using API.Services.Application.Implementations;
@@ -22,13 +23,21 @@ namespace API.Controllers
             _rolesHelper = rolesHelper;
         }
         [HttpDelete("DeleteCards")]
-        public async Task<IActionResult> DeleteCards(int projectId, int boardId, List<int> CardIds)
+        public async Task<IActionResult> DeleteCards(int projectId, int boardId, [FromBody] DeleteCardsRequest request)
         {
+            int userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            await _cardService.DeleteCardsAsync(request.CardIds);
             return Ok("Карточки были удалены");
         }
         [HttpPatch("ChangeCardsNames")]
         public async Task<IActionResult> ChangeCardsNames(int projectId, int boardId, [FromBody] ChangeCardNames request)
         {
+            int userId = User.GetUserId();
+            await _rolesHelper.IsProjectOwnerOrLeaderOfBoard(userId, projectId, boardId);
+
+            await _cardService.ChangeCardsNamesAsync(request.Cards);
             return Ok("Названия успешно изменены");
         }
         [HttpPost("CreateCard")]

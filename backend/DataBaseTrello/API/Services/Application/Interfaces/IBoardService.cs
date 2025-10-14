@@ -1,4 +1,7 @@
-﻿using API.DTO.Requests;
+﻿using System.Dynamic;
+using API.DTO.Requests.Change;
+using API.DTO.Requests.Delete;
+using API.DTO.Responses.Pages.WorkSpacePage;
 using DataBaseInfo.models;
 
 namespace API.Services.Application.Interfaces
@@ -10,5 +13,8 @@ namespace API.Services.Application.Interfaces
         public Task<List<int>> AddProjectUsersInBoardAsync(int boardId, List<int> projectUserIds);
         public Task DeleteBoardsAsync(List<int> boardIds);
         public Task UpdateBoardsNameAsync(List<UpdatedBoard> updateBoards);
+        public Task UpdateBoardNameAsync(int boardId, string name);
+        public Task DeleteMembersAsync(int boardId,List<int> memberIds);
+        public Task<WorkSpaceMember?> AddMemberAsync(int boardId, int projectUserId);
     }
 }
