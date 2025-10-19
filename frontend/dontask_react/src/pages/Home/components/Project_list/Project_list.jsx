@@ -9,7 +9,7 @@ import {
 } from "../../../../service/api";
 import { useToast } from "../../../../components/Toast/ToastContext";
 import people_logo from "./people_logo.png";
-import create_logo from "./create_temporary.png";
+import create_logo from "./create_icon.png";
 import load_logo from "./load_logo.png";
 import default_avatar from "../Navbar/avatar.png";
 

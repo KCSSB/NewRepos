@@ -8,6 +8,7 @@ import workspace_logo from "./workspace_logo.png";
 import settings_logo from "./settings_logo.png";
 import hall_logo from "./hall_logo.png";
 import default_avatar from "./avatar.png";
+import NotificationList from "./NotificationList.jsx";
 
 export default function Navbar() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function Navbar() {
   const isActiveSettings = location.pathname === "/settings";
   const [userAvatar, setUserAvatar] = useState(default_avatar);
   const [lastProjectId, setLastProjectId] = useState(null);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const updateAvatarFromToken = () => {
     const token = localStorage.getItem("token");
@@ -54,6 +56,10 @@ export default function Navbar() {
   const hallLink = lastProjectId ? `/hall/${lastProjectId}` : "/hall";
 
   const isHallLinkDisabled = !lastProjectId && !isActiveHall;
+
+  const handleAvatarClick = () => {
+    setShowNotifications((prev) => !prev);
+  };
 
   return (
     <div className="navbar-container">
@@ -110,8 +116,21 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="navbar-bottom">
-        <div className="navbar-container-item profile">
-          <img src={userAvatar} alt="AVATAR" className="avatar-image" />
+        <div
+          className={`navbar-container-item profile-wrapper ${
+            showNotifications ? "active" : ""
+          }`}
+        >
+          <div className="navbar-container-item profile">
+            <button
+              className="navbar-button avatar"
+              onClick={handleAvatarClick}
+            >
+              {" "}
+              <img src={userAvatar} alt="AVATAR" className="avatar-image" />
+            </button>
+          </div>
+          <NotificationList show={showNotifications} />
         </div>
       </div>
     </div>
