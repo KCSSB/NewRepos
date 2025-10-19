@@ -12,7 +12,7 @@ export default function ProjectDescription() {
   } = useProject();
 
   if (loading) {
-    return <div>Загрузка...</div>; // СКЕЛЕТОН
+    return <div>Загрузка...</div>;
   }
 
   const currentDescription =
