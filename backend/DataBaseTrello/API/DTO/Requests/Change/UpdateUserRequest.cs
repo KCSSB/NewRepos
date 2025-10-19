@@ -2,7 +2,7 @@
 using API.Constants;
 using DataBaseInfo.models;
 
-namespace API.DTO.Requests
+namespace API.DTO.Requests.Change
 {
     public record class UpdateUserRequest
     {

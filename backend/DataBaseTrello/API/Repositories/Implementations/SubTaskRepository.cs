@@ -3,6 +3,7 @@ using DataBaseInfo.models;
 using DataBaseInfo;
 using DataBaseInfo.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace API.Repositories.Implementations
 {
@@ -20,6 +21,10 @@ namespace API.Repositories.Implementations
         public async Task<SubTask?> GetAsync(int subTaskId)
         {
             return await _context.SubTasks.FirstOrDefaultAsync(st => st.Id == subTaskId);
+        }
+        public void Delete(SubTask subTask)
+        {
+            _context.SubTasks.Remove(subTask);
         }
     }
 }

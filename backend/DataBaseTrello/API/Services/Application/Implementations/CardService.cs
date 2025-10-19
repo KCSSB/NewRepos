@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication.ExtendedProtection;
+using API.DTO.Requests.Change;
 using API.Exceptions.Context;
 using API.Exceptions.ContextCreator;
 using API.Repositories.Uof;
@@ -36,6 +37,39 @@ namespace API.Services.Application.Implementations
             await _unitOfWork.SaveChangesAsync(ServiceName,"Ошибка при создании карточки");
 
             return card;
+        }
+        public async Task DeleteCardsAsync(List<int> CardIds) 
+        {
+            int count = 0;
+            foreach(var cardId in CardIds)
+            {
+  
+                var card = await _unitOfWork.CardRepository.GetCardAsync(cardId);
+                if (card != null)
+                {
+                    await _unitOfWork.CardRepository.DeleteCardAsync(card);
+                    count++;
+                }
+            }
+            if (count==0)
+                throw new AppException(_errCreator.NotFound("Карточка не найдена"));
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибки при удалении карточек");
+        }
+        public async Task ChangeCardsNamesAsync(List<ChangedCard> cards)
+        {
+            int count = 0;
+            foreach (var cardDTO in cards)
+            {
+                var card = await _unitOfWork.CardRepository.GetCardAsync(cardDTO.CardId);
+                if (card != null)
+                {
+                    card.Name = cardDTO.CardName;
+                    count++;
+                }
+            }
+            if (count == 0)
+                throw new AppException(_errCreator.NotFound("Карточки для измненеия не были найдены"));
+            await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибки при обновлении карточек");
         }
     }
 }

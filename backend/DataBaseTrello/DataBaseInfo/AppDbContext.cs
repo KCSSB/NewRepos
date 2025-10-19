@@ -97,7 +97,7 @@ namespace DataBaseInfo
                 //Настройка полей
                 entity.Property(b => b.Name).IsRequired().HasMaxLength(20);
 
-                entity.HasOne(b => b.Project).WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId);
+                entity.HasOne(b => b.Project).WithMany(p => p.Boards).HasForeignKey(b => b.ProjectId).OnDelete(DeleteBehavior.Cascade);
                
                 
             });
@@ -138,7 +138,7 @@ namespace DataBaseInfo
 
                 entity.HasOne(st => st.Task)
                 .WithMany(t => t.SubTasks)
-                .HasForeignKey(st => st.TaskId);
+                .HasForeignKey(st => st.TaskId).OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<Session>(entity =>
             {

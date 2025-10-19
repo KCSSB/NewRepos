@@ -6,5 +6,6 @@ namespace API.Repositories.Interfaces
     {
         public Task AddAsync(_Task task);
         public Task<_Task?> GetAsync(int taskId);
+        public Task Delete(_Task task);
     }
 }

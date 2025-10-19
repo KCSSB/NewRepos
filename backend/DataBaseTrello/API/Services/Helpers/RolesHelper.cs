@@ -5,6 +5,7 @@ using API.Repositories.Uof;
 using API.Services.Helpers.Implementations;
 using API.Services.Helpers.Interfaces;
 using DataBaseInfo.models;
+using Microsoft.CodeAnalysis;
 
 namespace API.Services.Helpers
 {
@@ -53,6 +54,14 @@ namespace API.Services.Helpers
                 }
                 
             }
+        }
+        public async Task<bool> IsMemberOfBoard(int userId, int boardId)
+        {
+            var memberOfBoard = await _unitOfWork.MembersOfBoardRepository.GetMemberOfBoardAsync(userId, boardId);
+
+            if (memberOfBoard==null)
+                throw new AppException(_errCreator.Forbidden($"Пользователь не является основателем проекта"));
+            return true;
         }
     }
 }

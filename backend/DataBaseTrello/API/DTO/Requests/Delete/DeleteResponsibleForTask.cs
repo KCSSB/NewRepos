@@ -1,6 +1,6 @@
-﻿namespace API.DTO.Requests
+﻿namespace API.DTO.Requests.Delete
 {
-    public record ResponsibleForTask
+    public record DeleteResponsibleForTask
     {
         public int TaskId { get; set; }
         public int MemberId { get; set; }
