@@ -14,6 +14,7 @@
   flex-direction: column;
   border-radius: 1.5rem;
   background-color: white;
+  justify-content: center;
 }
 
 .profile-header-group {
@@ -157,7 +158,7 @@
 
 .profile-button.quit {
   background-color: rgba(231, 76, 60, 1);
-  margin-left: auto;
+  width: 16rem;
 }
 
 .profile-button:hover {
@@ -391,4 +392,11 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.button-quit-container {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

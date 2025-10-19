@@ -346,13 +346,6 @@ export default function Profile() {
             >
               Отменить
             </button>
-            <button
-              className="profile-button quit"
-              onClick={handleLogout}
-              disabled={isEditing}
-            >
-              Выйти
-            </button>
           </div>
         </div>
 
@@ -604,6 +597,17 @@ export default function Profile() {
             </form>
           )}
         </div>
+        {!isEditingSecurity && (
+          <div className="button-quit-container">
+            <button
+              className="profile-button quit"
+              onClick={handleLogout}
+              disabled={isEditing}
+            >
+              Выйти
+            </button>
+          </div>
+        )}
       </div>
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
     </div>
