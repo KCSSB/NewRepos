@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "../../../../components/Toast/ToastContext";
-import { postWithAuth } from "../../../../service/api";
+import { postWithAuth, fetchWithAuth } from "../../../../service/api";
 import { useProject } from "../../HallContext.jsx";
 import create_board_icon from "./create_board_icon.png";
 import sand_watches_icon from "./sand_watches_icon.png";
@@ -23,10 +24,11 @@ const BoardCard = ({ board, index }) => {
     addBoardToDelete,
     addBoardToUpdateName,
     checkBoardExistsInChanges,
-    projectData,
+    projectData, // <-- Содержит projectId и projectName
   } = useProject();
   const showToast = useToast();
   const [localBoardName, setLocalBoardName] = useState(board.boardName);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentBoard = projectData?.boards.find(
@@ -45,11 +47,57 @@ const BoardCard = ({ board, index }) => {
     return `${day}.${month}`;
   };
 
-  const handleCardClick = () => {
+  /**
+   * Обновленная асинхронная функция для обработки клика и навигации.
+   * Передает projectId через state роутера, чтобы WorkspaceContext мог его получить.
+   */
+  const handleCardClick = async () => {
     if (isEditMode) {
       return;
     }
-    console.log(`Переход на доску с ID: ${board.boardId}`);
+
+    // 1. Извлечение Project ID и Project Name
+    const projectId = projectData?.projectId;
+    const projectName = projectData?.projectName;
+
+    if (!projectId) {
+      console.error(
+        "BoardCard: Не удалось получить Project ID из контекста Hall."
+      );
+      showToast(
+        "Ошибка: ID проекта не найден. Пожалуйста, перезагрузите страницу.",
+        "error"
+      );
+      return;
+    }
+
+    try {
+      console.log(`Отправка GET запроса для доски с ID: ${board.boardId}`);
+
+      // Выполняем GET запрос к указанному эндпоинту
+      const workSpaceData = await fetchWithAuth(
+        `/GetPages/GetWorkSpacePage/${board.boardId}`
+      );
+
+      console.log("Данные WorkSpace получены:", workSpaceData);
+
+      // 2. Навигация и передача ProjectID и ProjectName через state
+      navigate(`/workspace/${board.boardId}`, {
+        state: {
+          projectId: projectId,
+          projectName: projectName, // Для надежности, если API-ответ не содержит названия
+        },
+      });
+    } catch (err) {
+      console.error(
+        `Ошибка при получении данных для доски с ID ${board.boardId}:`,
+        err.response || err.message
+      );
+      showToast(
+        "Не удалось загрузить доску. Пожалуйста, попробуйте снова.",
+        "error"
+      );
+    }
   };
 
   const handleBoardNameChange = (e) => {
@@ -179,8 +227,9 @@ export default function Board_list({ boards, loading, projectId }) {
     setIsSubmitting(true);
 
     try {
+      // Здесь используется projectId, который приходит из пропсов (из Hall/ProjectContext)
       const newBoard = await postWithAuth(
-        `/project/${projectId}/Board/CreateBoard`,
+        `/project/${projectData.projectId}/Board/CreateBoard`, // Используем projectId из projectData
         { BoardName: boardName },
         {
           headers: {
