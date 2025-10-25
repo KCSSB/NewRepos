@@ -40,27 +40,38 @@ const calculateDeadline = (subTasks) => {
 
 // Компонент для отображения одной ПОДЗАДАЧИ (SubTask)
 const SubTaskItem = ({ subtask }) => {
-  const { toggleSubTaskStatus, loading, projectId, boardId } = useWorkspace();
+  const { toggleSubTaskStatus, loading } = useWorkspace();
   const [isUpdating, setIsUpdating] = useState(false);
+
+  console.log("🔴 SubTaskItem РЕНДЕРИТСЯ", { 
+    subTaskId: subtask.subTaskId,
+    isCompleted: subtask.isCompleted 
+  });
 
   const handleToggle = async (e) => {
     const newStatus = e.target.checked;
+    
+    console.log("🔴🔴🔴 ЧЕКБОКС НАЖАТ!", {
+      subTaskId: subtask.subTaskId,
+      newStatus,
+      currentStatus: subtask.isCompleted,
+      isUpdating,
+      loading
+    });
 
-    if (isUpdating || loading) return;
+    if (isUpdating || loading) {
+      console.log("🔴 БЛОКИРОВКА: уже обновляется или загрузка");
+      return;
+    }
 
     setIsUpdating(true);
+    
     try {
-      // 🔑 Используем функцию из контекста
-      const success = await toggleSubTaskStatus(subtask.subTaskId, newStatus);
-      
-      if (!success) {
-        // Если запрос не удался, откатываем чекбокс
-        e.target.checked = !newStatus;
-      }
+      console.log("🔴 ВЫЗОВ toggleSubTaskStatus...");
+      await toggleSubTaskStatus(subtask.subTaskId, newStatus);
+      console.log("🔴 toggleSubTaskStatus ВЫПОЛНЕНА");
     } catch (error) {
-      console.error("Ошибка при изменении статуса подзадачи:", error);
-      // Откатываем чекбокс при ошибке
-      e.target.checked = !newStatus;
+      console.error("🔴 ОШИБКА В handleToggle:", error);
     } finally {
       setIsUpdating(false);
     }

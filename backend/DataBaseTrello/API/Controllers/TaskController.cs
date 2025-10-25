@@ -70,7 +70,7 @@ namespace API.Controllers
             
             await _rolesHelper.IsMemberOfBoard(userId, boardId);
             bool status = request.IsCompleted;
-            var subTask = await _taskService.UpdateSubTaskStatusAsync(subTaskId,status);
+            var subTask = await _taskService.UpdateSubTaskStatusAsync(subTaskId);
             ToResponseMapper.ToWorkSpaceSubTask(subTask);
             return Ok(subTask);
         }

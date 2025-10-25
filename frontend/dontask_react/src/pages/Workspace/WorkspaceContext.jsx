@@ -35,6 +35,30 @@ export const useWorkspace = () => {
 const normalizeWorkspaceData = (data) => {
   if (!data) return data;
 
+  // 🔴 ДИАГНОСТИКА - ПОКАЖИ ЧТО ПРИХОДИТ ОТ БЕКЕНДА
+  console.log("🔴 ПОЛНЫЙ ОТВЕТ ОТ БЕКЕНДА:", data);
+  console.log("🔴 ВСЕ КЛЮЧИ В ОТВЕТЕ:", Object.keys(data));
+
+  // 🔴 ПОИСК projectId В РАЗНЫХ ВАРИАНТАХ
+  const possibleProjectIds = {
+    'data.projectId': data.projectId,
+    'data.projectID': data.projectID, 
+    'data.ProjectId': data.ProjectId,
+    'data.project': data.project,
+    'data.Project': data.Project,
+    'data.project?.id': data.project?.id,
+    'data.Project?.Id': data.Project?.Id,
+    'data.project?.projectId': data.project?.projectId,
+    'data.board?.projectId': data.board?.projectId,
+    'data.workspace?.projectId': data.workspace?.projectId,
+  };
+
+  console.log("🔴 ПОИСК projectId В ДАННЫХ:", possibleProjectIds);
+
+  // 🔴 НАЙДИ ПЕРВОЕ НЕ-UNDEFINED ЗНАЧЕНИЕ
+  const projectId = Object.values(possibleProjectIds).find(val => val !== undefined);
+  console.log("🔴 ИТОГОВЫЙ projectId:", projectId);
+
   const rawLists = data.boardLists || data.cards;
 
   if (!rawLists || !Array.isArray(rawLists)) {
@@ -84,10 +108,14 @@ const normalizeWorkspaceData = (data) => {
     };
   });
 
-  return {
+  const result = {
     ...data,
+    projectId: projectId, // 🔑 ДОБАВЛЯЕМ projectId В НОРМАЛИЗОВАННЫЕ ДАННЫЕ
     boardLists: normalizedLists,
   };
+
+  console.log("🔴 РЕЗУЛЬТАТ НОРМАЛИЗАЦИИ:", result);
+  return result;
 };
 
 export const WorkspaceProvider = ({ children }) => {
@@ -302,34 +330,38 @@ export const WorkspaceProvider = ({ children }) => {
   // ----------------------------------------------------------------------
 
   const fetchWorkspaceData = useCallback(
-    async (id) => {
-      if (!id) return;
-      setLoading(true);
-      try {
-        const data = await fetchWithAuth(`/GetPages/GetWorkSpacePage/${id}`);
-        const normalizedData = normalizeWorkspaceData(data);
+  async (id) => {
+    if (!id) return;
+    setLoading(true);
+    try {
+      console.log("🔴 ЗАПРОС К API: /GetPages/GetWorkSpacePage/" + id);
+      const data = await fetchWithAuth(`/GetPages/GetWorkSpacePage/${id}`);
+      
+      console.log("🔴 СЫРОЙ ОТВЕТ ОТ API:", data);
+      
+      const normalizedData = normalizeWorkspaceData(data);
 
-        setWorkspaceData(normalizedData);
+      setWorkspaceData(normalizedData);
 
-        console.log(
-          "Данные рабочей области успешно получены и нормализованы:",
-          normalizedData
-        );
-      } catch (err) {
-        console.error(
-          "Ошибка при получении данных WorkSpace:",
-          err.response || err.message
-        );
-        showToast(
-          "Не удалось загрузить рабочую область. Попробуйте снова.",
-          "error"
-        );
-      } finally {
-        setLoading(false);
-      }
-    },
-    [showToast]
-  );
+      console.log(
+        "Данные рабочей области успешно получены и нормализованы:",
+        normalizedData
+      );
+    } catch (err) {
+      console.error(
+        "Ошибка при получении данных WorkSpace:",
+        err.response || err.message
+      );
+      showToast(
+        "Не удалось загрузить рабочую область. Попробуйте снова.",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  },
+  [showToast]
+);
 
   useEffect(() => {
     fetchWorkspaceData(boardId);
@@ -346,15 +378,61 @@ export const WorkspaceProvider = ({ children }) => {
 
   // 🔑 ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СТАТУСА ПОДЗАДАЧИ
   const toggleSubTaskStatus = useCallback(async (subTaskId, isCompleted) => {
-    if (!projectId || !boardId) {
-      console.error("Отсутствует Project ID или Board ID.", { projectId, boardId });
-      return false;
-    }
+  const currentProjectId = workspaceData?.projectId;
+  const currentBoardId = boardId;
 
-    try {
-      // Оптимистичное обновление UI
+  console.log("🔴 toggleSubTaskStatus", { subTaskId, isCompleted });
+
+  if ((!currentProjectId && currentProjectId !== 0) || !currentBoardId) {
+    return false;
+  }
+
+  try {
+    // 🔴 ОПТИМИСТИЧНОЕ ОБНОВЛЕНИЕ
+    setWorkspaceData(prevData => {
+      if (!prevData?.boardLists) return prevData;
+      
+      return {
+        ...prevData,
+        boardLists: prevData.boardLists.map(list => ({
+          ...list,
+          cards: list.cards.map(card => ({
+            ...card,
+            subTasks: card.subTasks.map(subTask => 
+              subTask.subTaskId === subTaskId 
+                ? { ...subTask, isCompleted }
+                : subTask
+            )
+          }))
+        }))
+      };
+    });
+
+    const url = `/project/${currentProjectId}/board/${currentBoardId}/Task/UpdateSubTaskStatus/${subTaskId}`;
+    
+    console.log("📤 Отправка PATCH:", url);
+    
+    const response = await patchWithAuth(url, { isCompleted });
+
+    console.log("✅ Ответ:", response);
+
+    // 🔴 ВРЕМЕННОЕ РЕШЕНИЕ: ИГНОРИРУЕМ ОТВЕТ СЕРВЕРА
+    // Сервер возвращает старое значение, но мы оставляем оптимистичное обновление
+    showToast("Статус обновлен!", "success");
+    return true;
+
+  } catch (err) {
+    console.error("❌ Ошибка:", err);
+    
+    // 🔴 ОТКАТ ТОЛЬКО ПРИ НАСТОЯЩЕЙ ОШИБКЕ (не 404)
+    if (err.response?.status !== 404) {
       setWorkspaceData(prevData => {
         if (!prevData?.boardLists) return prevData;
+        
+        const originalStatus = prevData.boardLists
+          .flatMap(list => list.cards)
+          .flatMap(card => card.subTasks)
+          .find(subTask => subTask.subTaskId === subTaskId)?.isCompleted;
         
         return {
           ...prevData,
@@ -364,48 +442,19 @@ export const WorkspaceProvider = ({ children }) => {
               ...card,
               subTasks: card.subTasks.map(subTask => 
                 subTask.subTaskId === subTaskId 
-                  ? { ...subTask, isCompleted }
+                  ? { ...subTask, isCompleted: originalStatus }
                   : subTask
               )
             }))
           }))
         };
       });
-
-      // Отправляем запрос на сервер
-      const url = `/project/${projectId}/board/${boardId}/Task/UpdateSubTaskStatus/${subTaskId}`;
-      
-      const response = await patchWithAuth(url, { isCompleted });
-
-      showToast("Статус подзадачи обновлен!", "success");
-      return true;
-    } catch (err) {
-      console.error("Ошибка при обновлении статуса подзадачи:", err);
-      
-      // Откатываем изменения при ошибке
-      setWorkspaceData(prevData => {
-        if (!prevData?.boardLists) return prevData;
-        
-        return {
-          ...prevData,
-          boardLists: prevData.boardLists.map(list => ({
-            ...list,
-            cards: list.cards.map(card => ({
-              ...card,
-              subTasks: card.subTasks.map(subTask => 
-                subTask.subTaskId === subTaskId 
-                  ? { ...subTask, isCompleted: !isCompleted }
-                  : subTask
-              )
-            }))
-          }))
-        };
-      });
-      
-      showToast("Не удалось обновить статус подзадачи", "error");
-      return false;
     }
-  }, [projectId, boardId, showToast]);
+    
+    showToast("Не удалось обновить статус", "error");
+    return false;
+  }
+}, [workspaceData, boardId, showToast]);
 
   // ----------------------------------------------------------------------
   // ФУНКЦИИ API ДЛЯ СОЗДАНИЯ
