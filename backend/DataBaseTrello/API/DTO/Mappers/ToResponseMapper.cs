@@ -124,6 +124,7 @@ namespace API.DTO.Mappers
         {
             return new WorkSpace
             {
+                ProjectId = board.ProjectId,
                 BoardId = board.Id,
                 BoardName = board.Name,
                 ProjectName = board.MemberOfBoards

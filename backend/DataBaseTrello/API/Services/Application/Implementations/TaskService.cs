@@ -63,10 +63,10 @@ namespace API.Services.Application.Implementations
 
             return subTask;
         }
-        public async Task<SubTask> UpdateSubTaskStatusAsync(int subTaskId, bool status)
+        public async Task<SubTask> UpdateSubTaskStatusAsync(int subTaskId)
         {
             var subTask = await _unitOfWork.SubTaskRepository.GetAsync(subTaskId);
-            subTask.IsCompleted = !status;
+            subTask.IsCompleted = !subTask.IsCompleted;
             await _unitOfWork.SaveChangesAsync(ServiceName, "Ошибка при изменении состояния подзадачи");
             return subTask;
         }
