@@ -1,0 +1,72 @@
+/* Пример стилей для TaskItem.css */
+
+.task-name-display {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #333;
+  cursor: default;
+}
+
+.task-name-input {
+  width: 100%;
+  /* Стилизация под обычный текст */
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.4;
+
+  /* Стилизация поля ввода */
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: none;
+}
+
+.task-name-input:focus {
+  border-color: #007bff; /* Подсветка фокуса */
+}
+
+/* ------------------------------------------- */
+/* Стили для Подзадач */
+/* ------------------------------------------- */
+.subtasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Меньший промежуток */
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 8px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center; /* Выравнивание по центру */
+  font-size: 13px;
+  color: #5e6c84;
+}
+
+.subtask-item input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  /* Добавьте стили для кастомного чекбокса, если необходимо,
+     например, border: 1px solid #ccc; */
+}
+
+.subtask-item .subtask-name {
+  line-height: 1.4;
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+/* Стиль для выполненных подзадач */
+.subtask-item.completed .subtask-name {
+  text-decoration: line-through; /* Зачеркнутый текст */
+  color: #a0a0a0; /* Более бледный цвет */
+}
