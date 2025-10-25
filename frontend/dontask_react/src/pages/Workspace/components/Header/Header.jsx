@@ -31,16 +31,19 @@ const ProjectHeader = ({
               {/* Рендерим аватарки участников. 
               Этот блок теперь отвечает за отображение аватаров, 
               даже если их всего один (текущий пользователь) */}
-              {visibleAvatars.map((avatar, index) => (
-                <img
-                  key={index}
-                  // Используем avatar.url, если он есть, иначе defaultAvatarUrl
-                  src={avatar.url ? avatar.url : defaultAvatarUrl}
-                  alt={avatar.alt || "Участник"}
-                  className="workspace-user-avatar"
-                />
-              ))}
-
+                           {" "}
+              {visibleAvatars.map((avatar, index) => {
+                // 🎯 Теперь avatar.userAvatar будет содержать URL
+                // console.log(`Avatar ${index} URL:`, avatar.userAvatar);
+                return (
+                  <img
+                    key={index} // Используем прямое поле, так как оно теперь корректно передается
+                    src={avatar.userAvatar || defaultAvatarUrl}
+                    alt={avatar.alt || "Участник"}
+                    className="workspace-user-avatar"
+                  />
+                );
+              })}
               {/* Отображение счетчика "+N" */}
               {memberAvatars.length > visibleAvatars.length && (
                 <div className="avatar-count-more">

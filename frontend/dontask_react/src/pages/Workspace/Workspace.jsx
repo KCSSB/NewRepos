@@ -1,23 +1,50 @@
-// src/pages/Workspace/Workspace.jsx
+// src/pages/Workspace/Workspace.jsx - ИСПРАВЛЕННЫЙ КОД
 
-import React, { useState } from "react";
-import { useParams } from "react-router-dom"; // Добавляем импорт useParams
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import default_avatar from "./components/Header/avatar.png";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "../Home/components/Navbar/Navbar.jsx";
 import Card from "./components/Card/Card.jsx";
-import { WorkspaceProvider, useWorkspace } from "./WorkspaceContext.jsx"; // Импортируем провайдер и хук
+import { WorkspaceProvider, useWorkspace } from "./WorkspaceContext.jsx";
+import {
+  WorkspaceEditProvider,
+  useWorkspaceEdit,
+} from "./WorkspaceEditContext.jsx";
+import WorkspaceFooter from "./WorkspaceFooter.jsx";
 import "./Workspace.css";
 import "../../fonts/fonts.css";
 
-// --- Вспомогательный компонент для отображения контента ---
+// --- Вспомогательный компонент для отображения контента (Остается без изменений) ---
 const WorkspaceContent = ({ defaultAvatarUrl }) => {
-  // Получаем данные из контекста
-  const { loading, projectName, boardName, members, projectId } =
-    useWorkspace();
+  const {
+    loading,
+    projectName,
+    boardName,
+    members,
+    projectId: projectIdFromContext,
+    lists,
+  } = useWorkspace();
 
-  // Для Header передадим только те аватарки, которые нам нужны.
-  // Предполагаем, что Header ожидает массив аватарок
+  // 🔑 Здесь useWorkspace() и useWorkspaceEdit() будут работать корректно,
+  // так как они оба обернуты в свои провайдеры в родительском компоненте
+  const { isEditMode } = useWorkspaceEdit();
+
+  const { projectId, boardId } = useParams(); // Предполагаем, что Workspace использует эти параметры
+
+  // 🔑 Эффект для сохранения последнего посещенного проекта и доски
+  useEffect(() => {
+    const finalProjectId = projectIdFromContext;
+
+    if (finalProjectId && boardId) {
+      localStorage.setItem("lastVisitedWorkspaceProjectId", finalProjectId);
+      localStorage.setItem("lastVisitedWorkspaceBoardId", boardId);
+      console.log(
+        `[Workspace] Сохранен последний путь: ${finalProjectId}/${boardId}`
+      );
+    }
+  }, [projectIdFromContext, boardId]);
+
   const memberAvatars = members.map((member) => ({
     url: member.userImageUrl,
     alt: member.userName,
@@ -48,6 +75,7 @@ const WorkspaceContent = ({ defaultAvatarUrl }) => {
         loading={false}
       />
       <Card />
+      <WorkspaceFooter />
     </div>
   );
 };
@@ -57,9 +85,13 @@ export default function Workspace() {
   return (
     <div className="workspace-container">
       <Navbar />
-      {/* Оборачиваем контент в провайдер контекста */}
+      {/* 🔑 ИСПРАВЛЕНО: WorkspaceProvider теперь снаружи */}
       <WorkspaceProvider>
-        <WorkspaceContent defaultAvatarUrl={default_avatar} />
+        {/* 🔑 WorkspaceEditProvider теперь внутри,
+           и может безопасно вызывать useWorkspace() */}
+        <WorkspaceEditProvider>
+          <WorkspaceContent defaultAvatarUrl={default_avatar} />
+        </WorkspaceEditProvider>
       </WorkspaceProvider>
     </div>
   );

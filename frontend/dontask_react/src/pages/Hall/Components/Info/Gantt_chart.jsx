@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "./Gantt_chart.css";
+import { useProject } from "../../HallContext.jsx"; // Импорт для подключения к контексту
 
 const BOARD_COLORS = [
   "#8E8DFF",
@@ -27,65 +28,6 @@ const MONTHS = [
 
 const BOARD_BAR_HEIGHT = 60;
 const ROW_HEIGHT = 75;
-
-const MOCK_BOARDS = [
-  {
-    boardId: 1,
-    boardName: "Дизайн UX/UI",
-    dateOfStartWork: "2025-09-01",
-    dateOfDeadline: "2026-10-10",
-    progressBar: 70,
-  },
-  {
-    boardId: 2,
-    boardName: "Бэк-энд разработка",
-    dateOfStartWork: "2025-09-01",
-    dateOfDeadline: "2025-12-23",
-    progressBar: 40,
-  },
-  {
-    boardId: 3,
-    boardName: "Фронт-энд разработка",
-    dateOfStartWork: "2026-01-01",
-    dateOfDeadline: "2026-03-28",
-    progressBar: 10,
-  },
-  {
-    boardId: 4,
-    boardName: "Интеграция API",
-    dateOfStartWork: "2025-11-15",
-    dateOfDeadline: "2025-12-31",
-    progressBar: 100,
-  },
-  {
-    boardId: 5,
-    boardName: "Тестирование",
-    dateOfStartWork: "2026-04-01",
-    dateOfDeadline: "2026-08-30",
-    progressBar: 0,
-  },
-  {
-    boardId: 7,
-    boardName: "Дополнительная задача 1",
-    dateOfStartWork: "2025-03-01",
-    dateOfDeadline: "2025-05-15",
-    progressBar: 90,
-  },
-  {
-    boardId: 8,
-    boardName: "Лох",
-    dateOfStartWork: "2025-07-20",
-    dateOfDeadline: "2025-08-20",
-    progressBar: 60,
-  },
-  {
-    boardId: 9,
-    boardName: "Дополнительная задача 3",
-    dateOfStartWork: "2025-07-01",
-    dateOfDeadline: "2025-07-31",
-    progressBar: 2,
-  },
-];
 
 /**
  * @param {string} dateString
@@ -144,13 +86,15 @@ const GanttBoard = ({ board, index, selectedYear }) => {
   } else if (boardEndYear > selectedYear) {
     endDayOfYear = daysInYear;
   } else {
+    // ВАША ОРИГИНАЛЬНАЯ ЛОГИКА
     endDayOfYear = getDayOfYear(deadlineDate, selectedYear) + 1;
   }
 
   const widthInDays = endDayOfYear - startDayOfYear;
   if (widthInDays <= 0) return null;
 
-  const left = (startDayOfYear / daysInYear) * 100 + 0.8;
+  // ВАША ОРИГИНАЛЬНАЯ ЛОГИКА
+  const left = (startDayOfYear / daysInYear) * 100 + 1.2;   
   const width = (widthInDays / daysInYear) * 100;
 
   const formatMonthDay = (date) => {
@@ -204,18 +148,21 @@ const GanttBoard = ({ board, index, selectedYear }) => {
 };
 
 export default function Gantt_chart() {
+  const { projectData } = useProject();
+  const boards = projectData?.boards || []; // Получаем доски с бэка
+
   const currentYear = new Date().getFullYear();
 
   const allBoardYears = useMemo(() => {
     const years = new Set();
-    MOCK_BOARDS.forEach((b) => {
+    boards.forEach((b) => {
       if (b.dateOfStartWork)
         years.add(parseDateString(b.dateOfStartWork).getUTCFullYear());
       if (b.dateOfDeadline)
         years.add(parseDateString(b.dateOfDeadline).getUTCFullYear());
     });
     return Array.from(years).sort();
-  }, []);
+  }, [boards]);
 
   const availableYears = useMemo(() => {
     const years = new Set(allBoardYears);
@@ -227,7 +174,8 @@ export default function Gantt_chart() {
       .sort();
   }, [allBoardYears, currentYear]);
 
-  const initialYear = MOCK_BOARDS.some(
+  // Вычисляем initialYear на основе данных с бэка
+  const initialYear = boards.some(
     (b) =>
       (b.dateOfStartWork &&
         parseDateString(b.dateOfStartWork).getUTCFullYear() === currentYear) ||
@@ -235,9 +183,18 @@ export default function Gantt_chart() {
         parseDateString(b.dateOfDeadline).getUTCFullYear() === currentYear)
   )
     ? currentYear
-    : 2025;
+    : availableYears.length > 0
+    ? availableYears[0]
+    : 2025; // Если нет досок, берем 2025, как было в моках
 
   const [selectedYear, setSelectedYear] = useState(initialYear);
+
+  // Обновляем selectedYear, если initialYear изменился после загрузки данных
+  useEffect(() => {
+    if (initialYear !== selectedYear) {
+      setSelectedYear(initialYear);
+    }
+  }, [initialYear]);
 
   const maxRowCount = useMemo(() => {
     let max = 0;
@@ -249,7 +206,7 @@ export default function Gantt_chart() {
     ]);
 
     yearsToCheck.forEach((year) => {
-      const count = MOCK_BOARDS.filter((b) => {
+      const count = boards.filter((b) => {
         if (!b.dateOfStartWork || !b.dateOfDeadline) return false;
         const startYear = parseDateString(b.dateOfStartWork).getUTCFullYear();
         const endYear = parseDateString(b.dateOfDeadline).getUTCFullYear();
@@ -259,7 +216,7 @@ export default function Gantt_chart() {
     });
 
     return max;
-  }, [allBoardYears, currentYear]);
+  }, [allBoardYears, currentYear, boards]);
 
   const fixedBoardsContentHeight = maxRowCount * ROW_HEIGHT + ROW_HEIGHT;
 
@@ -297,14 +254,14 @@ export default function Gantt_chart() {
   const currentMonthIndex =
     new Date().getFullYear() === selectedYear ? new Date().getMonth() : -1;
 
-  const renderedBoards = MOCK_BOARDS.filter(
-    (b) => b.dateOfStartWork && b.dateOfDeadline
-  ).filter((board) => {
-    const startYear = parseDateString(board.dateOfStartWork).getUTCFullYear();
-    const endYear = parseDateString(board.dateOfDeadline).getUTCFullYear();
+  const renderedBoards = boards
+    .filter((b) => b.dateOfStartWork && b.dateOfDeadline)
+    .filter((board) => {
+      const startYear = parseDateString(board.dateOfStartWork).getUTCFullYear();
+      const endYear = parseDateString(board.dateOfDeadline).getUTCFullYear();
 
-    return startYear <= selectedYear && endYear >= selectedYear;
-  });
+      return startYear <= selectedYear && endYear >= selectedYear;
+    });
 
   return (
     <div className="gantt-chart-wrapper">
