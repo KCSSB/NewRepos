@@ -9,15 +9,11 @@ import React, {
 } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useToast } from "../../components/Toast/ToastContext";
-// 🔑 Импортируем fetchWithAuth (для GET), postWithAuth (для POST) и patchWithAuth (для PATCH)
 import {
   fetchWithAuth,
   postWithAuth,
   patchWithAuth,
 } from "../../service/api.js";
-
-// ❌ УДАЛЕН ИМПОРТ useWorkspaceEdit, чтобы избежать циклической зависимости
-// import { useWorkspaceEdit } from "./WorkspaceEditContext.jsx";
 
 // --- Вспомогательные функции для генерации уникальных ID ---
 const generateUniqueId = (prefix = "temp") =>
@@ -35,61 +31,6 @@ export const useWorkspace = () => {
   return context;
 };
 
-const updateSubTaskStatus = async (projectId, boardId, subTaskId, isCompleted) => {
-  try {
-    // 🚀 Оптимистичное обновление — сразу меняем UI
-    setLists(prevLists =>
-      prevLists.map(list => ({
-        ...list,
-        cards: list.cards.map(card => ({
-          ...card,
-          subTasks: card.subTasks.map(subTask =>
-            subTask.subTaskId === subTaskId
-              ? { ...subTask, isCompleted }
-              : subTask
-          )
-        }))
-      }))
-    );
-
-    // 🌐 Отправляем запрос на сервер
-    const response = await fetch(
-      `/api/project/${projectId}/board/${boardId}/Task/UpdateSubTaskStatus/${subTaskId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ isCompleted }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Ошибка при обновлении статуса на сервере');
-    }
-
-    // ✅ Успех — ничего не делаем, состояние уже актуально
-
-  } catch (error) {
-    // ❌ Ошибка — откатываем локальное изменение
-    setLists(prevLists =>
-      prevLists.map(list => ({
-        ...list,
-        cards: list.cards.map(card => ({
-          ...card,
-          subTasks: card.subTasks.map(subTask =>
-            subTask.subTaskId === subTaskId
-              ? { ...subTask, isCompleted: !isCompleted } // откат
-              : subTask
-          )
-        }))
-      }))
-    );
-    toast.error('Не удалось обновить статус подзадачи');
-    console.error(error);
-    throw error;
-  }
-};
 // 🔑 НОРМАЛИЗАЦИЯ ДАННЫХ
 const normalizeWorkspaceData = (data) => {
   if (!data) return data;
@@ -112,7 +53,6 @@ const normalizeWorkspaceData = (data) => {
       // НОРМАЛИЗАЦИЯ ПОДЗАДАЧ
       const normalizedSubTasks = (card.subTasks || []).map((subtask) => ({
         ...subtask,
-        // 🔑 ИСПРАВЛЕНИЕ: Приоритет subTaskId (маленькой) или SubTaskId (большой)
         subTaskId: String(
           subtask.subTaskId || subtask.SubTaskId || generateUniqueId("subtask")
         ),
@@ -124,7 +64,7 @@ const normalizeWorkspaceData = (data) => {
         isCompleted: subtask.isCompleted || false,
       }));
 
-      const idFromServer = card.cardId || card.CardId; // 🔑 Приоритет cardId
+      const idFromServer = card.cardId || card.CardId;
       const finalCardId = idFromServer
         ? String(idFromServer)
         : generateUniqueId("temp");
@@ -160,14 +100,14 @@ export const WorkspaceProvider = ({ children }) => {
   const [workspaceData, setWorkspaceData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // --- Функция обновления данных рабочей области (для добавления КОЛОНКИ, ЗАДАЧИ и ПОДЗАДАЧИ) ---
+  // --- Функция обновления данных рабочей области ---
   const updateWorkspaceData = useCallback((newData) => {
     setWorkspaceData((prevData) => {
       if (!prevData) return prevData;
 
       let newBoardLists = [...(prevData.boardLists || [])];
 
-      // 1. ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ КОЛОНКИ (КАРТОЧКИ)
+      // 1. ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ КОЛОНКИ
       if (newData.newCard) {
         const listIdFromServer =
           newData.newCard.CardId || newData.newCard.cardId;
@@ -200,8 +140,9 @@ export const WorkspaceProvider = ({ children }) => {
           ...prevData,
           boardLists: finalLists,
         };
-      } // 2. ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ ЗАДАЧИ (ТАСКА)
+      }
 
+      // 2. ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ ЗАДАЧИ
       if (newData.newTask && newData.listId) {
         const { newTask, listId } = newData;
 
@@ -216,11 +157,9 @@ export const WorkspaceProvider = ({ children }) => {
           return prevData;
         }
 
-        // 🔑 ИСПРАВЛЕНИЕ: Приоритет cardId (маленькая буква), как гарантировано в createTask
         const taskIdFromServer =
           newData.newTask.cardId || newData.newTask.CardId;
 
-        // ⚠️ ГАРАНТИЯ ЧИСЛОВОГО ID: Если ID не числовой (т.е. temp-...), отменяем обновление UI.
         if (!taskIdFromServer || isNaN(parseInt(taskIdFromServer))) {
           console.error(
             "Ошибка: Сервер не вернул корректный числовой ID для новой задачи. Требуется проверка бэкенда."
@@ -229,7 +168,7 @@ export const WorkspaceProvider = ({ children }) => {
         }
 
         const normalizedNewTask = {
-          cardId: String(taskIdFromServer), // ⬅️ Только числовой ID (как строка)
+          cardId: String(taskIdFromServer),
           cardName:
             newData.newTask.CardName ||
             newData.newTask.cardName ||
@@ -267,14 +206,14 @@ export const WorkspaceProvider = ({ children }) => {
           ...prevData,
           boardLists: finalLists,
         };
-      } // 3. 🚀 ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ ПОДЗАДАЧИ (SUBTASK)
+      }
 
+      // 3. ЛОГИКА ДОБАВЛЕНИЯ НОВОЙ ПОДЗАДАЧИ
       if (newData.newSubTask && newData.taskId) {
         const { newSubTask, taskId } = newData;
 
         let targetListIndex = -1;
         let targetCardIndex = -1;
-        // Находим список (list) и задачу (card) по taskId
 
         for (let i = 0; i < newBoardLists.length; i++) {
           targetCardIndex = newBoardLists[i].cards.findIndex(
@@ -291,9 +230,8 @@ export const WorkspaceProvider = ({ children }) => {
             `Не удалось найти задачу с ID: ${taskId} для добавления подзадачи.`
           );
           return prevData;
-        } // Нормализация ответа от API SubTask
+        }
 
-        // 🔑 ИСПРАВЛЕНИЕ: Приоритет subTaskId (маленькой), затем SubTaskId (большой)
         const subTaskIdFromServer =
           newSubTask.subTaskId || newSubTask.SubTaskId;
 
@@ -302,7 +240,7 @@ export const WorkspaceProvider = ({ children }) => {
           subTaskName:
             newSubTask.SubTaskName ||
             newSubTask.subTaskName ||
-            "Новая подзадача", // 🔑 Уточненная нормализация
+            "Новая подзадача",
           isCompleted: newSubTask.isCompleted || false,
           ...newSubTask,
         };
@@ -406,6 +344,69 @@ export const WorkspaceProvider = ({ children }) => {
   const members = workspaceData?.members || [];
   const lists = workspaceData?.boardLists || [];
 
+  // 🔑 ФУНКЦИЯ ДЛЯ ПЕРЕКЛЮЧЕНИЯ СТАТУСА ПОДЗАДАЧИ
+  const toggleSubTaskStatus = useCallback(async (subTaskId, isCompleted) => {
+    if (!projectId || !boardId) {
+      console.error("Отсутствует Project ID или Board ID.", { projectId, boardId });
+      return false;
+    }
+
+    try {
+      // Оптимистичное обновление UI
+      setWorkspaceData(prevData => {
+        if (!prevData?.boardLists) return prevData;
+        
+        return {
+          ...prevData,
+          boardLists: prevData.boardLists.map(list => ({
+            ...list,
+            cards: list.cards.map(card => ({
+              ...card,
+              subTasks: card.subTasks.map(subTask => 
+                subTask.subTaskId === subTaskId 
+                  ? { ...subTask, isCompleted }
+                  : subTask
+              )
+            }))
+          }))
+        };
+      });
+
+      // Отправляем запрос на сервер
+      const url = `/project/${projectId}/board/${boardId}/Task/UpdateSubTaskStatus/${subTaskId}`;
+      
+      const response = await patchWithAuth(url, { isCompleted });
+
+      showToast("Статус подзадачи обновлен!", "success");
+      return true;
+    } catch (err) {
+      console.error("Ошибка при обновлении статуса подзадачи:", err);
+      
+      // Откатываем изменения при ошибке
+      setWorkspaceData(prevData => {
+        if (!prevData?.boardLists) return prevData;
+        
+        return {
+          ...prevData,
+          boardLists: prevData.boardLists.map(list => ({
+            ...list,
+            cards: list.cards.map(card => ({
+              ...card,
+              subTasks: card.subTasks.map(subTask => 
+                subTask.subTaskId === subTaskId 
+                  ? { ...subTask, isCompleted: !isCompleted }
+                  : subTask
+              )
+            }))
+          }))
+        };
+      });
+      
+      showToast("Не удалось обновить статус подзадачи", "error");
+      return false;
+    }
+  }, [projectId, boardId, showToast]);
+
   // ----------------------------------------------------------------------
   // ФУНКЦИИ API ДЛЯ СОЗДАНИЯ
   // ----------------------------------------------------------------------
@@ -433,7 +434,6 @@ export const WorkspaceProvider = ({ children }) => {
 
       showToast("Новая колонка успешно создана!", "success");
 
-      // Используем updateWorkspaceData для добавления новой колонки в состояние
       updateWorkspaceData({ newCard: newCard });
 
       return newCard;
@@ -452,7 +452,6 @@ export const WorkspaceProvider = ({ children }) => {
 
   const createTask = useCallback(
     async (listId, taskName = "Новая задача") => {
-      // ⚠️ ИСПРАВЛЕНИЕ: ПРОВЕРКА ЗАВИСИМОСТЕЙ
       if (!projectId || !boardId || !listId) {
         console.error("Отсутствует Project ID, Board ID или List ID.", {
           projectId,
@@ -463,22 +462,16 @@ export const WorkspaceProvider = ({ children }) => {
         return;
       }
 
-      // Если вы отправляете taskName, убедитесь, что URL его принимает
       const baseUrl = `/project/${projectId}/board/${boardId}/Task/CreateTask?cardId=${listId}`;
-
-      // В вашем коде payload был пустым. Если вам нужно передать taskName, используйте:
-      // const payload = { CardName: taskName };
-      const payload = {}; // Используем, как в вашем оригинальном коде
+      const payload = {};
 
       try {
-        // 1. API-вызов
         const newTask = await postWithAuth(baseUrl, payload, {
           headers: { "Content-Type": "application/json" },
         });
 
         console.log("проверка ", newTask);
 
-        // 🔑 ИСПРАВЛЕНИЕ: Приоритет cardId (маленькая буква)
         const taskIdFromServer = newTask?.taskId;
 
         if (!taskIdFromServer || isNaN(parseInt(taskIdFromServer))) {
@@ -487,14 +480,12 @@ export const WorkspaceProvider = ({ children }) => {
           );
         }
 
-        const numericIdString = String(taskIdFromServer); // 🔑 Принудительное строковое числовое значение
+        const numericIdString = String(taskIdFromServer);
 
         showToast("Новая задача успешно создана!", "success");
 
-        // 3. Обновление состояния: передаем ответ сервера
-        // ВАЖНО: Мы заменяем CardId/cardId в ответе сервера на нормализованный String ID
         updateWorkspaceData({
-          newTask: { ...newTask, cardId: numericIdString }, // 🔑 Используем cardId, как ожидается в UI
+          newTask: { ...newTask, cardId: numericIdString },
           listId: listId,
         });
 
@@ -511,13 +502,11 @@ export const WorkspaceProvider = ({ children }) => {
         throw err;
       }
     },
-    // ⚠️ КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Добавление updateWorkspaceData в массив зависимостей
     [projectId, boardId, showToast, updateWorkspaceData]
   );
 
   const createSubTask = useCallback(
     async (taskId, subTaskName = "Новая подзадача") => {
-      // 🔑 ЛОГ 2: Исходный ID, переданный из компонента (будет "temp-..." или число)
       console.log(
         `🚀 [SubTask] Попытка создать подзадачу. Task ID (исходный): ${taskId}`
       );
@@ -530,8 +519,7 @@ export const WorkspaceProvider = ({ children }) => {
 
       const numericTaskId = parseInt(taskId);
 
-      // 🔑 ЛОГ 3: Результат парсинга
-      console.log(`🚀 [SubTask] Task ID после parseInt: ${numericTaskId}`); // 🔑 Здесь происходит блокировка, если taskId == "temp-..."
+      console.log(`🚀 [SubTask] Task ID после parseInt: ${numericTaskId}`);
 
       if (isNaN(numericTaskId) || numericTaskId <= 0) {
         console.error(
@@ -544,7 +532,6 @@ export const WorkspaceProvider = ({ children }) => {
         return;
       }
 
-      // 🔑 ЛОГ 4: Успешная валидация
       console.log(
         `✅ [SubTask] Task ID прошел валидацию: ${numericTaskId}. Выполняется API-вызов.`
       );
@@ -566,7 +553,6 @@ export const WorkspaceProvider = ({ children }) => {
 
         return newSubTask;
       } catch (err) {
-        // ... (логика обработки ошибок) ...
         throw err;
       }
     },
@@ -577,11 +563,6 @@ export const WorkspaceProvider = ({ children }) => {
   // 🔑 ФУНКЦИЯ API: PATCH для обновления названий задач/колонок
   // ----------------------------------------------------------------------
 
-  /**
-   * Отправляет PATCH запрос для одновременного обновления названий нескольких карточек/колонок.
-   * @param {Array<{id: string, name: string}>} cardsToUpdate Массив объектов с ID и новым именем.
-   * @returns {Promise<boolean>} Успешно ли выполнено обновление.
-   */
   const updateCardNames = useCallback(
     async (cardsToUpdate) => {
       if (!projectId || !boardId || cardsToUpdate.length === 0) {
@@ -593,13 +574,11 @@ export const WorkspaceProvider = ({ children }) => {
 
       const url = `/project/${projectId}/board/${boardId}/Card/ChangeCardsNames`;
 
-      // 1. Формируем массив карточек с ключами с маленькой буквы (cardId, cardName)
       const cardArray = cardsToUpdate.map((item) => ({
         cardId: parseInt(item.id),
         cardName: item.name,
       }));
 
-      // Отфильтровываем временные ID
       const validCardArray = cardArray.filter(
         (item) => !isNaN(item.cardId) && item.cardId > 0
       );
@@ -609,7 +588,6 @@ export const WorkspaceProvider = ({ children }) => {
         return true;
       }
 
-      // 2. Оборачиваем массив в объект с ключом "cards"
       const finalPayload = {
         cards: validCardArray,
       };
@@ -617,11 +595,9 @@ export const WorkspaceProvider = ({ children }) => {
       try {
         await patchWithAuth(url, finalPayload);
 
-        // 🔑 НОВЫЙ КОД ДЛЯ ОБНОВЛЕНИЯ ЛОКАЛЬНОГО СОСТОЯНИЯ:
         setWorkspaceData((prevData) => {
           if (!prevData || !prevData.boardLists) return prevData;
 
-          // Создаем Map для быстрого поиска обновлений по ID
           const updatesMap = new Map(
             cardsToUpdate.map((card) => [String(card.id), card.name])
           );
@@ -631,14 +607,11 @@ export const WorkspaceProvider = ({ children }) => {
             let isListUpdated = false;
             let updatedCards = list.cards;
 
-            // 1. Проверяем, нужно ли обновить название самой колонки (listName)
             if (updatesMap.has(listId)) {
               isListUpdated = true;
-              // Создаем копию списка с новым названием
               list = { ...list, listName: updatesMap.get(listId) };
             }
 
-            // 2. Проверяем, нужно ли обновить названия задач внутри колонки (cardName)
             updatedCards = list.cards.map((card) => {
               const cardId = String(card.cardId);
               if (updatesMap.has(cardId)) {
@@ -656,16 +629,15 @@ export const WorkspaceProvider = ({ children }) => {
 
           return { ...prevData, boardLists: newBoardLists };
         });
-        // --------------------------------------------------------
 
-        showToast("Название карточки(ок) успешно изменено!", "success"); // Добавляем тост об успешном завершении
+        showToast("Название карточки(ок) успешно изменено!", "success");
         return true;
       } catch (err) {
         console.error(
           "Ошибка при обновлении названий (PATCH):",
           err.response || err.message
         );
-        showToast("Ошибка при сохранении изменений.", "error"); // Тост об ошибке
+        showToast("Ошибка при сохранении изменений.", "error");
         return false;
       }
     },
@@ -683,12 +655,14 @@ export const WorkspaceProvider = ({ children }) => {
     boardName,
     members,
     projectId,
+    boardId,
     createCard,
     createTask,
     createSubTask,
     fetchWorkspaceData,
     lists,
-    updateCardNames, // Функция API для редактирования
+    updateCardNames,
+    toggleSubTaskStatus,
   };
 
   return (

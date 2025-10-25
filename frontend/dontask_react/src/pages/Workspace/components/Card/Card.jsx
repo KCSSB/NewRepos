@@ -39,8 +39,8 @@ const calculateDeadline = (subTasks) => {
 };
 
 // Компонент для отображения одной ПОДЗАДАЧИ (SubTask)
-const SubTaskItem = ({ subtask, projectId, boardId }) => {
-  const { toggleSubTaskStatus, loading } = useWorkspace();
+const SubTaskItem = ({ subtask }) => {
+  const { toggleSubTaskStatus, loading, projectId, boardId } = useWorkspace();
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleToggle = async (e) => {
@@ -50,7 +50,17 @@ const SubTaskItem = ({ subtask, projectId, boardId }) => {
 
     setIsUpdating(true);
     try {
-      await toggleSubTaskStatus(projectId, boardId, subtask.subTaskId, newStatus);
+      // 🔑 Используем функцию из контекста
+      const success = await toggleSubTaskStatus(subtask.subTaskId, newStatus);
+      
+      if (!success) {
+        // Если запрос не удался, откатываем чекбокс
+        e.target.checked = !newStatus;
+      }
+    } catch (error) {
+      console.error("Ошибка при изменении статуса подзадачи:", error);
+      // Откатываем чекбокс при ошибке
+      e.target.checked = !newStatus;
     } finally {
       setIsUpdating(false);
     }
@@ -163,11 +173,14 @@ const TaskItem = ({ card }) => {
           ) : (
             <span className="subtask-status-text-empty">&#9711; 0 из 0</span>
           )}
-        </div>
-
-        {subtasksToRender.map((subtask) => (
-          <SubTaskItem key={subtask.subTaskId} subtask={subtask} />
-        ))}
+        </div> подзадач:
+{subtasksToRender.map((subtask) => (
+  <SubTaskItem 
+    key={subtask.subTaskId} 
+    subtask={subtask}
+    // 🔑 projectId и boardId больше не передаем пропсами - берем из контекста
+  />
+))}
 
         <button
           type="button"
