@@ -1,0 +1,10 @@
+*/.git/
+**/.vs/
+**/bin/
+**/obj/
+**/*.pdb
+**/*.nupkg
+**/appsettings.Development.json
+**/secrets.json
+.env
+*.env
